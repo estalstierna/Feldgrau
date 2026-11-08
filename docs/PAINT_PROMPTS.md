@@ -7,9 +7,11 @@ Prompts for an **image-generating** model (for example ChatGPT image generation,
 2. Send **one asset prompt at a time**.
 3. Save each image under the file name given, put them all in one zip and send it over.
 
-You do **not** need to match the exact pixel sizes or formats. Wide images in any resolution are fine, and the developer will crop, resize and convert them to WebP. The only thing that matters is the composition: important things in the centre, with the horizon in the lower half.
+You do **not** need to match the exact pixel sizes or formats, or make backgrounds transparent (the developer cuts out the medals). Wide images in any resolution are fine, and the developer will crop, resize and convert them to WebP. The only thing that matters is the composition: important things in the centre, with the horizon in the lower half.
 
-The medals, ribbons and maps from the earlier code-drawn pack are kept for now. Painting them is not needed.
+The ribbon bars and maps from the earlier code-drawn pack are kept. The medals get their own prompts (section 4).
+
+**Attach `docs/substitute-emblem.png`** together with the master prompt: it shows the emblem that replaces the swastika.
 
 ---
 
@@ -25,7 +27,7 @@ STYLE, for every image:
 - People are small, distant and mostly seen as silhouettes or from behind (except in portraits).
 
 STRICT RULES:
-- No swastikas, no Nazi eagles, no SS runes, no flags of any kind, no armbands, no badges or emblems on uniforms, helmets, buildings or vehicles. Uniforms and helmets are plain.
+- Period insignia (the Wehrmacht eagle, flags, badges) may appear where they are historically correct. But NEVER draw a swastika: wherever a swastika would historically be, paint the substitute emblem from the attached reference image instead (an upright sword, point up, with two crossed oak leaves above the hilt).
 - No text, letters, numbers or signatures anywhere in the image.
 - No blood, no wounds, no dead bodies in view.
 - No real, recognisable people.
@@ -33,6 +35,8 @@ STRICT RULES:
 FORMAT:
 - Scene banners: a very wide panorama (aspect ratio about 15:4; if you cannot do that, 16:9 is fine). Keep all important elements in the central 60 % horizontally, with the horizon at about 60–70 % of the height. The top and sides may be cropped.
 - Portraits: square, head and shoulders.
+
+The attached image substitute-emblem.png shows the substitute emblem: on its own, on a flag, and in the centre of the Iron Cross.
 
 I will send one image request at a time, each with a file name. Make one image per request and keep the style consistent across the whole series. When I ask for the same scene at a different time of day, keep the SAME composition and change only the light.
 ```
@@ -116,7 +120,7 @@ Scene "letter": a top-down still life on a dark, worn wooden table, very wide fo
 Start each portrait with this line:
 
 ```
-Portrait, square, head and shoulders, three-quarter view, painted like a hand-coloured 1940 photograph in gouache, plain dark olive background (#3b3d34). German soldiers wear a plain field-grey wool tunic with a dark green collar and NO badges, eagles or emblems.
+Portrait, square, head and shoulders, three-quarter view, painted like a hand-coloured 1940 photograph in gouache, plain dark olive background (#3b3d34). German soldiers wear a field-grey wool tunic with a dark green collar and period-correct insignia. The breast eagle holds the substitute emblem, never a swastika.
 ```
 
 Then add the description:
@@ -124,11 +128,11 @@ Then add the description:
 | File | Description |
 |---|---|
 | `hartmann.webp` | Willi Hartmann, 22, a docker's son from Hamburg. Lanky, crooked cheeky grin, side cap pushed back, a cigarette tucked behind one ear. The squad joker. |
-| `lenz.webp` | Karl Lenz, 22, a former Hitler Youth leader, now a military policeman. Neat, pale, thin lips, cold correct gaze, perfectly straight posture. Wears a plain crescent-shaped metal plate on a chain around his neck (no emblem on it). |
+| `lenz.webp` | Karl Lenz, 22, a former Hitler Youth leader, now a military policeman. Neat, pale, thin lips, cold correct gaze, perfectly straight posture. Wears the crescent-shaped metal gorget of the military police on a chain around his neck, with an eagle holding the substitute emblem. |
 | `rau.webp` | Fritz Rau, 19, "the choirboy". Round, very young face, big ears, slightly frightened eyes, a uniform a size too large. |
 | `vogel.webp` | Ernst Vogel, 22, a Swabian farm boy. Stocky, sunburnt, anxious and gentle eyes. |
 | `brandt.webp` | Paul Brandt, 35, a twelve-year career sergeant. Square jaw, cropped greying hair, a face "like a closed door", hard but fair. |
-| `albrecht.webp` | Joachim von Albrecht, 24, an aristocratic infantry officer. Fine, serious features, a small old duelling scar on his left cheek, a plain peaked officer's cap with no badge. |
+| `albrecht.webp` | Joachim von Albrecht, 24, an aristocratic infantry officer. Fine, serious features, a small old duelling scar on his left cheek, a peaked officer's cap with the eagle (holding the substitute emblem) and cockade. |
 | `sattler.webp` | Bruno Sattler, 28, a streetwise Berliner. Sharp, amused face, slicked-back hair, a knowing half-smile: a man who can get you anything. |
 | `pohl.webp` | Gustav Pohl, 41, a reservist plumber with four children. Bushy moustache, thinning hair, tired kind eyes. |
 | `kuehn.webp` | Heinz Kühn, 20, a zealous former youth leader. Blond, hard unblinking stare, chin up. |
@@ -138,7 +142,41 @@ Then add the description:
 
 ---
 
-## 4. Title image (1 image)
+## 4. Medals (15 images)
+
+Start each medal with this line:
+
+```
+A single military decoration, painted as a precise, realistic museum-catalogue illustration in gouache: front view, centred, soft even light, subtle metal sheen. Plain flat light-grey background (#d8d8d8) with nothing else in the image, so it can be cut out. No text except where stated. Wherever a swastika would historically be, use the substitute emblem from the reference image.
+```
+
+**Ribbon medals** hang from a short ribbon: the ribbon at the top (about a third of the height, stripes running vertically), a small ring, then the medal. **Badges** are shown on their own, without a ribbon.
+
+Ribbon stripes are listed left to right; the widths are relative.
+
+| File | Prompt |
+|---|---|
+| `medal-ek2.png` | Iron Cross, 2nd Class (1939). A black cross pattée with a raised silver frame, hanging from its ribbon. The substitute emblem in the centre of the cross, "1939" small on the lower arm. Ribbon stripes: black 3, white 2, red 6, white 2, black 3. |
+| `medal-ek1.png` | Iron Cross, 1st Class (1939). The same black cross with silver frame and the substitute emblem in the centre, "1939" small on the lower arm, but WITHOUT a ribbon: pinned flat onto a square of field-grey wool breast-pocket cloth with visible stitching and a pocket button above it. |
+| `medal-kvk2.png` | War Merit Cross, 2nd Class with Swords. A bronze cross with straight, flared arms and a raised border, a small round centre medallion with the substitute emblem inside a small oak wreath, and two crossed swords behind the cross. Ribbon stripes: red 3, white 2, black 6, white 2, red 3. |
+| `medal-kvk2ns.png` | War Merit Cross, 2nd Class without swords. The same bronze cross and centre medallion, with no swords. Same ribbon as above. |
+| `medal-sudeten.png` | Sudetenland Medal (1938). A round bronze medal: a man holding a flag (showing the substitute emblem) steps up onto a platform where a second man pulls him up. Ribbon stripes: red 2, white 1, black 10, white 1, red 2. |
+| `medal-westwall.png` | West Wall Medal. An oval bronze medal: an eagle with spread wings above a bunker, holding the substitute emblem in a wreath, with a crossed sword and spade below. Ribbon stripes: white 2, brown 12, white 2. |
+| `medal-rescue.png` | Life Saving Medal. A round silver medal with a simple laurel border and a plain face. Ribbon stripes: white 2, orange-red 12, white 2. |
+| `medal-longservice4.png` | Long Service Award, 4 Years. A round matte silver medal with an eagle holding the substitute emblem in a wreath. A solid cornflower-blue ribbon. |
+| `medal-isa.png` | Infantry Assault Badge in silver. A vertical oval wreath of oak leaves, with a Kar98k rifle and fixed bayonet running diagonally from bottom-left to top-right across it, and a small eagle at the top holding the substitute emblem. No ribbon. |
+| `medal-wound_black.png` | Wound Badge in Black. A vertical oval badge with a laurel-wreath edge, a steel helmet in profile in the centre (the substitute emblem on the helmet) above two crossed swords. Black lacquer finish. No ribbon. |
+| `medal-wound_silver.png` | Wound Badge in Silver. The same design as the black wound badge, in matte silver. |
+| `medal-wound_gold.png` | Wound Badge in Gold. The same design, in matte gold. |
+| `medal-schnur1.png` | Marksmanship Lanyard, 1st Grade. A braided silver-grey aluminium cord hanging in a U-shaped loop from a short shoulder bar. No acorns. |
+| `medal-schnur2.png` | Marksmanship Lanyard, 2nd Grade. The same braided lanyard with ONE small silver acorn hanging at the bottom. |
+| `medal-schnur3.png` | Marksmanship Lanyard, 3rd Grade. The same braided lanyard with TWO small silver acorns. |
+
+**Tip:** paint `medal-wound_black.png` first. Then ask for "the same badge, now in matte silver" and "…in matte gold", and do the same for the three lanyards. That keeps each set consistent.
+
+---
+
+## 5. Title image (1 image)
 
 - **File:** `title.webp`
 ```
@@ -147,12 +185,13 @@ A very quiet, dark, atmospheric image for a title screen, wide 16:9. A lone sold
 
 ---
 
-## 5. Checklist
+## 6. Checklist
 
 | Type | Count |
 |---|---|
 | Scenes | 25 (8 scenes × 3 times of day, plus letter) |
 | Portraits | 12 |
+| Medals | 15 |
 | Title image | 1 |
 
 Put them all in one zip, in any folder structure. The file names are what matter.
