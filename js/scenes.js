@@ -21,7 +21,7 @@ function pines(rnd, count, yBase, hMin, hMax, color) {
 
 // Painted banners in assets/scenes/scene-<scene>-<phase>.webp. Scenes not listed use the drawn art.
 SIM.PHASE_NAMES = ['morning', 'afternoon', 'night'];
-SIM.SCENE_IMAGES = { camp: ['morning', 'afternoon', 'night'], forest: ['morning', 'afternoon', 'night'] };
+SIM.SCENE_IMAGES = { camp: ['morning', 'afternoon', 'night'], forest: ['morning', 'afternoon', 'night'], field: ['morning', 'afternoon', 'night'] };
 SIM.sceneImage = function (scene, phase) {
   const avail = SIM.SCENE_IMAGES[scene];
   if (!avail) return null;
