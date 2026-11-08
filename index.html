@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feldgrau</title>
+  <meta name="description" content="A text-driven life simulator: a German conscript in the Second World War.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Title -->
+  <section id="title" class="screen center">
+    <div class="title-card">
+      <div class="kicker">1930 – 1950</div>
+      <h1>Feldgrau</h1>
+      <p class="subtitle">A soldier's life in the Second World War</p>
+      <p class="warning">This game depicts war, violence and life under the Nazi dictatorship from the perspective of an ordinary German conscript. It is a work of historical fiction intended to show the choices, pressures and consequences ordinary people faced. It does not glorify any of it.</p>
+      <div class="btn-row">
+        <button class="btn primary" id="btn-new">New game</button>
+        <button class="btn" id="btn-continue" hidden>Continue</button>
+      </div>
+      <p class="muted small">Chapter I: The Corridor · 28 August – 3 September 1939</p>
+    </div>
+  </section>
+
+  <!-- Character creation -->
+  <section id="create" class="screen" hidden>
+    <div class="page">
+      <h2>Soldbuch</h2>
+      <p class="muted">Every soldier carried a paybook with his name, birth date and unit. Fill in yours.</p>
+      <div id="create-body"></div>
+      <div class="btn-row">
+        <button class="btn" id="btn-back">Back</button>
+        <button class="btn primary" id="btn-create">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prologue -->
+  <section id="prologue" class="screen" hidden>
+    <div class="page">
+      <div class="kicker">Prologue</div>
+      <h2 id="prologue-name"></h2>
+      <div id="prologue-body" class="timeline"></div>
+      <div class="btn-row"><button class="btn primary" id="btn-start">Report for duty</button></div>
+    </div>
+  </section>
+
+  <!-- Game -->
+  <section id="game" class="screen" hidden>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="card id-card">
+          <div class="kicker">Soldbuch</div>
+          <div id="char-name" class="char-name"></div>
+          <div id="char-rank" class="char-rank"></div>
+          <div id="char-unit" class="muted small"></div>
+        </div>
+        <div class="card"><div id="stats"></div></div>
+        <div class="card">
+          <div class="kicker small">Aug – Sep 1939</div>
+          <div id="days" class="days"></div>
+          <div id="map" class="map"></div>
+        </div>
+        <div class="card">
+          <button class="link" id="toggle-diary">Diary ▾</button>
+          <div id="diary-wrap" hidden><ul id="diary" class="diary"></ul></div>
+        </div>
+        <button class="link muted small" id="btn-quit">Title screen</button>
+      </aside>
+
+      <main id="main" class="main" tabindex="-1">
+        <div id="banner" class="banner"></div>
+        <div class="ev-head">
+          <div id="ev-date" class="ev-date"></div>
+          <div id="ev-place" class="ev-place"></div>
+        </div>
+        <div id="mini-stats" class="mini-stats" aria-hidden="true"></div>
+        <div id="notes"></div>
+        <h2 id="ev-title"></h2>
+        <div id="ev-text" class="ev-text"></div>
+        <div id="choices" class="choices"></div>
+        <div id="result" class="result" hidden></div>
+      </main>
+    </div>
+  </section>
+
+  <!-- Ending -->
+  <section id="ending" class="screen" hidden>
+    <div class="page">
+      <div class="kicker" id="end-kicker"></div>
+      <h2 id="end-title"></h2>
+      <div id="end-text" class="ev-text"></div>
+      <div id="end-summary" class="end-summary"></div>
+      <div class="btn-row"><button class="btn primary" id="btn-again">Play again</button></div>
+    </div>
+  </section>
+
+  <script src="js/data/world.js"></script>
+  <script src="js/data/events.js"></script>
+  <script src="js/data/pool.js"></script>
+  <script src="js/data/endings.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/scenes.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>
