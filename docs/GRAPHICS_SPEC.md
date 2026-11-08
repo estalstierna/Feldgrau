@@ -51,7 +51,7 @@ A fictional emblem for the regime, used consistently in every image. It is delib
   | Vehicles | Not used. Vehicles carry only the straight-armed Balkenkreuz |
 
 - **Style:** flat, heraldic, simple. Two or three shapes, readable at 10 px.
-- **Reference drawing:** `docs/substitute-emblem.svg` shows the emblem on its own, on a flag disc, and in the centre of an Iron Cross.
+- **Reference drawing:** `docs/substitute-emblem.svg` (and the same as an image, `docs/substitute-emblem.png`) shows the emblem on its own, on a flag disc, and in the centre of an Iron Cross.
 - **Name in the game world (for consistency if text ever refers to it):** "the Party sword".
 
 Where it replaces the swastika:
