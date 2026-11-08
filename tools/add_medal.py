@@ -1,7 +1,9 @@
 """Cut a painted medal out of its flat background and register it in js/data/medals.js.
 
 Usage:
-  python3 tools/add_medal.py <medal-id> <image.png> [--tolerance 28]
+  python3 tools/add_medal.py <medal-id> <image.png> [--tolerance 28] [--holes]
+
+--holes also clears enclosed background areas, such as the inside of a wreath.
 
 The background colour is sampled from the image corners. Every pixel that is close
 to it and connected to the image edge becomes transparent, with a soft edge. The
@@ -19,7 +21,7 @@ from PIL import Image, ImageFilter
 ROOT = Path(__file__).resolve().parent.parent
 
 
-def cut_out(src, tolerance):
+def cut_out(src, tolerance, holes=0.0):
     im = Image.open(src).convert('RGB')
     # Work at reduced size for the flood fill, then scale the mask back up.
     scale = 512 / max(im.size)
@@ -45,6 +47,23 @@ def cut_out(src, tolerance):
             ny, nx = y + dy, x + dx
             if 0 <= ny < h and 0 <= nx < w and close[ny, nx] and not outside[ny, nx]:
                 outside[ny, nx] = True; q.append((ny, nx))
+    if holes:
+        # Also clear enclosed background areas (for example inside a wreath), if they are large enough.
+        seen = outside.copy()
+        min_size = holes * h * w
+        for sy in range(h):
+            for sx in range(w):
+                if close[sy, sx] and not seen[sy, sx]:
+                    comp = [(sy, sx)]; seen[sy, sx] = True; i = 0
+                    while i < len(comp):
+                        y, x = comp[i]; i += 1
+                        for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                            ny, nx = y + dy, x + dx
+                            if 0 <= ny < h and 0 <= nx < w and close[ny, nx] and not seen[ny, nx]:
+                                seen[ny, nx] = True; comp.append((ny, nx))
+                    if len(comp) >= min_size:
+                        for y, x in comp:
+                            outside[y, x] = True
     mask = Image.fromarray(np.where(outside, 0, 255).astype(np.uint8)).resize(im.size, Image.LANCZOS)
     mask = mask.filter(ImageFilter.GaussianBlur(1.2))
     out = im.convert('RGBA')
@@ -73,8 +92,11 @@ def main():
     tol = 28
     if '--tolerance' in args:
         i = args.index('--tolerance'); tol = float(args[i + 1]); del args[i:i + 2]
+    holes = 0.0
+    if '--holes' in args:
+        args.remove('--holes'); holes = 0.004
     mid, src = args
-    img = cut_out(src, tol)
+    img = cut_out(src, tol, holes)
     img.thumbnail((256, 512), Image.LANCZOS)
     out = ROOT / 'assets' / 'medals'
     out.mkdir(parents=True, exist_ok=True)
