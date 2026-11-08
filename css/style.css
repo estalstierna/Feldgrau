@@ -24,6 +24,9 @@ body {
   font-size: 17px;
   line-height: 1.6;
   min-height: 100vh;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 h1, h2, h3, .kicker, .btn, .ev-date, .char-name, .choice .ch-num, .chip, .tl-year { font-family: var(--type); font-weight: normal; }
@@ -141,6 +144,9 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
   background: rgba(255,255,255,.35); border: 1px solid var(--line); padding: .75em 1em; cursor: pointer; border-radius: 2px;
 }
 .choice:hover:not(:disabled) { border-color: var(--feldgrau); background: rgba(77,83,69,.12); }
+.choice { min-height: 48px; touch-action: manipulation; }
+.btn { min-height: 44px; touch-action: manipulation; }
+.choice:active:not(:disabled) { background: rgba(77,83,69,.2); }
 .choice:disabled { opacity: .5; cursor: not-allowed; }
 .ch-num { color: var(--accent); min-width: 1.1em; }
 .ch-text small { display: block; font-size: .8rem; color: var(--ink-soft); }
@@ -169,6 +175,9 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
   .main { order: 1; }
   .banner { height: 120px; }
   .page { margin: 0; min-height: 100vh; }
+  .btn-row .btn { flex: 1 1 auto; }
+  #result .btn { width: 100%; }
+  .opts { grid-template-columns: 1fr; }
   .tl-item { grid-template-columns: 1fr; gap: 0; }
   .mini-stats { display: flex; flex-wrap: wrap; gap: .3rem .7rem; padding: .5rem 16px; font-size: .78rem; border-bottom: 1px solid var(--line); background: rgba(0,0,0,.04); }
   .mini b { font-weight: 600; }

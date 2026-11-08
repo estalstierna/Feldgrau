@@ -1,0 +1,16 @@
+{
+  "name": "Feldgrau",
+  "short_name": "Feldgrau",
+  "description": "A soldier's life in the Second World War.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1b1c18",
+  "theme_color": "#1b1c18",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

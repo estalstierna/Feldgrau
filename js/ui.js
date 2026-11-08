@@ -146,6 +146,9 @@ window.SIM = window.SIM || {};
     SIM.save(S);
     $('#btn-next').onclick = () => proceed(out);
     $('#btn-next').focus({ preventScroll: true });
+    // On small screens the outcome appears below the fold; bring it into view.
+    const top = r.getBoundingClientRect().top;
+    if (top > window.innerHeight * 0.6) window.scrollTo({ top: window.scrollY + top - 16, behavior: 'smooth' });
   }
 
   function proceed(out) {

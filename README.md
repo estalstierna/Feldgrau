@@ -6,7 +6,9 @@ A text-driven life simulator set in the Second World War. You play an ordinary G
 
 Open `index.html` in a browser. No build step and no server needed.
 
-Choose with the mouse, or press **1–4** to pick a choice and **Enter** to continue. Progress is saved automatically in the browser.
+**Play online:** https://estalstierna.github.io/SIMWW2/ (once GitHub Pages is enabled). The game works on phones, and you can add it to your home screen to run it like an app.
+
+Choose with the mouse or by tapping, or press **1–4** to pick a choice and **Enter** to continue. Progress is saved automatically in the browser.
 
 ## Chapter I: The Corridor (28 August – 3 September 1939)
 
