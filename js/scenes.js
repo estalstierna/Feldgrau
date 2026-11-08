@@ -19,7 +19,20 @@ function pines(rnd, count, yBase, hMin, hMax, color) {
   return s;
 }
 
+// Painted banners in assets/scenes/scene-<scene>-<phase>.webp. Scenes not listed use the drawn art.
+SIM.PHASE_NAMES = ['morning', 'afternoon', 'night'];
+SIM.SCENE_IMAGES = { camp: ['morning', 'afternoon', 'night'] };
+SIM.sceneImage = function (scene, phase) {
+  const avail = SIM.SCENE_IMAGES[scene];
+  if (!avail) return null;
+  if (avail === 'single') return `assets/scenes/scene-${scene}.webp`;
+  const name = SIM.PHASE_NAMES[phase];
+  return avail.includes(name) ? `assets/scenes/scene-${scene}-${name}.webp` : null;
+};
+
 SIM.sceneSVG = function (scene, phase, seed) {
+  const img = SIM.sceneImage(scene, phase);
+  if (img) return `<img class="scene-img" src="${img}" alt="">`;
   const rnd = seeded(seed || 7);
   const [top, bot] = SIM.SKIES[phase] || SIM.SKIES[0];
   const night = phase === 2;

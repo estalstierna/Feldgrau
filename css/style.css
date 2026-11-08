@@ -130,6 +130,8 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
 .main { padding: 0 0 2rem; outline: none; min-height: 70vh; }
 .banner { height: 160px; overflow: hidden; background: #333; }
 .banner svg { width: 100%; height: 100%; display: block; }
+.banner.painted { height: 230px; }
+.banner .scene-img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: 50% 60%; animation: fade .5s ease; }
 .ev-head, .main h2, .ev-text, .choices, .result, #notes { padding: 0 clamp(16px, 4vw, 2.4rem); }
 .ev-head { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-top: .8rem; padding-bottom: .6rem; }
 .ev-date { color: var(--accent); }
@@ -250,6 +252,7 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
   .sidebar { position: static; order: 2; padding: 0 16px; }
   .main { order: 1; }
   .banner { height: 120px; }
+  .banner.painted { height: 150px; }
   .page { margin: 0; min-height: 100vh; }
   .btn-row .btn { flex: 1 1 auto; }
   #result .btn { width: 100%; }
