@@ -21,27 +21,59 @@ The graphics support the text, they do not compete with it. They should feel lik
 
 ## 2. Rules for all graphics
 
-### 2.1 Content that must NOT appear
-- **No regime symbols**:
-  - no swastika (Hakenkreuz),
-  - no SS runes,
-  - no Nazi eagle (Hoheitszeichen),
-  - no Reich war flag,
-  - no Party badges or armbands.
+### 2.1 Content rules
+- **No swastika (Hakenkreuz).** Wherever a historical object carried a swastika, draw the **substitute emblem** described in 2.2 in its place. Never draw a swastika, a rotated or broken cross with bent arms, or anything that could be read as one.
+- Other period insignia **may** appear where they are historically correct, drawn with the substitute emblem wherever they originally contained a swastika:
+  - the Wehrmacht eagle on the right breast of the tunic and on the helmet decal,
+  - the Reich war flag (Reichskriegsflagge),
+  - the SS runes,
+  - Party badges and armbands.
 
-  This applies to uniforms, buildings, vehicles and medals. Where a historical object carried such a symbol, leave the space **plain** (for example the centre of the Iron Cross).
+  Use them only where they belong historically, and never as decoration or a focal point.
 - **No gore**: no visible wounds, blood or bodies in close-up. Death is shown by absence, distance, silhouette or aftermath.
 - **No real, identifiable people.** That includes Hitler, Pétain and others.
 - **No text inside images**, except where explicitly specified (the year "1939" on the Iron Cross and the year on the icon). Place names, labels and dates are added by the game.
 - **No glorification**: no heroic poses, triumphant lighting or recruitment-poster style.
 
-### 2.2 Visual style
+### 2.2 The substitute emblem (replaces the swastika everywhere)
+A fictional emblem for the regime, used consistently in every image. It is deliberately **not** rotationally symmetric and has **no bent arms**, so it can never be read as a swastika.
+
+- **Design:** a single upright double-edged **sword, point up**, with **two oak leaves** crossed over the blade just above the hilt (one leaf pointing left, one right, like a shallow X).
+- **Proportions:** the sword is about three times as tall as it is wide across the leaves. The leaves sit in the lower third.
+- **Colours by context:**
+
+  | Context | How the emblem appears |
+  |---|---|
+  | Flags and armbands | Black emblem in a white circle on a red field (the same layout as the historical flag) |
+  | Eagles | The emblem in the wreath held in the eagle's talons, in the same metal or colour as the eagle |
+  | Medals | Raised in the same metal as the medal, or black on a black cross |
+  | Helmets | The eagle decal on the left side (its wreath holds the emblem); the national shield in black, white and red on the right |
+  | Vehicles | Not used. Vehicles carry only the straight-armed Balkenkreuz |
+
+- **Style:** flat, heraldic, simple. Two or three shapes, readable at 10 px.
+- **Reference drawing:** `docs/substitute-emblem.svg` shows the emblem on its own, on a flag disc, and in the centre of an Iron Cross.
+- **Name in the game world (for consistency if text ever refers to it):** "the Party sword".
+
+Where it replaces the swastika:
+
+| Object | Use |
+|---|---|
+| National flag and Party flag | The emblem in the white disc |
+| Party armband | The emblem in the white disc on the red band |
+| Wehrmacht eagle (tunic, helmet decal, Feldgendarmerie gorget) | The eagle holds a wreath containing the emblem |
+| Iron Cross, both classes | The emblem in the centre of the cross |
+| Wound Badge | The emblem on the helmet |
+| Infantry Assault Badge | An eagle on top of the wreath holding the emblem |
+| Sudetenland Medal, West Wall Medal, Long Service Award | The eagle on these medals holds the emblem |
+| War Merit Cross | The emblem in the round centre medallion, inside a small wreath |
+
+### 2.3 Visual style
 - **Look:** muted, matte, painterly. Think gouache illustration or old lithograph, or silhouettes against a soft sky. Light paper grain is welcome.
 - **Detail:** low to medium. The banners are small and sit behind text headers, so legibility of shapes matters more than detail.
 - **Figures:** small and distant, mostly silhouettes, never facing the viewer with expressions (except portraits).
-- **Uniforms:** German army field grey (feldgrau `#4d5345`), M35 helmet silhouette, rifles (Kar98k), MG 34. French: khaki/mustard brown, Adrian helmet. Polish: olive-khaki, rogatywka cap. Belgian Chasseurs Ardennais: green beret.
+- **Uniforms:** German army field grey (feldgrau `#4d5345`), M35 helmet silhouette, the Wehrmacht breast eagle where visible (with the substitute emblem), rifles (Kar98k), MG 34. French: khaki/mustard brown, Adrian helmet. Polish: olive-khaki, rogatywka cap. Belgian Chasseurs Ardennais: green beret.
 
-### 2.3 Colour palette
+### 2.4 Colour palette
 These are the game's UI tokens. The images should sit comfortably on them.
 
 | Token | Hex | Use |
@@ -68,7 +100,7 @@ These are the game's UI tokens. The images should sit comfortably on them.
 
 Foreground silhouettes: `#2b2e27` by day and `#06080b` at night. Mid-ground: `#4a4d40` by day and `#0d1117` at night.
 
-### 2.4 Fonts (for reference only; images should not contain text)
+### 2.5 Fonts (for reference only; images should not contain text)
 - **Special Elite:** typewriter, used for headings and dates.
 - **Source Serif 4:** body text.
 
@@ -306,21 +338,21 @@ Every decoration needs **two** images:
 
 Ribbon stripes are given left to right as **colour : relative width**. They are symmetrical.
 
-| ID | Name (English / German) | Kind | Ribbon stripes | Medal design (with regime symbols omitted) |
+| ID | Name (English / German) | Kind | Ribbon stripes | Medal design (swastika replaced by the substitute emblem) |
 |---|---|---|---|---|
-| `sudeten` | Sudetenland Medal / *Medaille zur Erinnerung an den 1. Oktober 1938* | ribbon | `#b3262a`:2, `#f2f2f2`:1, `#111111`:10, `#f2f2f2`:1, `#b3262a`:2 | Round bronze-coloured medal, plain or with a simple wreath. **No eagle.** |
-| `westwall` | West Wall Medal / *Deutsches Schutzwall-Ehrenzeichen* | ribbon | `#f2f2f2`:2, `#7a4a26`:12, `#f2f2f2`:2 | Oval bronze medal showing a simple bunker shape with a crossed sword and spade. **No eagle.** |
-| `ek2` | Iron Cross, 2nd Class / *Eisernes Kreuz 2. Klasse* | ribbon | `#111111`:3, `#f2f2f2`:2, `#b3262a`:6, `#f2f2f2`:2, `#111111`:3 | Black cross pattée with a silver frame. **Centre left plain black.** "1939" in small silver numerals on the **lower arm**. Hangs from the ribbon. |
-| `ek1` | Iron Cross, 1st Class / *Eisernes Kreuz 1. Klasse* | badge | none | The **same cross**, but **no ribbon**: shown pinned to a patch of field-grey breast-pocket cloth (`#5d6352`) with visible stitching and a pocket button above. This is how it differs visually from the 2nd Class. |
-| `isa` | Infantry Assault Badge (silver) / *Infanterie-Sturmabzeichen* | badge | none | Vertical oval wreath of oak leaves in silver. A Kar98k rifle with fixed bayonet runs diagonally (bottom-left to top-right) across it. A small ribbon tie at the bottom. **No eagle at the top**; leave the top of the wreath closed. |
-| `kvk2` | War Merit Cross, 2nd Class with Swords / *Kriegsverdienstkreuz 2. Kl. mit Schwertern* | ribbon | `#b3262a`:3, `#f2f2f2`:2, `#111111`:6, `#f2f2f2`:2, `#b3262a`:3 | Bronze cross with straight, flared arms and a raised border, a small round centre medallion (**plain**), and two crossed swords behind the cross. |
+| `sudeten` | Sudetenland Medal / *Medaille zur Erinnerung an den 1. Oktober 1938* | ribbon | `#b3262a`:2, `#f2f2f2`:1, `#111111`:10, `#f2f2f2`:1, `#b3262a`:2 | Round bronze medal. Obverse: a man holding a flag stepping up onto a platform, where a second man pulls him up, as on the original. The flag shows the **substitute emblem**. Shown at small size, so keep the figures simplified. |
+| `westwall` | West Wall Medal / *Deutsches Schutzwall-Ehrenzeichen* | ribbon | `#f2f2f2`:2, `#7a4a26`:12, `#f2f2f2`:2 | Oval bronze medal. An eagle with spread wings above a bunker, with a crossed sword and spade below. The eagle holds the **substitute emblem** in a wreath. |
+| `ek2` | Iron Cross, 2nd Class / *Eisernes Kreuz 2. Klasse* | ribbon | `#111111`:3, `#f2f2f2`:2, `#b3262a`:6, `#f2f2f2`:2, `#111111`:3 | Black cross pattée with a silver frame. The **substitute emblem** in silver-edged black in the centre. "1939" in small silver numerals on the **lower arm**. Hangs from the ribbon. |
+| `ek1` | Iron Cross, 1st Class / *Eisernes Kreuz 1. Klasse* | badge | none | The **same cross** (with the substitute emblem in the centre), but **no ribbon**: shown pinned to a patch of field-grey breast-pocket cloth (`#5d6352`) with visible stitching and a pocket button above. This is how it differs visually from the 2nd Class. |
+| `isa` | Infantry Assault Badge (silver) / *Infanterie-Sturmabzeichen* | badge | none | Vertical oval wreath of oak leaves in silver. A Kar98k rifle with fixed bayonet runs diagonally (bottom-left to top-right) across it. A small ribbon tie at the bottom. A small **eagle at the top** of the wreath holding the **substitute emblem**. |
+| `kvk2` | War Merit Cross, 2nd Class with Swords / *Kriegsverdienstkreuz 2. Kl. mit Schwertern* | ribbon | `#b3262a`:3, `#f2f2f2`:2, `#111111`:6, `#f2f2f2`:2, `#b3262a`:3 | Bronze cross with straight, flared arms and a raised border, a small round centre medallion with the **substitute emblem** inside a small oak wreath, and two crossed swords behind the cross. |
 | `kvk2ns` | War Merit Cross, 2nd Class / *Kriegsverdienstkreuz 2. Kl. ohne Schwerter* | ribbon | same as `kvk2` | Same bronze cross, **without swords**. |
 | `rescue` | Life Saving Medal / *Medaille für Rettung aus Gefahr* | ribbon | `#f2f2f2`:2, `#d0562e`:12, `#f2f2f2`:2 | Round silver medal, plain face with a simple laurel border. |
-| `longservice4` | Long Service Award, 4 Years / *Wehrmacht-Dienstauszeichnung 4. Klasse* | ribbon | `#5f86c8`:1 (solid cornflower blue) | Round matte silver medal with a raised "4" (the one allowed numeral). **No eagle.** |
+| `longservice4` | Long Service Award, 4 Years / *Wehrmacht-Dienstauszeichnung 4. Klasse* | ribbon | `#5f86c8`:1 (solid cornflower blue) | Round matte silver medal. An eagle holding the **substitute emblem** in a wreath on the obverse, with a raised "4" on the reverse (the one allowed numeral). |
 | `schnur1` | Marksmanship Lanyard, 1st Grade / *Schützenschnur, 1. Stufe* | badge | none | A braided silver-grey cord in a U-shaped loop hanging from a short shoulder bar. No acorns. |
 | `schnur2` | Marksmanship Lanyard, 2nd Grade | badge | none | Same lanyard with **one** small silver acorn at the bottom. |
 | `schnur3` | Marksmanship Lanyard, 3rd Grade | badge | none | Same lanyard with **two** small silver acorns. |
-| `wound_black` | Wound Badge in Black / *Verwundetenabzeichen in Schwarz* | badge | none | Vertical oval, laurel-wreath edge, a steel helmet in profile in the centre above two crossed swords. Black lacquer finish. **Helmet plain, no symbol.** |
+| `wound_black` | Wound Badge in Black / *Verwundetenabzeichen in Schwarz* | badge | none | Vertical oval, laurel-wreath edge, a steel helmet in profile in the centre above two crossed swords. Black lacquer finish. The **substitute emblem** on the helmet. |
 | `wound_silver` | Wound Badge in Silver | badge | none | Same design in matte silver. |
 | `wound_gold` | Wound Badge in Gold | badge | none | Same design in matte gold `#c9a240`. |
 
@@ -342,14 +374,14 @@ Ribbons on the bar are ordered by importance: `ek2`, `kvk2`, `kvk2ns`, `rescue`,
 - Head and shoulders, three-quarter view.
 - Muted painted look, like a hand-coloured period photograph.
 - Neutral dark background `#3b3d34`.
-- No insignia beyond plain shoulder straps.
+- Period-correct insignia are allowed: shoulder straps, collar patches, and the breast eagle holding the substitute emblem.
 
 **German soldiers** (field-grey tunic, M35 helmet or side cap):
 
 | ID | Name | Age | Description |
 |---|---|---|---|
 | `hartmann` | Willi Hartmann | 22 | Hamburg docker's son. Lanky, crooked grin, cap pushed back, cigarette behind the ear. Machine gunner, joker. |
-| `lenz` | Karl Lenz | 22 | Former Hitler Youth leader, now military police. Neat, pale, thin lips, very correct posture. From Chapter III wears the Feldgendarmerie metal gorget: a crescent plate on a chain, shown **blank**. |
+| `lenz` | Karl Lenz | 22 | Former Hitler Youth leader, now military police. Neat, pale, thin lips, very correct posture. From Chapter III wears the Feldgendarmerie metal gorget: a crescent plate on a chain, with an eagle holding the **substitute emblem**. |
 | `rau` | Fritz Rau | 19 | The "choirboy". Round, very young face, big ears, uniform slightly too large. |
 | `vogel` | Ernst Vogel | 22 | Swabian farm boy. Stocky, anxious eyes, sunburnt neck. |
 | `brandt` | Paul Brandt | 35 | Twelve-year regular. Square jaw, cropped grey-flecked hair, face "like a closed door". NCO braid on the collar. |

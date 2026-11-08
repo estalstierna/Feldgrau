@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 120" width="600" height="240">
+  <title>Feldgrau substitute emblem ("the Party sword")</title>
+  <!-- Reference sheet: the emblem alone, on a flag disc, and on an Iron Cross centre. -->
+  <rect width="300" height="120" fill="#e9e1cb"/>
+
+  <!-- 1. The emblem: upright sword, point up, two oak leaves crossed above the hilt. -->
+  <g id="emblem" transform="translate(50 60)">
+    <path d="M0,-40 L5,-30 L5,22 L-5,22 L-5,-30 Z" fill="#111"/>
+    <rect x="-15" y="22" width="30" height="5" fill="#111"/>
+    <rect x="-3" y="27" width="6" height="10" fill="#111"/>
+    <circle cx="0" cy="40" r="4" fill="#111"/>
+    <path d="M-3,14 C-14,6 -24,8 -28,2 C-20,-2 -10,2 -3,10 Z" fill="#111"/>
+    <path d="M3,14 C14,6 24,8 28,2 C20,-2 10,2 3,10 Z" fill="#111"/>
+  </g>
+
+  <!-- 2. On a flag: red field, white disc. -->
+  <g transform="translate(150 60)">
+    <rect x="-45" y="-32" width="90" height="64" fill="#b3262a"/>
+    <circle r="28" fill="#f2f2f2"/>
+    <use href="#emblem" transform="translate(-50 -60) scale(.55) translate(41 49)"/>
+  </g>
+
+  <!-- 3. In the centre of an Iron Cross (simplified). -->
+  <g transform="translate(250 60)">
+    <path d="M-9,-9 L-17,-42 L17,-42 L9,-9 L42,-17 L42,17 L9,9 L17,42 L-17,42 L-9,9 L-42,17 L-42,-17 Z" fill="#c0c4c8"/>
+    <path d="M-7,-7 L-14,-36 L14,-36 L7,-7 L36,-14 L36,14 L7,7 L14,36 L-14,36 L-7,7 L-36,14 L-36,-14 Z" fill="#111"/>
+    <g transform="scale(.42)">
+      <path d="M0,-40 L5,-30 L5,22 L-5,22 L-5,-30 Z" fill="#c0c4c8"/>
+      <rect x="-15" y="22" width="30" height="5" fill="#c0c4c8"/>
+      <path d="M-3,14 C-14,6 -24,8 -28,2 C-20,-2 -10,2 -3,10 Z" fill="#c0c4c8"/>
+      <path d="M3,14 C14,6 24,8 28,2 C20,-2 10,2 3,10 Z" fill="#c0c4c8"/>
+    </g>
+    <text y="31" text-anchor="middle" font-size="7" fill="#c0c4c8" font-family="serif">1939</text>
+  </g>
+</svg>
