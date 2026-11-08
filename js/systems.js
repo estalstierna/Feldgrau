@@ -29,7 +29,7 @@ SIM.PEOPLE = {
 };
 
 // Painted portraits available in assets/portraits/<id>.webp. Others fall back to initials.
-SIM.PORTRAITS = ['hartmann', 'lenz', 'rau', 'vogel', 'brandt', 'albrecht', 'sattler', 'brenner', 'kuehn', 'claire', 'madame', 'pohl', 'starck'];
+SIM.PORTRAITS = ['hartmann', 'lenz', 'rau', 'vogel', 'brandt', 'albrecht', 'sattler', 'brenner', 'kuehn', 'claire', 'madame', 'pohl', 'starck', 'brandes'];
 
 // Some people have more than one portrait, chosen by chapter (e.g. summer and winter uniform).
 SIM.PORTRAIT_FILE = {
