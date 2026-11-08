@@ -15,6 +15,10 @@ SIM.newState = function (char) {
     assaultDays: [],
     medals: [],
     rankHistory: [{ rank: 0, date: SIM.serviceStart(char) }],
+    rel: {},
+    items: {},
+    skillXp: {},
+    squad: null,
     reviews: {},
     delayed: [],
     newAwards: [],
@@ -81,6 +85,8 @@ SIM.INTERLUDE_EVENTS = SIM.INTERLUDE_EVENTS || {};
 SIM.chapter = s => SIM.CHAPTERS[s.chapter || 0];
 SIM.days = s => SIM.chapter(s).days;
 SIM.today = s => { const d = SIM.days(s); return d[Math.min(s.day, d.length - 1)]; };
+// A day's place can depend on the story so far.
+SIM.dayPlace = (s, d) => typeof d.place === 'function' ? d.place(s) : d.place;
 SIM.place = (s, id) => SIM.chapter(s).places[id];
 SIM.isPool = ev => SIM.POOL.includes(ev);
 // Random events may recur in later chapters; story events never do.
@@ -102,8 +108,8 @@ SIM.pickEvent = function (s) {
 SIM.choiceVisible = (s, ch) => !ch.show || ch.show(s);
 SIM.choiceAllowed = (s, ch) => !ch.req || ch.req(s);
 
-SIM.resolveChoice = function (s, ev, ch) {
-  const out = { texts: [], deltas: {}, next: null, end: null, wounded: false };
+SIM.resolveChoice = function (s, ev, ch, man) {
+  const out = { texts: [], deltas: {}, extra: [], next: null, end: null, wounded: false };
   const x = {
     apply: e => SIM.apply(s, e, out.deltas),
     roll: p => Math.random() < p,
@@ -112,8 +118,10 @@ SIM.resolveChoice = function (s, ev, ch) {
     log: t => SIM.addLog(s, t),
     next: id => { out.next = id; },
     end: id => { out.end = id; },
-    get wasHit() { return out.wounded; }
+    get wasHit() { return out.wounded; },
+    man: man || null
   };
+  if (SIM.extendContext) SIM.extendContext(s, x, out);
   s.seen[SIM.seenKey(s, ev)] = true;
   s.newAwards = [];
   if (ch.effects) x.apply(ch.effects);
@@ -139,6 +147,7 @@ SIM.resolveChoice = function (s, ev, ch) {
   }
   if (ch.assault && s.stats.health > 0) SIM.markAssault(s);
   if (ch.delay) s.delayed.push(Object.assign({}, ch.delay));
+  if (SIM.applyExtras) SIM.applyExtras(s, ch, x, out);
   if (ch.outcome) ch.outcome(s, x);
   if (ch.log) SIM.addLog(s, ch.log);
   out.awards = s.newAwards.slice();
@@ -170,8 +179,9 @@ SIM.upkeep = function (s) {
     if (dl.in <= 0) { SIM.apply(s, dl.effects || {}, d); if (dl.note) notes.push(dl.note); }
   });
   s.delayed = (s.delayed || []).filter(dl => dl.in > 0);
-  SIM.apply(s, { food: (atWar ? -7 : -5) + (s.flags.farm ? 1 : 0) }, d);
-  if (!atWar && s.phase === 2) { SIM.apply(s, { food: 8 }, d); notes.push('The field kitchen comes round with pea soup.'); }
+  const drain = SIM.chapter(s).foodDrain;
+  SIM.apply(s, { food: (drain !== undefined && !atWar ? drain : (atWar ? -7 : -5)) + (s.flags.farm ? 1 : 0) }, d);
+  if (!atWar && s.phase === 2) { SIM.apply(s, { food: 8 }, d); notes.push(SIM.chapter(s).kitchenNote || 'The field kitchen comes round with pea soup.'); }
   if (atWar && s.phase === 2 && Math.random() < 0.6) { SIM.apply(s, { food: 12 }, d); notes.push('The field kitchen catches up with the company at last: lukewarm stew and bread.'); }
   if (s.stats.food <= 15) {
     SIM.apply(s, { health: -4, morale: -3 }, d);
@@ -203,6 +213,7 @@ SIM.finish = function (s, id) {
   s.stage = 'ending';
   s.current = null;
   if (!e.final) SIM.review(s);
+  if (e.onFinish) e.onFinish(s);
   return id;
 };
 
@@ -271,7 +282,8 @@ SIM.review = function (s) {
     if (steps === 0 || score >= bar * 1.6) steps++;
     if (steps === 2) reasons.push('Promoted ahead of time for exceptional conduct.');
   }
-  const to = Math.min(from + steps, Math.max(from, ch.maxRank));
+  const maxRank = typeof ch.maxRank === 'function' ? ch.maxRank(s) : ch.maxRank;
+  const to = Math.min(from + steps, Math.max(from, maxRank));
   if (to > from) { s.rank = to; s.rankHistory.push({ rank: to, date: ch.promoDate }); }
   if (from + steps > to && to >= 3) { s.flags.ncoCandidate = true; reasons.push('Recommended for the NCO course. Unteroffizier rank requires it.'); }
   else if (to === from && steps > 0) reasons.push('No higher rank is open to you yet.');
@@ -329,6 +341,10 @@ SIM.migrate = function (s) {
   s.newAwards = [];
   s.chMerit = s.chMerit || s.merit || 0;
   s.stage = s.stage || (s.current ? 'event' : 'ending');
+  s.rel = s.rel || {};
+  s.items = s.items || {};
+  s.skillXp = s.skillXp || {};
+  if (SIM.syncKit) SIM.syncKit(s);
   return s;
 };
 

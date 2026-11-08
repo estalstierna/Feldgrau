@@ -106,7 +106,7 @@ SIM.POOL = [
     choices: [
       { text: s => `Work, and say a prayer over the ${foe(s)} grave too.`, effects: { conscience: 4, morale: -4 },
         result: 'An Our Father, mumbled. Some of the men look at you oddly. One of them takes his helmet off.' },
-      { text: s => `Take a dead ${foe(s)} soldier's boots. Better than yours.`, effects: { health: 4, conscience: -4 }, set: { goodBoots: true },
+      { text: s => `Take a dead ${foe(s)} soldier's boots. Better than yours.`, effects: { health: 4, conscience: -4 }, set: { goodBoots: true }, items: { boots: 1 },
         result: 'Good leather, nearly new. They fit. You try not to think about it.' },
       { text: 'Work fast and don\'t look at the faces.', effects: { morale: -6 },
         result: 'You look at them anyway. One of them could have been your cousin.' }

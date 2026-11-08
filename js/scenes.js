@@ -78,6 +78,25 @@ SIM.sceneSVG = function (scene, phase, seed) {
     body += `<path d="M200,70 C230,40 260,60 300,30 C340,10 380,40 420,20" stroke="${night ? '#3a3a3a' : '#777'}" stroke-width="22" fill="none" opacity=".35"/>`;
     if (night) [[230, 92], [320, 88]].forEach(([x, y]) => { body += `<circle cx="${x}" cy="${y}" r="18" fill="url(#glow)"/>`; });
     body += `<path d="M250,132 l40,0 l-6,8 l-28,0 Z" fill="${dark}"/><g fill="${dark}">${[256, 264, 272, 280].map(x => `<circle cx="${x}" cy="129" r="2.6"/>`).join('')}</g>`;
+  } else if (scene === 'city') {
+    // Paris rooftops with the Eiffel Tower.
+    const roof = night ? '#0e1218' : '#4b4a42';
+    body += `<g fill="${night ? '#151a20' : '#6b6a5e'}"><path d="M440,120 L452,30 L456,30 L468,120 Z"/><rect x="449" y="60" width="10" height="3"/><rect x="445" y="88" width="18" height="4"/><path d="M438,120 Q454,95 470,120 Z" fill="${night ? '#0e1218' : '#8e8c7c'}"/><line x1="454" y1="18" x2="454" y2="30" stroke="${night ? '#151a20' : '#6b6a5e'}" stroke-width="2"/></g>`;
+    let x0 = 0;
+    while (x0 < 600) { const w = 40 + rnd() * 50, h = 30 + rnd() * 35; body += `<rect x="${x0}" y="${160 - h}" width="${w}" height="${h}" fill="${roof}"/><polygon points="${x0},${160 - h} ${x0 + w * 0.15},${160 - h - 10} ${x0 + w * 0.85},${160 - h - 10} ${x0 + w},${160 - h}" fill="${dark}"/>`;
+      for (let i = 0; i < 3; i++) body += `<rect x="${x0 + 8 + i * (w / 3.2)}" y="${170 - h}" width="5" height="8" fill="${night ? (rnd() > 0.7 ? '#c98a3a' : '#0a0d10') : '#2a2b25'}"/>`;
+      x0 += w + 2; }
+  } else if (scene === 'bridge') {
+    // A stone bridge over a quiet river, a barrier and a sentry hut.
+    body += pines(rnd, 16, 98, 18, 40, mid);
+    body += `<rect x="0" y="96" width="600" height="64" fill="${night ? '#0d1a22' : '#6f8582'}"/>`;
+    for (let i = 0; i < 8; i++) body += `<line x1="${20 + i * 75}" y1="${130 + (i % 3) * 9}" x2="${50 + i * 75}" y2="${130 + (i % 3) * 9}" stroke="${night ? '#2e4652' : '#a9bdb9'}" stroke-width="1.4" opacity=".7"/>`;
+    body += `<rect x="60" y="92" width="480" height="12" fill="${night ? '#1a1f24' : '#7c7462'}"/>`;
+    for (let i = 0; i < 7; i++) body += `<path d="M${68 + i * 68},126 a30,24 0 0 1 60,0 Z" fill="${night ? '#0d1a22' : '#6f8582'}"/><rect x="${64 + i * 68}" y="104" width="8" height="24" fill="${night ? '#1a1f24' : '#7c7462'}"/>`;
+    body += `<rect x="60" y="104" width="480" height="4" fill="${night ? '#1a1f24' : '#7c7462'}"/>`;
+    body += `<rect x="40" y="62" width="34" height="32" fill="${dark}"/><polygon points="36,62 57,48 78,62" fill="${dark}"/>`;
+    body += `<rect x="96" y="70" width="4" height="24" fill="${dark}"/><rect x="96" y="70" width="90" height="4" fill="#9a2f22"/><rect x="120" y="70" width="14" height="4" fill="#e9e1cb"/><rect x="150" y="70" width="14" height="4" fill="#e9e1cb"/>`;
+    if (night) body += `<circle cx="57" cy="80" r="16" fill="url(#glow)"/>`;
   } else if (scene === 'letter') {
     return `<svg viewBox="0 0 600 160" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <rect width="600" height="160" fill="#3b3426"/>
@@ -133,12 +152,28 @@ SIM.MAPS = {
   })
 };
 
+SIM.MAPS.occupied = () => ({
+  label: 'Map of occupied France, 1940',
+  base: `<rect width="320" height="250" class="m-land"/>
+    <path d="M0,0 L180,0 C160,8 140,12 120,14 C100,16 80,30 60,40 C40,48 30,60 10,62 L0,62 Z" class="m-sea"/>
+    <path d="M0,62 C10,90 30,110 20,140 C12,170 30,200 20,250 L0,250 Z" class="m-sea"/>
+    <text x="40" y="22" class="m-sea-label">English Channel</text>
+    <path d="M300,140 C280,148 262,152 248,150 C232,160 216,170 205,175 C190,168 170,158 150,150 C132,146 118,140 108,135 C100,160 92,190 80,215 C74,230 70,240 66,250" class="m-border"/>
+    <path d="M30,128 C70,124 110,126 140,138 C150,142 160,150 166,158" class="m-river"/>
+    <path d="M40,40 C80,50 120,60 168,72 C200,70 230,60 250,50" class="m-river"/>
+    <text x="40" y="100" class="m-country m-small">OCCUPIED ZONE</text>
+    <text x="150" y="220" class="m-country m-small">VICHY FRANCE</text>
+    <text x="120" y="162" class="m-small m-label">Cher</text>
+    <text x="95" y="122" class="m-small m-label">Loire</text>`,
+  towns: [[168, 72, 'Paris'], [120, 18, 'Boulogne', 'end'], [176, 92, 'Fontainebleau'], [100, 128, 'Tours', 'end'], [160, 150, 'Vierzon'], [200, 196, 'Vichy'], [140, 150, 'Saint-Avit', 'end']]
+});
+
 SIM.mapSVG = function (s) {
   const ch = SIM.chapter(s);
   const m = SIM.MAPS[ch.map]();
   const days = ch.days;
-  const visited = days.slice(0, s.day + 1).map(d => d.place).filter((p, i, a) => a.indexOf(p) === i);
-  const cur = ch.places[days[Math.min(s.day, days.length - 1)].place];
+  const visited = days.slice(0, s.day + 1).map(d => SIM.dayPlace(s, d)).filter((p, i, a) => a.indexOf(p) === i);
+  const cur = ch.places[SIM.dayPlace(s, days[Math.min(s.day, days.length - 1)])];
   const path = visited.map(p => ch.places[p]).map((p, i) => `${i ? 'L' : 'M'}${p.x},${p.y}`).join(' ');
   const town = (x, y, name, anchor = 'start', dx = 5) => `<circle cx="${x}" cy="${y}" r="2.2" class="m-town"/><text x="${x + (anchor === 'end' ? -dx : dx)}" y="${y + 3}" text-anchor="${anchor}" class="m-label">${name}</text>`;
   return `<svg viewBox="0 0 320 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${m.label}">

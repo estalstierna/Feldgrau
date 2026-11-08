@@ -69,6 +69,15 @@
           <span id="char-unit" class="muted small"></span>
           <span id="char-ribbons" class="char-ribbons"></span>
         </button>
+        <div class="tabs" role="tablist" id="tabs">
+          <button role="tab" data-tab="status" class="tab on">Status</button>
+          <button role="tab" data-tab="comrades" class="tab">Comrades</button>
+          <button role="tab" data-tab="squad" class="tab">Squad</button>
+          <button role="tab" data-tab="kit" class="tab">Kit</button>
+          <button role="tab" data-tab="skills" class="tab">Skills</button>
+        </div>
+        <div class="card tab-panel" id="tab-panel" hidden></div>
+        <div id="tab-status">
         <div class="card"><div id="stats"></div></div>
         <div class="card">
           <div class="kicker small" id="map-title"></div>
@@ -78,6 +87,7 @@
         <div class="card">
           <button class="link" id="toggle-diary">Diary ▾</button>
           <div id="diary-wrap" hidden><ul id="diary" class="diary"></ul></div>
+        </div>
         </div>
         <button class="link muted small" id="btn-quit">Title screen</button>
       </aside>
@@ -129,6 +139,15 @@
     </div>
   </section>
 
+  <!-- Mobile bottom navigation -->
+  <nav class="bottom-nav" id="bottom-nav" hidden aria-label="Character panels">
+    <button data-panel="profile">Soldbuch</button>
+    <button data-panel="comrades">Comrades</button>
+    <button data-panel="squad">Squad</button>
+    <button data-panel="kit">Kit</button>
+    <button data-panel="skills">Skills</button>
+  </nav>
+
   <!-- Profile overlay -->
   <div id="profile" class="overlay" hidden role="dialog" aria-modal="true" aria-label="Soldbuch">
     <div class="overlay-card">
@@ -144,7 +163,10 @@
   <script src="js/data/medals.js"></script>
   <script src="js/data/chapters.js"></script>
   <script src="js/data/ch2.js"></script>
+  <script src="js/data/ch3.js"></script>
+  <script src="js/data/ch3_town.js"></script>
   <script src="js/engine.js"></script>
+  <script src="js/systems.js"></script>
   <script src="js/scenes.js"></script>
   <script src="js/ui.js"></script>
 </body>

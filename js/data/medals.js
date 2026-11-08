@@ -31,6 +31,11 @@ SIM.MEDALS = {
     stripes: [['#b3262a', 3], ['#f2f2f2', 2], ['#111', 6], ['#f2f2f2', 2], ['#b3262a', 3]],
     desc: 'Instituted in October 1939 for merit under enemy fire that did not fit the Iron Cross: rescuing the wounded, bringing up ammunition, saving others. Its ribbon reverses the colours of the Iron Cross ribbon.'
   },
+  kvk2ns: {
+    name: 'War Merit Cross, 2nd Class', german: 'Kriegsverdienstkreuz 2. Klasse ohne Schwerter', kind: 'ribbon', order: 13, pendant: 'kvk', swords: false,
+    stripes: [['#b3262a', 3], ['#f2f2f2', 2], ['#111', 6], ['#f2f2f2', 2], ['#b3262a', 3]],
+    desc: 'The same cross without swords: for merit away from enemy fire, such as rescues, exemplary service and courage in accidents and disasters.'
+  },
   rescue: {
     name: 'Life Saving Medal', german: 'Medaille für Rettung aus Gefahr', kind: 'ribbon', order: 40,
     stripes: [['#f2f2f2', 2], ['#d0562e', 12], ['#f2f2f2', 2]],
@@ -92,7 +97,7 @@ SIM.badgeSVG = function (id, size = 44) {
     return `<svg viewBox="0 0 40 56" width="${size * 0.72}" height="${size}" aria-hidden="true">
       ${SIM.ribbonSVG(id, 40, 20).replace('<svg class="ribbon" viewBox="0 0 40 20" width="40" height="20" aria-hidden="true">', '<g>').replace('</svg>', '</g>')}
       <polygon points="14,20 26,20 20,26" fill="#555"/>
-      ${cross ? crossPath(20, 40, 15, '#111', '#c0c4c8') : kvk ? kvkPath(20, 40, 14) : `<circle cx="20" cy="40" r="12" fill="#a8a294" stroke="#6b665a" stroke-width="2"/><circle cx="20" cy="40" r="7" fill="none" stroke="#6b665a" stroke-width="1"/>`}
+      ${cross ? crossPath(20, 40, 15, '#111', '#c0c4c8') : kvk ? kvkPath(20, 40, 14, m.swords !== false) : `<circle cx="20" cy="40" r="12" fill="#a8a294" stroke="#6b665a" stroke-width="2"/><circle cx="20" cy="40" r="7" fill="none" stroke="#6b665a" stroke-width="1"/>`}
     </svg>`;
   }
   if (m.shape === 'cross') {
@@ -146,7 +151,7 @@ SIM.badgeSVG = function (id, size = 44) {
 };
 
 // War Merit Cross: a bronze cross with straight, flared arms and crossed swords.
-function kvkPath(cx, cy, r) {
+function kvkPath(cx, cy, r, swords = true) {
   const b = r * 0.28;
   const d = `M${cx - b},${cy - b} L${cx - b * 1.5},${cy - r} L${cx + b * 1.5},${cy - r} L${cx + b},${cy - b}
     L${cx + r},${cy - b * 1.5} L${cx + r},${cy + b * 1.5} L${cx + b},${cy + b}
@@ -155,8 +160,8 @@ function kvkPath(cx, cy, r) {
   return `<path d="${d}" fill="#8a6a3a" stroke="#5a4423" stroke-width=".8"/>
     <path d="${d}" fill="none" stroke="#c49a5a" stroke-width=".7" transform="translate(${cx} ${cy}) scale(.78) translate(${-cx} ${-cy})"/>
     <circle cx="${cx}" cy="${cy}" r="${r * 0.32}" fill="#8a6a3a" stroke="#c49a5a" stroke-width=".6"/>
-    <line x1="${cx - r * 0.95}" y1="${cy + r * 0.95}" x2="${cx + r * 0.95}" y2="${cy - r * 0.95}" stroke="#4a3a20" stroke-width="1.4"/>
-    <line x1="${cx + r * 0.95}" y1="${cy + r * 0.95}" x2="${cx - r * 0.95}" y2="${cy - r * 0.95}" stroke="#4a3a20" stroke-width="1.4"/>`;
+    ${swords ? `<line x1="${cx - r * 0.95}" y1="${cy + r * 0.95}" x2="${cx + r * 0.95}" y2="${cy - r * 0.95}" stroke="#4a3a20" stroke-width="1.4"/>
+    <line x1="${cx + r * 0.95}" y1="${cy + r * 0.95}" x2="${cx - r * 0.95}" y2="${cy - r * 0.95}" stroke="#4a3a20" stroke-width="1.4"/>` : ''}`;
 }
 
 // Cross pattée with a silver frame. As on the 1939 version, the year sits on the lower arm.

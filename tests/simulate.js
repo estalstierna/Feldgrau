@@ -16,7 +16,7 @@ const SIM = ctx.SIM;
 const pick = a => a[Math.floor(Math.random() * a.length)];
 const RUNS = Number(process.argv[2] || 5000);
 const BAD = /undefined|\[object|NaN|\$\{/;
-const endings = {}, seen = {}, errors = [], ranks = {}, medals = {}, reached = {};
+const endings = {}, seen = {}, errors = [], ranks = {}, medals = {}, reached = {}, kit = {};
 
 function check(label, t) { if (BAD.test(t)) throw new Error(`bad text in ${label}: ${t.slice(0, 120)}`); }
 
@@ -27,7 +27,9 @@ function playEvent(s, ev) {
   if (!options.length) throw new Error(`no available choice in ${ev.id}`);
   const ch = pick(options);
   check(ev.id + ' choice', SIM.fmt(s, ch.text));
-  const out = SIM.resolveChoice(s, ev, ch);
+  let man = null;
+  if (ch.assign) { const men = SIM.squadMen(s); if (!men.length) throw new Error(`assign without squad in ${ev.id}`); man = pick(men); }
+  const out = SIM.resolveChoice(s, ev, ch, man);
   out.texts.forEach(t => check(ev.id + ' result', t));
   return out;
 }
@@ -58,6 +60,8 @@ for (let run = 0; run < RUNS; run++) {
     endings[ending] = (endings[ending] || 0) + 1;
     ranks[SIM.RANKS[s.rank]] = (ranks[SIM.RANKS[s.rank]] || 0) + 1;
     s.medals.forEach(m => { medals[m.id] = (medals[m.id] || 0) + 1; });
+    Object.keys(s.items || {}).forEach(k => { kit[k] = (kit[k] || 0) + 1; });
+    if (s.squad) { kit['~squadLoyalty ' + Math.floor(SIM.squadLoyalty(s) / 10) * 10] = (kit['~squadLoyalty ' + Math.floor(SIM.squadLoyalty(s) / 10) * 10] || 0) + 1; }
     // Saves must survive a JSON round trip.
     SIM.migrate(JSON.parse(JSON.stringify(s)));
   } catch (e) { errors.push(e.stack.split('\n').slice(0, 2).join(' | ')); }
@@ -69,6 +73,7 @@ console.log('Endings:', pct(endings));
 console.log('Chapter ends reached:', reached);
 console.log('Final rank:', pct(ranks));
 console.log('Medals held:', pct(medals));
+console.log('Kit at end:', pct(kit));
 console.log('Never seen:', all.filter(id => !seen[id]));
 console.log('Errors:', errors.length, [...new Set(errors)].slice(0, 10));
 process.exit(errors.length ? 1 : 0);

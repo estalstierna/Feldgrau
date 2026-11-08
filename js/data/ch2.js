@@ -197,6 +197,7 @@ Then the medical orderly comes down the line with a tin. "Pervitin," he says. "O
         log: 'Took Pervitin for the first time.' },
       { text: 'Pocket the tablets for later.',
         set: { pervitinSpare: true },
+        items: { pervitin: 2 },
         result: 'You put the little tube in your breast pocket. You might need it. Everyone says the march will be long.' },
       { text: 'Refuse them.',
         effects: { conscience: 1 },
@@ -259,7 +260,7 @@ By mid-morning men are falling out. ${vogelHere(s) ? 'Vogel is grey in the face.
         show: s => s.flags.pervitinSpare,
         effects: { morale: 8, health: 2 },
         delay: { in: 3, effects: { morale: -12, health: -7 }, note: 'The Pervitin is wearing off. Your heart races, your hands shake, and a grey exhaustion pulls at you like mud.' },
-        outcome: (s, x) => { s.flags.pervitinSpare = false; s.flags.pervitin = true; x.say('The tiredness evaporates like water on a hot stove. You march for six hours without feeling your feet. You march past men who are sitting in the ditch. You feel invincible, and somewhere underneath, you know you are not.'); } },
+        outcome: (s, x) => { s.flags.pervitinSpare = false; s.flags.pervitin = true; x.item('pervitin', -2); x.say('The tiredness evaporates like water on a hot stove. You march for six hours without feeling your feet. You march past men who are sitting in the ditch. You feel invincible, and somewhere underneath, you know you are not.'); } },
       { text: 'Hitch a ride on a passing tank.',
         outcome: (s, x) => {
           x.apply({ health: 4 });
@@ -441,6 +442,8 @@ The French officer says, in careful German: "We are prisoners of war. We have su
         } },
       { text: 'Take the lieutenant\'s watch and pistol before anyone else does.',
         effects: { marks: 6, conscience: -4 },
+        set: { tookWatch: true },
+        items: { watch: 1, pistol: 1 },
         result: 'A good Swiss watch and a little Browning pistol. "Spoils of war," you tell yourself. The pioneer, robbed of his moment, lowers his rifle. In a way, you have saved the man\'s life. In a way.' },
       { text: 'It isn\'t your business. Walk away.',
         effects: { conscience: -10, morale: -6 },
@@ -656,6 +659,7 @@ ${s.flags.refusedOrder2 ? 'He stops in front of you and says nothing at all, and
           } },
         { text: 'Take two bottles for later and go to sleep.',
           effects: { morale: 4, health: 3 },
+          set: { cellarBottles: true }, items: { wine: 2 },
           result: 'A sensible decision. The two bottles clink in your pack for days and buy you a great deal of goodwill.' }
       ]
     },
@@ -669,6 +673,7 @@ ${s.flags.refusedOrder2 ? 'He stops in front of you and says nothing at all, and
           result: 'The clerk looks at you oddly but takes it. Some of these letters get through. Most probably don\'t.' },
         { text: 'Keep it.',
           effects: { morale: -3, conscience: 2 },
+          set: { keptLetter: true }, items: { letter: 1 },
           result: 'You fold it into your paybook. You are not sure why. Perhaps so that somebody remembers.' },
         { text: 'Leave it with him.',
           effects: { morale: -2 },

@@ -17,8 +17,10 @@ Choose with the mouse or by tapping, or press **1–4** to pick a choice and **E
 | I: The Corridor | 28 Aug – 3 Sep 1939 | Mobilisation in Pomerania, the invasion of Poland, the Tuchel Heath |
 | *Interlude* | Sep 1939 – May 1940 | The fall of Poland, the fates of your comrades, the winter on the West Wall, the qualification shoot, Christmas leave |
 | II: The Meuse | 10 – 16 May 1940 | The Ardennes, the crossing of the Meuse at Dinant, the French counterattack, the pursuit into France |
+| *Interlude* | May – July 1940 | The armistice, the demarcation line, the company photograph |
+| III: The Line | 12 Jul – 16 Nov 1940 | Occupied France over 14 days in three places: **Paris** (5 days), the **NCO course** at Fontainebleau or the **invasion barges** at Boulogne (2 days), and **Saint-Avit-sur-Cher**, a town on the demarcation line, where you command your own post (7 days) |
 
-Each chapter is 7 days with 3 phases each (morning, afternoon, night). Choices in Chapter I follow you: who you saved, who you betrayed, and who is still in your squad.
+Chapters I and II are 7 days each; Chapter III is 14 days across several places. Each day has 3 phases (morning, afternoon, night). Choices in Chapter I follow you: who you saved, who you betrayed, and who is still in your squad.
 
 ## Character and stats
 
@@ -39,13 +41,50 @@ Each chapter is 7 days with 3 phases each (morning, afternoon, night). Choices i
   You also have Reichsmarks, plus a hidden **merit** score for each chapter.
 - **Randomness:** combat choices carry a risk of being wounded or killed, and nights draw random events. In Chapter II, Pervitin keeps you going, and the crash comes a few phases later.
 
+## Systems
+
+The sidebar (or the bottom bar on a phone) has panels for each system.
+
+### Comrades
+Hartmann, Lenz, Rau, Vogel, Brandt, Albrecht and the people you meet later each have a relationship with you, from Hostile to Close. Every choice since Chapter I counts. Relationships unlock or close off options, and decide who covers for you and who reports you.
+
+### Squad
+From Chapter III you command your own men: each has a name, an age, traits and a morale and loyalty score.
+
+| Trait | What it does |
+|---|---|
+| joker | Lifts spirits |
+| zealot, informer | Watches the others and reports you |
+| schemer | Always has a deal going |
+| steady | Calm and reliable |
+| nervous | Frightened easily |
+| devout | Has a conscience |
+| strong | Can carry anything |
+| green | New, and learns from you |
+| tired | Old for a soldier, wants to go home |
+
+Some orders ask you to **choose a man** for the task. What happens depends on who he is. You also choose a deputy.
+
+### Kit
+Things you carry follow you between chapters:
+
+- **Keepsakes:** the rosary from your mother, a French officer's watch and pistol, a letter you never sent.
+- **Goods:** cigarettes, coffee, silk stockings and wine. You can use them to bribe, trade, comfort or sell on the black market.
+
+### Skills
+Your five skills are Shooting, French, First aid, Leadership and Scrounging. Each runs from 0 to 5:
+
+- **Starting level** comes from your background and your deeds.
+- **Practice** raises them.
+- **Higher levels** open up new options and improve your chances.
+
 ## Promotions
 
 A promotion board sits at the end of every chapter:
 
 - **Time in service** gives one step, unless your record is stained: suspicion of 60 or more, a refused order, or being caught asleep on sentry duty.
 - **Merit** (the chapter's merit score plus your standing with your superiors) gives a recommendation. Skipping a rank requires an exceptional record.
-- **Ranks:** Schütze → Oberschütze → Gefreiter → Obergefreiter. Unteroffizier requires the NCO course, which you can be recommended for.
+- **Ranks:** Schütze → Oberschütze → Gefreiter → Obergefreiter → Unteroffizier. Unteroffizier requires passing the NCO course in Chapter III. The course depends on your leadership skill, your standing with your superiors, and how you prepared.
 
 As a Gefreiter you lead the machine-gun team, which opens up new choices.
 
@@ -64,6 +103,7 @@ Medals are collected in your **Soldbuch** (paybook). Open it by tapping the ID c
 | War Merit Cross, 2nd Class with Swords | Saving others under fire, such as dragging Brandt out of the road or saving a comrade from the Meuse |
 | Life Saving Medal | Pulling a drowning soldier out of the Meuse |
 | Marksmanship Lanyard, grades 1–3 | The qualification shoot at the range at Wahn during the interlude (grade 3 comes in later chapters) |
+| War Merit Cross, 2nd Class (without swords) | Courage away from the front, such as rescuing a family from a house fire |
 | Long Service Award, 4 Years | Automatically after four years of service (from Chapter III for the 1917 class) |
 
 The medal artwork is simplified, and symbols of the regime are deliberately left out.
@@ -89,6 +129,9 @@ js/data/endings.js  early endings and Chapter I endings
 js/data/medals.js   decorations and their artwork
 js/data/chapters.js chapter registry (Chapter I rules: promotions, awards)
 js/data/ch2.js      Chapter II: interlude, events, random events, endings
+js/data/ch3.js      Chapter III: interlude, Paris, NCO course / Boulogne
+js/data/ch3_town.js Chapter III: the town on the Cher, random events, endings
+js/systems.js       relationships, skills, kit, squad
 js/engine.js        state, effects, event selection, saving
 js/scenes.js        SVG scene banners and the campaign map
 js/ui.js            rendering and input
@@ -111,6 +154,9 @@ An event is a plain object:
       outcome: (s, x) => { if (x.roll(0.5)) x.apply({ health: -5 }); x.say('...'); },
       req: s => s.marks >= 2, reqText: 'You need 2 RM.',
       show: s => s.flags.someFlag,
+      rel: { lenz: -10 }, items: { coffee: -1 }, train: { french: 1 },
+      squad: { all: { morale: 5 }, kuehn: { loyalty: -10 } },
+      assign: true,               // ask the player which man to send (outcome gets x.man)
       assault: true,              // counts toward the Infantry Assault Badge
       delay: { in: 3, effects: { morale: -10 }, note: '...' },  // delayed effect
       log: 'Diary entry', next: 'eventId', end: 'endingId' }
@@ -122,4 +168,4 @@ An event is a plain object:
 
 A new chapter is a file like `js/data/ch2.js` that pushes itself onto `SIM.CHAPTERS`.
 
-The Eastern Front 1941–43 (NCO course and your first squad) · home leave and bombing raids · 1944–45 · captivity · coming home, 1945–1950.
+The Eastern Front 1941–43 · home leave and bombing raids · 1944–45 · captivity · coming home, 1945–1950.

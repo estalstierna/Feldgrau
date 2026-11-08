@@ -13,6 +13,8 @@ window.SIM = window.SIM || {};
 
   function show(id) {
     document.querySelectorAll('.screen').forEach(el => el.hidden = el.id !== id);
+    const nav = document.querySelector('#bottom-nav');
+    if (nav) nav.hidden = id !== 'game';
     window.scrollTo(0, 0);
   }
 
@@ -158,12 +160,13 @@ window.SIM = window.SIM || {};
       return `<span class="mini ${level(st, v)}" title="${esc(st.label)}">${st.short} <b>${v}</b></span>`;
     }).join('') + `<span class="mini">RM <b>${S.marks}</b></span><button class="mini link" id="mini-profile">Soldbuch ›</button>`;
     $('#mini-profile').onclick = openProfile;
+    renderTab();
   }
 
   // ── Events ──
   function header(ev) {
     const d = SIM.today(S);
-    const place = SIM.place(S, ev.place || d.place).name;
+    const place = SIM.place(S, ev.place || SIM.dayPlace(S, d)).name;
     $('#ev-date').textContent = `${d.date} · ${ev.time || SIM.PHASE_TIME[S.phase]}`;
     $('#ev-place').textContent = place;
     $('#banner').innerHTML = SIM.sceneSVG(ev.scene, S.phase, (S.day + 1) * 13 + S.phase * 5 + ev.id.length + S.chapter * 31);
@@ -178,9 +181,88 @@ window.SIM = window.SIM || {};
       b.className = 'choice';
       b.disabled = !ok;
       b.innerHTML = `<span class="ch-num">${i + 1}</span><span class="ch-text">${esc(SIM.fmt(S, ch.text))}${!ok && ch.reqText ? `<small>${esc(ch.reqText)}</small>` : ''}${ch.risk ? '<small class="risky">Dangerous</small>' : ''}</span>`;
-      b.onclick = () => onPick(ch);
+      b.onclick = () => ch.assign ? pickMan(ev, box, ch, onPick) : onPick(ch);
       box.appendChild(b);
     });
+  }
+
+  // Choose which man of your squad carries out an order.
+  function pickMan(ev, box, ch, onPick) {
+    const men = SIM.squadMen(S).filter(m => typeof ch.assign !== 'function' || ch.assign(m));
+    box.innerHTML = `<div class="assign-head">${esc(ch.assignPrompt || 'Who do you send?')}</div>`;
+    men.forEach((m, i) => {
+      const b = document.createElement('button');
+      b.className = 'choice man-choice';
+      b.innerHTML = `<span class="ch-num">${i + 1}</span><span class="ch-text"><b>${esc(m.name)}</b>${S.flags.deputy === m.id ? ' <span class="deputy">deputy</span>' : ''}
+        <small>${esc(m.role)} · ${m.traits.map(t => esc(t)).join(', ')}</small>
+        <span class="man-bars">${miniBar('Morale', m.morale)}${miniBar('Loyalty', m.loyalty)}</span></span>`;
+      b.onclick = () => onPick(ch, m);
+      box.appendChild(b);
+    });
+    const back = document.createElement('button');
+    back.className = 'btn small';
+    back.textContent = 'Back';
+    back.onclick = () => choiceButtons(ev, box, onPick);
+    box.appendChild(back);
+  }
+  const miniBar = (label, v) => `<span class="mbar"><span>${label}</span><span class="bar"><span class="fill ${v <= 30 ? 'crit' : v <= 50 ? 'warn' : 'ok'}" style="width:${v}%"></span></span></span>`;
+
+  // ── Character panels: comrades, squad, kit, skills ──
+  function relBar(v) {
+    const left = v < 0 ? 50 + v / 2 : 50, width = Math.abs(v) / 2;
+    return `<span class="relbar"><span class="mid"></span><span class="relfill ${v < 0 ? 'neg' : 'pos'}" style="left:${left}%;width:${width}%"></span></span>`;
+  }
+  const initials = n => n.split(' ').map(w => w[0]).join('').slice(0, 2);
+  function panelHTML(name) {
+    if (name === 'comrades') {
+      const people = SIM.knownPeople(S);
+      return `<div class="kicker">Comrades &amp; people</div>` + people.map(id => {
+        const p = SIM.PEOPLE[id], v = SIM.rel(S, id);
+        return `<div class="person"><span class="avatar">${esc(initials(p.name))}</span><div class="person-info">
+          <div class="person-top"><b>${esc(p.name)}</b><span class="rel-label ${v < -15 ? 'neg' : v >= 15 ? 'pos' : ''}">${SIM.relLabel(v)}</span></div>
+          ${relBar(v)}<span class="small muted">${esc(SIM.personStatus(S, id) || p.role)}</span></div></div>`;
+      }).join('');
+    }
+    if (name === 'squad') {
+      if (!S.squad) return `<div class="kicker">Squad</div><p class="muted small">You do not command any men yet. That may change.</p>`;
+      return `<div class="kicker">Your squad</div>
+        <div class="squad-sum">${miniBar('Morale', SIM.squadMorale(S))}${miniBar('Loyalty', SIM.squadLoyalty(S))}</div>` +
+        S.squad.map(m => `<div class="person ${m.status !== 'ok' ? 'gone' : ''}"><span class="avatar">${esc(initials(m.name))}</span><div class="person-info">
+          <div class="person-top"><b>${esc(m.name)}</b>${S.flags.deputy === m.id ? '<span class="deputy">deputy</span>' : ''}</div>
+          <span class="small muted">${esc(m.role)}, ${m.age}${m.status !== 'ok' ? ' · ' + esc(m.status) : ''}</span>
+          <div class="traits">${m.traits.map(t => `<span class="trait" title="${esc(SIM.TRAITS[t] || '')}">${esc(t)}</span>`).join('')}</div>
+          ${miniBar('Morale', m.morale)}${miniBar('Loyalty', m.loyalty)}
+          ${m.bio ? `<span class="small muted">${esc(m.bio)}</span>` : ''}</div></div>`).join('');
+    }
+    if (name === 'kit') {
+      const ids = Object.keys(S.items || {}).filter(id => S.items[id] > 0);
+      return `<div class="kicker">Kit</div><p class="small muted">Reichsmarks: <b>${S.marks} RM</b></p>` + (ids.length ? ids.map(id => {
+        const it = SIM.ITEMS[id];
+        return `<div class="item"><div class="person-top"><b>${esc(it.name)}</b><span>${S.items[id] > 1 || it.unit ? '× ' + S.items[id] : ''}</span></div>
+          <span class="small muted">${esc(it.desc)}${it.value ? ` Worth about ${it.value} RM.` : ''}</span></div>`;
+      }).join('') : '<p class="muted small">Nothing but what the army issued.</p>');
+    }
+    if (name === 'skills') {
+      return `<div class="kicker">Skills</div><p class="small muted">Skills grow with use and open up new choices.</p>` + Object.keys(SIM.SKILLS).map(k => {
+        const lv = SIM.skill(S, k);
+        return `<div class="item"><div class="person-top"><b>${esc(SIM.SKILLS[k].name)}</b><span class="pips">${[1, 2, 3, 4, 5].map(i => `<span class="pip ${i <= lv ? 'on' : ''}"></span>`).join('')}</span></div>
+          <span class="small muted">${esc(SIM.SKILLS[k].desc)}</span></div>`;
+      }).join('');
+    }
+    return '';
+  }
+  let activeTab = 'status';
+  function renderTab() {
+    document.querySelectorAll('#tabs .tab').forEach(t => t.classList.toggle('on', t.dataset.tab === activeTab));
+    $('#tab-status').hidden = activeTab !== 'status';
+    $('#tab-panel').hidden = activeTab === 'status';
+    if (activeTab !== 'status') $('#tab-panel').innerHTML = panelHTML(activeTab);
+  }
+  function openPanel(name) {
+    if (name === 'profile') return openProfile();
+    $('#profile-body').innerHTML = panelHTML(name);
+    $('#profile').hidden = false;
+    $('#btn-close-profile').focus();
   }
 
   function renderEvent(ev) {
@@ -208,10 +290,11 @@ window.SIM = window.SIM || {};
       return `<span class="chip ${good ? 'good' : 'bad'}">${v > 0 ? '+' : ''}${v} ${label}</span>`;
     }).join('');
   }
+  const extraChips = list => (list || []).map(e => `<span class="chip ${e.good ? 'good' : 'bad'} ${e.kind || ''}">${esc(e.label)}</span>`).join('');
 
   function resultHTML(ch, out, btnLabel, btnId = 'btn-next') {
     const awards = (out.awards || []).length ? `<div class="award-box"><div class="kicker">Awarded</div>${medalCards(out.awards, S)}</div>` : '';
-    return `<div class="chosen">“${esc(SIM.fmt(S, ch.text))}”</div>${paras(out.texts.join('\n\n'))}<div class="chips">${chips(out.deltas)}</div>${awards}<button class="btn primary" id="${btnId}">${btnLabel}</button>`;
+    return `<div class="chosen">“${esc(SIM.fmt(S, ch.text))}”</div>${paras(out.texts.join('\n\n'))}<div class="chips">${chips(out.deltas)}${extraChips(out.extra)}</div>${awards}<button class="btn primary" id="${btnId}">${btnLabel}</button>`;
   }
 
   function revealResult(r, btnId = 'btn-next') {
@@ -221,9 +304,9 @@ window.SIM = window.SIM || {};
     if (top > window.innerHeight * 0.6) window.scrollTo({ top: window.scrollY + top - 16, behavior: 'smooth' });
   }
 
-  function choose(ch) {
+  function choose(ch, man) {
     const ev = current;
-    const out = SIM.resolveChoice(S, ev, ch);
+    const out = SIM.resolveChoice(S, ev, ch, man);
     $('#choices').hidden = true;
     const r = $('#result');
     r.hidden = false;
@@ -337,6 +420,8 @@ window.SIM = window.SIM || {};
     $('#btn-interlude-profile').onclick = openProfile;
     $('#btn-quit').onclick = () => { if (confirm('Return to the title screen? Your progress is saved.')) renderTitle(); };
     $('#toggle-diary').onclick = () => { const d = $('#diary-wrap'); d.hidden = !d.hidden; };
+    document.querySelectorAll('#tabs .tab').forEach(t => t.onclick = () => { activeTab = t.dataset.tab; renderTab(); });
+    document.querySelectorAll('#bottom-nav button').forEach(b => b.onclick = () => openPanel(b.dataset.panel));
     $('#id-card').onclick = openProfile;
     $('#btn-close-profile').onclick = closeProfile;
     $('#profile').onclick = e => { if (e.target.id === 'profile') closeProfile(); };
