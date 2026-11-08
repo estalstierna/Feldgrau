@@ -51,7 +51,7 @@ for (let run = 0; run < RUNS; run++) {
       SIM.enterInterlude(s);
       const ch = SIM.chapter(s);
       ch.interlude(s).forEach(i => check('interlude', i.text));
-      playEvent(s, SIM.INTERLUDE_EVENTS[ch.interludeEvent]);
+      for (let ie; (ie = SIM.pendingInterlude(s)[0]);) playEvent(s, ie);
       ev = SIM.startChapter(s);
     }
     if (!ending) throw new Error('no ending reached');

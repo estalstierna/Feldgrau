@@ -4,7 +4,7 @@ window.SIM = window.SIM || {};
 
 SIM.CHAPTERS = [
   {
-    id: 'poland', num: 'I', title: 'The Corridor', range: '28 August – 3 September 1939', year: 1939,
+    id: 'poland', num: 'I', start: [1939, 8], title: 'The Corridor', range: '28 August – 3 September 1939', year: 1939,
     days: SIM.DAYS, places: SIM.PLACES, map: 'poland',
     finalEvent: 'd6n',
     ending: s => SIM.chapterEnding(s),
@@ -24,6 +24,8 @@ SIM.CHAPTERS = [
     },
     awards: (s, score) => {
       if (s.ending === 'decorated' || score >= 9) SIM.award(s, 'ek2', 'For bravery during the Polish campaign, September 1939.', 'October 1939');
+      if (s.flags.savedBrandt) SIM.award(s, 'kvk2', 'For rescuing his wounded squad leader under machine-gun fire in the Tuchel Heath.', 'March 1940');
+      else if (s.flags.vogelSaved) SIM.award(s, 'kvk2', 'For bringing a comrade forward under fire at the border, 1 September 1939.', 'March 1940');
     }
   }
 ];

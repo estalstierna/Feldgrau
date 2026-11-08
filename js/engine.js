@@ -281,6 +281,22 @@ SIM.review = function (s) {
   return s.reviews[key];
 };
 
+// Long service: four years in uniform by the start of a chapter.
+SIM.SERVICE_START = { 1917: [1937, 11], 1918: [1938, 11], 1919: [1939, 4] };
+SIM.checkService = function (s) {
+  const ch = SIM.chapter(s);
+  const st = SIM.SERVICE_START[s.char.birthYear];
+  if (!ch.start || !st) return;
+  const months = (ch.start[0] - st[0]) * 12 + (ch.start[1] - st[1]);
+  if (months >= 48) {
+    const names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    SIM.award(s, 'longservice4', 'Four years of service.', `${names[st[1] - 1]} ${st[0] + 4}`);
+  }
+};
+
+// Interlude events still to be played, in order.
+SIM.pendingInterlude = s => (SIM.chapter(s).interludeEvents || []).map(id => SIM.INTERLUDE_EVENTS[id]).filter(ev => ev && !s.seen[ev.id]);
+
 SIM.hasNextChapter = s => !!SIM.CHAPTERS[(s.chapter || 0) + 1] && s.ending && !SIM.ENDINGS[s.ending].final;
 
 SIM.enterInterlude = function (s) {
@@ -296,6 +312,7 @@ SIM.startChapter = function (s) {
   s.day = 0; s.phase = 0; s.chMerit = 0;
   s.ending = null; s.notes = []; s.delayed = [];
   if (ch.onStart) ch.onStart(s);
+  SIM.checkService(s);
   return SIM.pickEvent(s);
 };
 

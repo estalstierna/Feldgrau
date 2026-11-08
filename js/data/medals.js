@@ -26,6 +26,33 @@ SIM.MEDALS = {
     name: 'Infantry Assault Badge', german: 'Infanterie-Sturmabzeichen in Silber', kind: 'badge', order: 20, shape: 'wreath-rifle',
     desc: 'Instituted in December 1939. It was awarded for taking part in three assaults, weapon in hand, on three separate days.'
   },
+  kvk2: {
+    name: 'War Merit Cross, 2nd Class with Swords', german: 'Kriegsverdienstkreuz 2. Klasse mit Schwertern', kind: 'ribbon', order: 12, pendant: 'kvk',
+    stripes: [['#b3262a', 3], ['#f2f2f2', 2], ['#111', 6], ['#f2f2f2', 2], ['#b3262a', 3]],
+    desc: 'Instituted in October 1939 for merit under enemy fire that did not fit the Iron Cross: rescuing the wounded, bringing up ammunition, saving others. Its ribbon reverses the colours of the Iron Cross ribbon.'
+  },
+  rescue: {
+    name: 'Life Saving Medal', german: 'Medaille für Rettung aus Gefahr', kind: 'ribbon', order: 40,
+    stripes: [['#f2f2f2', 2], ['#d0562e', 12], ['#f2f2f2', 2]],
+    desc: 'A civil decoration for saving a life at the risk of one\'s own, most often from drowning. Soldiers could receive it too.'
+  },
+  longservice4: {
+    name: 'Long Service Award, 4 Years', german: 'Wehrmacht-Dienstauszeichnung 4. Klasse', kind: 'ribbon', order: 70,
+    stripes: [['#5f86c8', 1]],
+    desc: 'Awarded automatically after four years of service. A plain silver medal on a cornflower-blue ribbon.'
+  },
+  schnur1: {
+    name: 'Marksmanship Lanyard, 1st Grade', german: 'Schützenschnur, 1. Stufe', kind: 'badge', order: 80, shape: 'lanyard', grade: 1,
+    desc: 'A braided cord worn from the right shoulder, earned by meeting set standards on the rifle range. Higher grades added small acorns.'
+  },
+  schnur2: {
+    name: 'Marksmanship Lanyard, 2nd Grade', german: 'Schützenschnur, 2. Stufe', kind: 'badge', order: 79, shape: 'lanyard', grade: 2, replaces: 'schnur1',
+    desc: 'The second grade of the lanyard, for better results on the range.'
+  },
+  schnur3: {
+    name: 'Marksmanship Lanyard, 3rd Grade', german: 'Schützenschnur, 3. Stufe', kind: 'badge', order: 78, shape: 'lanyard', grade: 3, replaces: 'schnur2',
+    desc: 'The third grade of the lanyard. Only very good shots reached it.'
+  },
   wound_black: {
     name: 'Wound Badge in Black', german: 'Verwundetenabzeichen in Schwarz', kind: 'badge', order: 30, shape: 'wound', color: '#222',
     desc: 'For one or two wounds received in action.'
@@ -43,9 +70,9 @@ SIM.MEDALS = {
 // Medals worth displaying: higher grades hide lower ones.
 SIM.displayMedals = function (s) {
   const ids = s.medals.map(m => m.id);
-  return s.medals
-    .filter(m => !ids.some(other => SIM.MEDALS[other].replaces === m.id || (SIM.MEDALS[other].replaces && SIM.MEDALS[SIM.MEDALS[other].replaces].replaces === m.id)))
-    .sort((a, b) => SIM.MEDALS[a.id].order - SIM.MEDALS[b.id].order);
+  const replaced = new Set();
+  ids.forEach(id => { let r = SIM.MEDALS[id].replaces; while (r) { replaced.add(r); r = SIM.MEDALS[r].replaces; } });
+  return s.medals.filter(m => !replaced.has(m.id)).sort((a, b) => SIM.MEDALS[a.id].order - SIM.MEDALS[b.id].order);
 };
 
 SIM.ribbonSVG = function (id, w = 36, h = 11) {
@@ -61,10 +88,11 @@ SIM.badgeSVG = function (id, size = 44) {
   if (m.kind === 'ribbon') {
     // Full medal: ribbon above a disc or cross.
     const cross = id === 'ek2';
+    const kvk = m.pendant === 'kvk';
     return `<svg viewBox="0 0 40 56" width="${size * 0.72}" height="${size}" aria-hidden="true">
       ${SIM.ribbonSVG(id, 40, 20).replace('<svg class="ribbon" viewBox="0 0 40 20" width="40" height="20" aria-hidden="true">', '<g>').replace('</svg>', '</g>')}
       <polygon points="14,20 26,20 20,26" fill="#555"/>
-      ${cross ? crossPath(20, 40, 15, '#111', '#c0c4c8') : `<circle cx="20" cy="40" r="12" fill="#a8a294" stroke="#6b665a" stroke-width="2"/><circle cx="20" cy="40" r="7" fill="none" stroke="#6b665a" stroke-width="1"/>`}
+      ${cross ? crossPath(20, 40, 15, '#111', '#c0c4c8') : kvk ? kvkPath(20, 40, 14) : `<circle cx="20" cy="40" r="12" fill="#a8a294" stroke="#6b665a" stroke-width="2"/><circle cx="20" cy="40" r="7" fill="none" stroke="#6b665a" stroke-width="1"/>`}
     </svg>`;
   }
   if (m.shape === 'cross') {
@@ -76,6 +104,18 @@ SIM.badgeSVG = function (id, size = 44) {
       <circle cx="22" cy="10" r="2.2" fill="#6f7563" stroke="#3d4136" stroke-width=".6"/>
       <g transform="translate(0 3)">${crossPath(22, 26, 15, '#111', '#c0c4c8')}</g>
       <ellipse cx="22" cy="44" rx="13" ry="1.6" fill="rgba(0,0,0,.25)"/>
+    </svg>`;
+  }
+  if (m.shape === 'lanyard') {
+    // Braided aluminium cord, looped, with acorns for higher grades.
+    const acorns = Array.from({ length: m.grade - 1 }, (_, i) => `<g transform="translate(${15 + i * 10} 40)"><ellipse cx="0" cy="2" rx="2.6" ry="3.4" fill="#b8bcc2" stroke="#6f747a" stroke-width=".5"/><path d="M-2.8,0 Q0,-3 2.8,0 Z" fill="#8d9299"/></g>`).join('');
+    return `<svg viewBox="0 0 40 50" width="${size * 0.8}" height="${size}" aria-hidden="true">
+      <path d="M8,6 C2,20 6,34 20,36 C34,34 38,20 32,6" fill="none" stroke="#9ba0a7" stroke-width="4"/>
+      <path d="M8,6 C2,20 6,34 20,36 C34,34 38,20 32,6" fill="none" stroke="#d3d6da" stroke-width="4" stroke-dasharray="2 2"/>
+      <path d="M12,6 C9,18 12,28 20,30 C28,28 31,18 28,6" fill="none" stroke="#9ba0a7" stroke-width="2.6"/>
+      <path d="M12,6 C9,18 12,28 20,30 C28,28 31,18 28,6" fill="none" stroke="#e1e3e6" stroke-width="2.6" stroke-dasharray="1.5 1.5"/>
+      <rect x="6" y="2" width="28" height="5" rx="1.5" fill="#7f858c"/>
+      ${acorns}
     </svg>`;
   }
   if (m.shape === 'wound') return `<svg viewBox="0 0 40 48" width="${size * 0.83}" height="${size}" aria-hidden="true">
@@ -104,6 +144,20 @@ SIM.badgeSVG = function (id, size = 44) {
   }
   return '';
 };
+
+// War Merit Cross: a bronze cross with straight, flared arms and crossed swords.
+function kvkPath(cx, cy, r) {
+  const b = r * 0.28;
+  const d = `M${cx - b},${cy - b} L${cx - b * 1.5},${cy - r} L${cx + b * 1.5},${cy - r} L${cx + b},${cy - b}
+    L${cx + r},${cy - b * 1.5} L${cx + r},${cy + b * 1.5} L${cx + b},${cy + b}
+    L${cx + b * 1.5},${cy + r} L${cx - b * 1.5},${cy + r} L${cx - b},${cy + b}
+    L${cx - r},${cy + b * 1.5} L${cx - r},${cy - b * 1.5} Z`;
+  return `<path d="${d}" fill="#8a6a3a" stroke="#5a4423" stroke-width=".8"/>
+    <path d="${d}" fill="none" stroke="#c49a5a" stroke-width=".7" transform="translate(${cx} ${cy}) scale(.78) translate(${-cx} ${-cy})"/>
+    <circle cx="${cx}" cy="${cy}" r="${r * 0.32}" fill="#8a6a3a" stroke="#c49a5a" stroke-width=".6"/>
+    <line x1="${cx - r * 0.95}" y1="${cy + r * 0.95}" x2="${cx + r * 0.95}" y2="${cy - r * 0.95}" stroke="#4a3a20" stroke-width="1.4"/>
+    <line x1="${cx + r * 0.95}" y1="${cy + r * 0.95}" x2="${cx - r * 0.95}" y2="${cy - r * 0.95}" stroke="#4a3a20" stroke-width="1.4"/>`;
+}
 
 // Cross pattée with a silver frame. As on the 1939 version, the year sits on the lower arm.
 // (The real centre carried the swastika, which is left out here.)

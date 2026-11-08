@@ -37,7 +37,7 @@ window.SIM = window.SIM || {};
 
   // ── Chapter registration ──
   SIM.CHAPTERS.push({
-    id: 'france', num: 'II', title: 'The Meuse', range: '10 – 16 May 1940', year: 1940,
+    id: 'france', num: 'II', start: [1940, 5], title: 'The Meuse', range: '10 – 16 May 1940', year: 1940,
     days: DAYS, places: PLACES, map: 'france',
     finalEvent: 'c2_6n',
     commander: 'Oberleutnant von Albrecht',
@@ -59,6 +59,10 @@ window.SIM = window.SIM || {};
     },
     awards: (s, sc) => {
       const hadEk2 = s.medals.some(m => m.id === 'ek2' && m.chapter < 1);
+      if (s.flags.riverSave) {
+        SIM.award(s, 'rescue', 'For pulling a drowning soldier out of the Meuse under fire, 13 May 1940.', 'August 1940');
+        SIM.award(s, 'kvk2', 'For saving a comrade from the Meuse under enemy fire.', 'June 1940');
+      }
       if (!SIM.hasMedal(s, 'ek2') && earnsCross(s)) SIM.award(s, 'ek2', 'For bravery at the crossing of the Meuse, May 1940.', 'June 1940');
       else if (hadEk2 && !s.flags.refusedOrder2 && (sc >= 15 || (s.flags.tankKill && sc >= 11))) SIM.award(s, 'ek1', 'For outstanding bravery in the Meuse bridgehead, May 1940.', 'June 1940');
     },
@@ -80,7 +84,7 @@ window.SIM = window.SIM || {};
     },
     onStart: s => { s.flags.rauHere = true; },
     interlude: s => interludeItems(s),
-    interludeEvent: 'i1_leave'
+    interludeEvents: ['i1_range', 'i1_leave']
   });
 
   // ── Interlude: September 1939 – May 1940 ──
@@ -109,6 +113,32 @@ Behind the front, SS and police units began shooting Polish teachers, priests, l
   }
 
   SIM.INTERLUDE_EVENTS = SIM.INTERLUDE_EVENTS || {};
+  SIM.INTERLUDE_EVENTS.i1_range = {
+    id: 'i1_range', scene: 'field',
+    title: 'The Range at Wahn, February 1940',
+    text: s => `In February the company spends a week at the big range at Wahn near Cologne. The ground is frozen hard. The last day is the qualification shoot for the marksmanship lanyard: the braided cord worn from the right shoulder, which every recruit secretly wants.
+
+Three hundred metres, prone, five rounds. ${s.flags.farm ? 'You grew up shooting crows off the fields; you know how to wait for the breath.' : ''}${s.flags.cleanRifle ? ' Your rifle is the cleanest in the platoon, and you know exactly how it shoots.' : ''}`,
+    choices: [
+      { text: 'Take your time. Breathe out, squeeze, don\'t pull.',
+        outcome: (s, x) => {
+          const skill = Math.random() + (s.flags.farm ? 0.2 : 0) + (s.flags.cleanRifle ? 0.15 : 0) + (s.char.birthYear === 1917 ? 0.1 : 0) + (s.stats.health - 70) / 200;
+          if (skill >= 1.05) { SIM.award(s, 'schnur1', 'Qualification shoot at Wahn, February 1940.', 'February 1940'); SIM.award(s, 'schnur2', 'Top results at the qualification shoot at Wahn, February 1940.', 'February 1940'); x.apply({ officers: 5, morale: 6 }); x.say('Five shots in the black, three of them in the centre. The range officer looks at the target twice. You qualify straight for the second grade: a lanyard with a little aluminium acorn.'); }
+          else if (skill >= 0.55) { SIM.award(s, 'schnur1', 'Qualification shoot at Wahn, February 1940.', 'February 1940'); x.apply({ officers: 3, morale: 4 }); x.say('Four in the black, one just outside. Enough. That evening you sew the lanyard to your tunic with clumsy, cold fingers and look at it far too often.'); }
+          else { x.apply({ morale: -3 }); x.say('Your fingers are numb and the third shot goes wide. Not this time. Hartmann says the lanyard is only for show anyway. He doesn\'t have one either.'); }
+        } },
+      { text: 'Shoot fast. The range officer is watching, and so is the Oberleutnant.',
+        outcome: (s, x) => {
+          if (x.roll(0.3 + (s.flags.farm ? 0.15 : 0))) { SIM.award(s, 'schnur1', 'Qualification shoot at Wahn, February 1940.', 'February 1940'); x.apply({ officers: 5 }); x.say('Five rounds in ten seconds, all on the target. Albrecht raises his eyebrows. You get the lanyard, and a reputation.'); }
+          else { x.apply({ officers: -2 }); x.say('Fast, and all over the place. The range officer shakes his head. "This isn\'t a machine gun."'); }
+        } },
+      { text: 'Give your turn to Rau. He is desperate for the lanyard.',
+        effects: { comrades: 5, conscience: 2 },
+        set: { rauLoyal: true },
+        result: 'Rau qualifies on his first try and nearly cries. He wears the lanyard everywhere, even to the latrine. He will remember who gave him the chance.' }
+    ]
+  };
+
   SIM.INTERLUDE_EVENTS.i1_leave = {
     id: 'i1_leave', scene: 'letter',
     title: 'Christmas Leave, 1939',
@@ -388,6 +418,7 @@ ${s.flags.firstWave ? 'You are in the first wave. There is nothing between you a
         risk: { chance: 0.17, dmg: [12, 35], fatal: 0.2, cause: 'Drowned in the Meuse at Houx, trying to save a comrade, 13 May 1940.',
           hit: 'The current and the weight of your kit pull you down. You swallow green water. Somebody grabs your harness.',
           miss: 'You get him by the collar, a boy from another company, and kick for the bank. Somehow, both of you make it.' },
+        outcome: (s, x) => { if (!x.wasHit) s.flags.riverSave = true; },
         log: 'Went into the Meuse after a man who fell overboard.' }
     ]
   });

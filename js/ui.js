@@ -281,29 +281,33 @@ window.SIM = window.SIM || {};
     $('#interlude-kicker').textContent = `Before Chapter ${ch.num}`;
     $('#interlude-title').textContent = ch.interludeTitle;
     $('#interlude-body').innerHTML = timeline(ch.interlude(S));
-    const ev = SIM.INTERLUDE_EVENTS[ch.interludeEvent];
-    const done = S.seen[ev.id];
-    $('#interlude-ev-title').textContent = ev.title;
-    $('#interlude-ev-text').innerHTML = paras(SIM.fmt(S, ev.text));
     const r = $('#interlude-result');
     const begin = () => {
       const first = SIM.startChapter(S);
       renderEvent(first);
     };
-    if (done) {
+    const ev = SIM.pendingInterlude(S)[0];
+    if (!ev) {
       $('#interlude-choices').hidden = true;
       r.hidden = false;
       r.innerHTML = `<button class="btn primary" id="btn-inext">Begin Chapter ${ch.num}: ${esc(ch.title)}</button>`;
       $('#btn-inext').onclick = begin;
     } else {
+      $('#interlude-ev-title').textContent = ev.title;
+      $('#interlude-ev-text').innerHTML = paras(SIM.fmt(S, ev.text));
       r.hidden = true;
       choiceButtons(ev, $('#interlude-choices'), chc => {
         const out = SIM.resolveChoice(S, ev, chc);
+        const more = SIM.pendingInterlude(S).length > 0;
         $('#interlude-choices').hidden = true;
         r.hidden = false;
-        r.innerHTML = resultHTML(chc, out, `Begin Chapter ${ch.num}: ${esc(ch.title)}`, 'btn-inext');
+        r.innerHTML = resultHTML(chc, out, more ? 'Continue' : `Begin Chapter ${ch.num}: ${esc(ch.title)}`, 'btn-inext');
         SIM.save(S);
-        $('#btn-inext').onclick = begin;
+        $('#btn-inext').onclick = () => {
+          if (!more) return begin();
+          renderInterlude();
+          $('.interlude-event').scrollIntoView({ behavior: 'smooth' });
+        };
         revealResult(r, 'btn-inext');
       });
     }

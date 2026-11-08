@@ -15,7 +15,7 @@ Choose with the mouse or by tapping, or press **1–4** to pick a choice and **E
 | Chapter | Dates | Story |
 |---|---|---|
 | I: The Corridor | 28 Aug – 3 Sep 1939 | Mobilisation in Pomerania, the invasion of Poland, the Tuchel Heath |
-| *Interlude* | Sep 1939 – May 1940 | The fall of Poland, the fates of your comrades, the winter on the West Wall, Christmas leave |
+| *Interlude* | Sep 1939 – May 1940 | The fall of Poland, the fates of your comrades, the winter on the West Wall, the qualification shoot, Christmas leave |
 | II: The Meuse | 10 – 16 May 1940 | The Ardennes, the crossing of the Meuse at Dinant, the French counterattack, the pursuit into France |
 
 Each chapter is 7 days with 3 phases each (morning, afternoon, night). Choices in Chapter I follow you: who you saved, who you betrayed, and who is still in your squad.
@@ -61,6 +61,10 @@ Medals are collected in your **Soldbuch** (paybook). Open it by tapping the ID c
 | Iron Cross, 1st Class | Further outstanding bravery, and you must already hold the 2nd Class. It is rare |
 | Infantry Assault Badge | Three assaults or counterattacks on three separate days (instituted December 1939) |
 | Wound Badge in black, silver or gold | 1, 3 or 5 wounds |
+| War Merit Cross, 2nd Class with Swords | Saving others under fire, such as dragging Brandt out of the road or saving a comrade from the Meuse |
+| Life Saving Medal | Pulling a drowning soldier out of the Meuse |
+| Marksmanship Lanyard, grades 1–3 | The qualification shoot at the range at Wahn during the interlude (grade 3 comes in later chapters) |
+| Long Service Award, 4 Years | Automatically after four years of service (from Chapter III for the 1917 class) |
 
 The medal artwork is simplified, and symbols of the regime are deliberately left out.
 
