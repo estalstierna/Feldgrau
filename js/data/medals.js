@@ -16,11 +16,11 @@ SIM.MEDALS = {
   ek2: {
     name: 'Iron Cross, 2nd Class', german: 'Eisernes Kreuz 2. Klasse', kind: 'ribbon', order: 10,
     stripes: [['#111', 3], ['#f2f2f2', 2], ['#b3262a', 6], ['#f2f2f2', 2], ['#111', 3]],
-    desc: 'For bravery in the face of the enemy. Only the ribbon was worn day to day, threaded through the second buttonhole of the tunic.'
+    desc: 'For bravery in the face of the enemy. The cross hung from a ribbon; day to day only the ribbon was worn, threaded through the second buttonhole of the tunic. Every cross awarded from 1939 to 1945 bears the year 1939, when the order was re-instituted.'
   },
   ek1: {
     name: 'Iron Cross, 1st Class', german: 'Eisernes Kreuz 1. Klasse', kind: 'badge', order: 5, shape: 'cross',
-    desc: 'For repeated, outstanding bravery. It required the 2nd Class first, and was pinned on the left breast pocket. Rare among enlisted men in 1940.'
+    desc: 'For repeated, outstanding bravery, and only for holders of the 2nd Class. The same cross, but with no ribbon: it was pinned straight onto the left breast pocket. Rare among enlisted men in 1940.'
   },
   isa: {
     name: 'Infantry Assault Badge', german: 'Infanterie-Sturmabzeichen in Silber', kind: 'badge', order: 20, shape: 'wreath-rifle',
@@ -67,29 +67,53 @@ SIM.badgeSVG = function (id, size = 44) {
       ${cross ? crossPath(20, 40, 15, '#111', '#c0c4c8') : `<circle cx="20" cy="40" r="12" fill="#a8a294" stroke="#6b665a" stroke-width="2"/><circle cx="20" cy="40" r="7" fill="none" stroke="#6b665a" stroke-width="1"/>`}
     </svg>`;
   }
-  if (m.shape === 'cross') return `<svg viewBox="0 0 40 40" width="${size}" height="${size}" aria-hidden="true">${crossPath(20, 20, 18, '#111', '#c0c4c8')}</svg>`;
+  if (m.shape === 'cross') {
+    // The 1st Class had no ribbon: it was pinned straight onto the left breast pocket.
+    return `<svg viewBox="0 0 44 48" width="${size * 0.92}" height="${size}" aria-hidden="true">
+      <rect x="2" y="6" width="40" height="40" rx="3" fill="#5d6352"/>
+      <path d="M2,14 L42,14" stroke="#474c3f" stroke-width="1.5"/>
+      <rect x="4.5" y="8.5" width="35" height="35" rx="2" fill="none" stroke="#7b826e" stroke-width=".8" stroke-dasharray="1.6 1.4"/>
+      <circle cx="22" cy="10" r="2.2" fill="#6f7563" stroke="#3d4136" stroke-width=".6"/>
+      <g transform="translate(0 3)">${crossPath(22, 26, 15, '#111', '#c0c4c8')}</g>
+      <ellipse cx="22" cy="44" rx="13" ry="1.6" fill="rgba(0,0,0,.25)"/>
+    </svg>`;
+  }
   if (m.shape === 'wound') return `<svg viewBox="0 0 40 48" width="${size * 0.83}" height="${size}" aria-hidden="true">
       <ellipse cx="20" cy="24" rx="17" ry="21" fill="${m.color}" stroke="#555" stroke-width="1.5"/>
       <ellipse cx="20" cy="24" rx="12.5" ry="16.5" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2" stroke-dasharray="2 2"/>
       <path d="M11,27 C11,17 15,13 20,13 C25,13 29,17 29,27 L32,28 L32,30 L8,30 L8,28 Z" fill="rgba(0,0,0,.55)"/>
       <path d="M12,35 L28,35 M14,38 L26,38" stroke="rgba(0,0,0,.45)" stroke-width="1.5"/>
     </svg>`;
-  if (m.shape === 'wreath-rifle') return `<svg viewBox="0 0 40 50" width="${size * 0.8}" height="${size}" aria-hidden="true">
-      <ellipse cx="20" cy="25" rx="17" ry="22" fill="none" stroke="#b8bcc2" stroke-width="5"/>
-      <ellipse cx="20" cy="25" rx="17" ry="22" fill="none" stroke="#7f858c" stroke-width="5" stroke-dasharray="3 3"/>
-      <line x1="9" y1="40" x2="31" y2="10" stroke="#9a9fa6" stroke-width="3"/>
-      <line x1="27" y1="15" x2="33" y2="7" stroke="#6f747a" stroke-width="1.5"/>
-      <rect x="15" y="43" width="10" height="5" fill="#9a9fa6"/>
+  if (m.shape === 'wreath-rifle') {
+    // Oval oak-leaf wreath with a rifle and fixed bayonet across it.
+    let leaves = '';
+    for (let i = 0; i < 22; i++) {
+      const t = (i / 22) * Math.PI * 2;
+      const x = 20 + 15.5 * Math.cos(t), y = 25 + 20.5 * Math.sin(t);
+      const ang = (Math.atan2(20.5 * Math.cos(t), -15.5 * Math.sin(t)) * 180) / Math.PI + 35;
+      leaves += `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="3.4" ry="1.7" transform="rotate(${ang.toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})" fill="${i % 2 ? '#c4c8cd' : '#9ba0a7'}" stroke="#6f747a" stroke-width=".4"/>`;
+    }
+    return `<svg viewBox="0 0 40 50" width="${size * 0.8}" height="${size}" aria-hidden="true">
+      ${leaves}
+      <polygon points="8,41 13,35.5 16,38 11,44" fill="#8d9299" stroke="#5f646a" stroke-width=".5"/>
+      <line x1="14" y1="37" x2="30" y2="14" stroke="#a7acb2" stroke-width="2.4" stroke-linecap="round"/>
+      <line x1="16" y1="36" x2="26" y2="22" stroke="#6f747a" stroke-width=".8"/>
+      <line x1="30" y1="14" x2="34.5" y2="7.5" stroke="#d3d6da" stroke-width="1.1" stroke-linecap="round"/>
+      <rect x="15" y="44.5" width="10" height="3.5" rx="1" fill="#9ba0a7" stroke="#6f747a" stroke-width=".4"/>
     </svg>`;
+  }
   return '';
 };
 
+// Cross pattée with a silver frame. As on the 1939 version, the year sits on the lower arm.
+// (The real centre carried the swastika, which is left out here.)
 function crossPath(cx, cy, r, fill, edge) {
-  const a = r, b = r * 0.32;
-  const d = `M${cx - b},${cy - b} L${cx - b * 1.6},${cy - a} L${cx + b * 1.6},${cy - a} L${cx + b},${cy - b}
-    L${cx + a},${cy - b * 1.6} L${cx + a},${cy + b * 1.6} L${cx + b},${cy + b}
-    L${cx + b * 1.6},${cy + a} L${cx - b * 1.6},${cy + a} L${cx - b},${cy + b}
-    L${cx - a},${cy + b * 1.6} L${cx - a},${cy - b * 1.6} Z`;
-  return `<path d="${d}" fill="${edge}"/><path d="${d}" fill="${fill}" transform="translate(${cx} ${cy}) scale(.8) translate(${-cx} ${-cy})"/>
-    <text x="${cx}" y="${cy + 3}" text-anchor="middle" font-size="${r * 0.38}" fill="${edge}" font-family="serif">1939</text>`;
+  const a = r, b = r * 0.3;
+  const d = `M${cx - b},${cy - b} L${cx - b * 1.9},${cy - a} L${cx + b * 1.9},${cy - a} L${cx + b},${cy - b}
+    L${cx + a},${cy - b * 1.9} L${cx + a},${cy + b * 1.9} L${cx + b},${cy + b}
+    L${cx + b * 1.9},${cy + a} L${cx - b * 1.9},${cy + a} L${cx - b},${cy + b}
+    L${cx - a},${cy + b * 1.9} L${cx - a},${cy - b * 1.9} Z`;
+  return `<path d="${d}" fill="${edge}" stroke="#7d8288" stroke-width=".5"/>
+    <path d="${d}" fill="${fill}" transform="translate(${cx} ${cy}) scale(.82) translate(${-cx} ${-cy})"/>
+    <text x="${cx}" y="${cy + r * 0.72}" text-anchor="middle" font-size="${(r * 0.24).toFixed(1)}" fill="${edge}" font-family="serif">1939</text>`;
 }
