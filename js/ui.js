@@ -193,7 +193,7 @@ window.SIM = window.SIM || {};
     men.forEach((m, i) => {
       const b = document.createElement('button');
       b.className = 'choice man-choice';
-      b.innerHTML = `<span class="ch-num">${i + 1}</span><span class="ch-text"><b>${esc(m.name)}</b>${S.flags.deputy === m.id ? ' <span class="deputy">deputy</span>' : ''}
+      b.innerHTML = `<span class="ch-num">${i + 1}</span>${avatar(m.id, m.name, 'small')}<span class="ch-text"><b>${esc(m.name)}</b>${S.flags.deputy === m.id ? ' <span class="deputy">deputy</span>' : ''}
         <small>${esc(m.role)} · ${m.traits.map(t => esc(t)).join(', ')}</small>
         <span class="man-bars">${miniBar('Morale', m.morale)}${miniBar('Loyalty', m.loyalty)}</span></span>`;
       b.onclick = () => onPick(ch, m);
@@ -213,12 +213,15 @@ window.SIM = window.SIM || {};
     return `<span class="relbar"><span class="mid"></span><span class="relfill ${v < 0 ? 'neg' : 'pos'}" style="left:${left}%;width:${width}%"></span></span>`;
   }
   const initials = n => n.split(' ').map(w => w[0]).join('').slice(0, 2);
+  const avatar = (id, name, cls = '') => (SIM.PORTRAITS || []).includes(id)
+    ? `<img class="avatar portrait ${cls}" src="assets/portraits/${id}.webp" alt="" loading="lazy">`
+    : `<span class="avatar ${cls}">${esc(initials(name))}</span>`;
   function panelHTML(name) {
     if (name === 'comrades') {
       const people = SIM.knownPeople(S);
       return `<div class="kicker">Comrades &amp; people</div>` + people.map(id => {
         const p = SIM.PEOPLE[id], v = SIM.rel(S, id);
-        return `<div class="person"><span class="avatar">${esc(initials(p.name))}</span><div class="person-info">
+        return `<div class="person">${avatar(id, p.name)}<div class="person-info">
           <div class="person-top"><b>${esc(p.name)}</b><span class="rel-label ${v < -15 ? 'neg' : v >= 15 ? 'pos' : ''}">${SIM.relLabel(v)}</span></div>
           ${relBar(v)}<span class="small muted">${esc(SIM.personStatus(S, id) || p.role)}</span></div></div>`;
       }).join('');
@@ -227,7 +230,7 @@ window.SIM = window.SIM || {};
       if (!S.squad) return `<div class="kicker">Squad</div><p class="muted small">You do not command any men yet. That may change.</p>`;
       return `<div class="kicker">Your squad</div>
         <div class="squad-sum">${miniBar('Morale', SIM.squadMorale(S))}${miniBar('Loyalty', SIM.squadLoyalty(S))}</div>` +
-        S.squad.map(m => `<div class="person ${m.status !== 'ok' ? 'gone' : ''}"><span class="avatar">${esc(initials(m.name))}</span><div class="person-info">
+        S.squad.map(m => `<div class="person ${m.status !== 'ok' ? 'gone' : ''}">${avatar(m.id, m.name)}<div class="person-info">
           <div class="person-top"><b>${esc(m.name)}</b>${S.flags.deputy === m.id ? '<span class="deputy">deputy</span>' : ''}</div>
           <span class="small muted">${esc(m.role)}, ${m.age}${m.status !== 'ok' ? ' · ' + esc(m.status) : ''}</span>
           <div class="traits">${m.traits.map(t => `<span class="trait" title="${esc(SIM.TRAITS[t] || '')}">${esc(t)}</span>`).join('')}</div>

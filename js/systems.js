@@ -23,6 +23,9 @@ SIM.PEOPLE = {
   madame: { name: 'Madame Girard', role: 'Widow. Her husband died at Verdun.', present: f => f.metClaire, base: () => -30 }
 };
 
+// Painted portraits available in assets/portraits/<id>.webp. Others fall back to initials.
+SIM.PORTRAITS = ['hartmann', 'lenz', 'rau'];
+
 SIM.rel = (s, id) => SIM.clamp(SIM.PEOPLE[id].base(s.flags) + ((s.rel || {})[id] || 0), -100, 100);
 SIM.relLabel = v => v <= -50 ? 'Hostile' : v <= -15 ? 'Cold' : v < 15 ? 'Neutral' : v < 50 ? 'Friendly' : 'Close';
 SIM.knownPeople = s => Object.keys(SIM.PEOPLE).filter(id => {
