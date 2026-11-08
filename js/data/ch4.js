@@ -273,7 +273,7 @@ You do not know yet that the NKVD shot its prisoners before it retreated. She wi
     ] });
 
   // ───────────────────────── Day 3 · Friday 27 June ─────────────────────────
-  ev({ id: 'c4_3m', day: 3, phase: 0, scene: 'village', time: '10:30',
+  ev({ id: 'c4_3m', day: 3, phase: 0, scene: 'city', time: '10:30',
     title: 'Smoke over Białystok',
     text: `Białystok was taken without much fighting. The company is held up in the city, waiting for the road east to clear. Then a battalion of Order Police arrives: policemen in green uniforms, not army. By mid-morning there is shooting in the streets of the old Jewish quarter, and smoke rising above the roofs near the great synagogue.
 
@@ -305,7 +305,7 @@ Your squad is resting in a courtyard. A man of about forty climbs over the back 
         result: 'When you turn round again, they are gone, and the policemen go past the gate without looking in. You will never know where they went.' }
     ] });
 
-  ev({ id: 'c4_3a', day: 3, phase: 1, scene: 'village', time: '19:00',
+  ev({ id: 'c4_3a', day: 3, phase: 1, scene: 'city', time: '19:00',
     title: 'The Photographs',
     text: s => `By evening the smoke still hangs over the city. The men know what happened, because everybody knows: the police drove hundreds of Jewish men into the great synagogue and set it on fire. More were shot in the streets. Two thousand people, the rumour says. The army did not stop it. Nobody tried.
 

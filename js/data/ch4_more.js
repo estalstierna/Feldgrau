@@ -145,7 +145,7 @@ The men stand round the grave with their caps in their hands, looking at you.`;
     ] });
 
   // ───────────────────────── Day 8 · Wednesday 16 July ─────────────────────────
-  ev({ id: 'c4_8m', day: 8, phase: 0, scene: 'village', time: '07:00',
+  ev({ id: 'c4_8m', day: 8, phase: 0, scene: 'city', time: '07:00',
     title: 'Smolensk',
     text: 'Smolensk is burning. The Red Army defends the city street by street, and the old wooden quarters burn like kindling. Your squad has to clear a row of houses by the river: every house has a cellar, and in every cellar there could be Red Army soldiers, or women and children hiding from the shells. There is no way to tell from outside.',
     choices: [
@@ -159,7 +159,7 @@ The men stand round the grave with their caps in their hands, looking at you.`;
         result: 'The pioneers come with their flamethrowers and do it the quick way. Your squad covers them from the street. Nobody comes out of any of the cellars. You do not let yourself think about it, and then you think about nothing else.' }
     ] });
 
-  ev({ id: 'c4_8a', day: 8, phase: 1, scene: 'village',
+  ev({ id: 'c4_8a', day: 8, phase: 1, scene: 'city',
     title: 'The Cathedral',
     text: s => `On the hill above Smolensk stands the great cathedral with its five gilded domes. The Soviets turned it into a museum of atheism. Now old women are climbing the hill again with candles they have kept hidden for twenty years, and kneeling on the stone floor.
 
