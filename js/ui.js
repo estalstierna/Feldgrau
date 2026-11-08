@@ -216,7 +216,7 @@ window.SIM = window.SIM || {};
   }
   const initials = n => n.split(' ').map(w => w[0]).join('').slice(0, 2);
   const avatar = (id, name, cls = '') => (SIM.PORTRAITS || []).includes(id)
-    ? `<img class="avatar portrait ${cls}" src="assets/portraits/${id}.webp" alt="" loading="lazy">`
+    ? `<img class="avatar portrait ${cls}" src="assets/portraits/${SIM.portraitFile(S, id)}.webp" alt="" loading="lazy">`
     : `<span class="avatar ${cls}">${esc(initials(name))}</span>`;
   function panelHTML(name) {
     if (name === 'comrades') {
