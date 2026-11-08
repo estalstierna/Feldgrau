@@ -180,7 +180,8 @@ SIM.upkeep = function (s) {
   });
   s.delayed = (s.delayed || []).filter(dl => dl.in > 0);
   const drain = SIM.chapter(s).foodDrain;
-  SIM.apply(s, { food: (drain !== undefined && !atWar ? drain : (atWar ? -7 : -5)) + (s.flags.farm ? 1 : 0) }, d);
+  const ch = SIM.chapter(s);
+  SIM.apply(s, { food: (ch.warFoodDrain !== undefined && atWar ? ch.warFoodDrain : drain !== undefined && !atWar ? drain : (atWar ? -7 : -5)) + (s.flags.farm ? 1 : 0) }, d);
   if (!atWar && s.phase === 2) { SIM.apply(s, { food: 8 }, d); notes.push(SIM.chapter(s).kitchenNote || 'The field kitchen comes round with pea soup.'); }
   if (atWar && s.phase === 2 && Math.random() < 0.6) { SIM.apply(s, { food: 12 }, d); notes.push('The field kitchen catches up with the company at last: lukewarm stew and bread.'); }
   if (s.stats.food <= 15) {
@@ -191,6 +192,9 @@ SIM.upkeep = function (s) {
     notes.push('You are hungry.');
   }
   if (s.phase === 2 && s.stats.food > 30) SIM.apply(s, { health: 3 }, d); // rest overnight
+  if (SIM.chapter(s).cold && SIM.coldUpkeep) SIM.coldUpkeep(s, d, notes);
+  // Some chapters give back morale each night: sleep, comradeship, a letter.
+  if (s.phase === 2 && SIM.chapter(s).nightMorale) SIM.apply(s, { morale: SIM.chapter(s).nightMorale }, d);
   if (s.stats.health < 30) notes.push('Your wounds throb. You need rest and a doctor.');
   if (s.stats.morale < 20) notes.push('Something in you is close to breaking.');
   if (s.stats.suspicion >= 70) notes.push('You feel eyes on you. People stop talking when you come near.');
@@ -341,6 +345,7 @@ SIM.migrate = function (s) {
   s.newAwards = [];
   s.chMerit = s.chMerit || s.merit || 0;
   s.stage = s.stage || (s.current ? 'event' : 'ending');
+  if (s.stats && s.stats.warmth === undefined) s.stats.warmth = 70;
   s.rel = s.rel || {};
   s.items = s.items || {};
   s.skillXp = s.skillXp || {};

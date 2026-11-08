@@ -21,8 +21,10 @@ Choose with the mouse or by tapping, or press **1–4** to pick a choice and **E
 | III: The Line | 12 Jul – 16 Nov 1940 | Occupied France over 14 days in three places: **Paris** (5 days), the **NCO course** at Fontainebleau or the **invasion barges** at Boulogne (2 days), and **Saint-Avit-sur-Cher**, a town on the demarcation line, where you command your own post (7 days) |
 | *Interlude* | Nov 1940 – Jun 1941 | The fates of the people from France, training your squad, the troop train past the Warsaw ghetto |
 | IV: Barbarossa | 21 Jun – 19 Jul 1941 | The invasion of the Soviet Union over 10 days: the **Bug** at Brest, **Białystok** and the pocket, the road past **Minsk**, the **Berezina**, the **Dnieper** and **Smolensk** |
+| *Interlude* | Jul – Nov 1941 | Kiev and Vyazma, the mud of the rasputitsa, preparing your squad for the winter |
+| V: Before Moscow | 15 Nov – 24 Dec 1941 | The last offensive and the Soviet counteroffensive over 12 days, from the Volokolamsk highway to thirty kilometres from Moscow and back to the Ruza. Introduces **SS-Hauptsturmführer Wolfram Starck** |
 
-Chapters I and II are 7 days each; Chapter III is 14 days and Chapter IV 10 days, across several places. Each day has 3 phases (morning, afternoon, night). Choices in Chapter I follow you: who you saved, who you betrayed, and who is still in your squad.
+Chapters I and II are 7 days each; Chapter III is 14 days, Chapter IV 10 days and Chapter V 12 days, across several places. Each day has 3 phases (morning, afternoon, night). Choices in Chapter I follow you: who you saved, who you betrayed, and who is still in your squad.
 
 ## Character and stats
 
@@ -69,6 +71,22 @@ Some orders ask you to **choose a man** for the task. What happens depends on wh
 
 From Chapter IV, men can be **killed, wounded or sent to the rear**. Whom you send on dangerous tasks decides who comes home. Training in the interlude (digging in, first aid) and checking kit before battle lower the odds.
 
+### Cold (Chapter V)
+A **Warmth** value appears in winter, and the temperature shows in the date line. Cold drains warmth every phase:
+
+- **Kit** protects you: a sheepskin coat, felt boots, a blanket.
+- **Shelter** at night gives warmth back.
+- Below 20 warmth, you start to **freeze**. Frostbite counts as a wound for the Wound Badge.
+- The squad has its own **winter kit** level. The colder it is, the more men are lost to frostbite at night.
+
+### Starck
+SS-Hauptsturmführer **Wolfram Starck** is a recurring character from Chapter V on: a former schoolteacher and a true believer.
+
+- His view of you is built from everything you have done since Chapter I.
+- He respects courage and hardness, and despises softness.
+- He can help you: winter clothing, protection from Lenz, a transfer to the Waffen-SS.
+- He can also hurt you: searching your pack, reporting you to the SD, standing one of your men before a summary court.
+
 ### Kit
 Things you carry follow you between chapters:
 
@@ -109,6 +127,7 @@ Medals are collected in your **Soldbuch** (paybook). Open it by tapping the ID c
 | Marksmanship Lanyard, grades 1–3 | The qualification shoot at the range at Wahn during the interlude (grade 3 comes in later chapters) |
 | War Merit Cross, 2nd Class (without swords) | Courage away from the front, such as rescuing a family from a house fire |
 | Tank Destruction Badge | Destroying a T-34 single-handed with a bundle charge (instituted in 1942, awarded retroactively) |
+| Eastern Front Medal | Surviving the winter battle of 1941/42 (instituted in May 1942) |
 | Long Service Award, 4 Years | Automatically after four years of service (from Chapter III for the 1917 class) |
 
 The medal artwork is simplified, and symbols of the regime are deliberately left out.
@@ -138,6 +157,8 @@ js/data/ch3.js      Chapter III: interlude, Paris, NCO course / Boulogne
 js/data/ch3_town.js Chapter III: the town on the Cher, random events, endings
 js/data/ch4.js      Chapter IV: interlude, the Bug, Białystok, the pocket
 js/data/ch4_more.js Chapter IV: Minsk road to Smolensk, random events, endings
+js/data/ch5.js      Chapter V: interlude, the offensive, Starck, the eviction
+js/data/ch5_more.js Chapter V: the counteroffensive, retreat, Christmas, endings
 js/systems.js       relationships, skills, kit, squad
 js/engine.js        state, effects, event selection, saving
 js/scenes.js        SVG scene banners and the campaign map

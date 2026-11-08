@@ -19,6 +19,11 @@ SIM.PEOPLE = {
   albrecht: { name: 'Joachim von Albrecht', role: 'Your company commander. A Junker\'s son who believes in the rules of war.',
     base: f => (f.stoppedReprisal ? 25 : 0) + (f.triedToStop ? 10 : 0) + (f.savedTirailleurs ? 20 : 0) + (f.savedPole ? 5 : 0) + (f.firstWave ? 10 : 0) + (f.tookBoat ? 10 : 0) + (f.refusedOrder2 ? -20 : 0) },
   sattler: { name: 'Bruno Sattler', role: 'Berliner. Can get you anything, for a price.', present: f => f.metSattler, base: () => 0 },
+  starck: { name: 'Wolfram Starck', role: 'SS-Hauptsturmführer. A schoolteacher from Brunswick who believes every word.', present: f => f.metStarck,
+    // He respects courage and hardness, and despises what he calls softness.
+    base: f => (f.party ? 10 : 0) + (f.spd ? -15 : 0) + (f.tankKill4 ? 15 : 0) + (f.tankKill ? 8 : 0) + (f.tookBoat ? 5 : 0) + (f.firstWave ? 5 : 0)
+      + (f.shotCommissar ? 15 : 0) + (f.burnedVillage ? 8 : 0) + (f.signedAgainstHartmann ? 8 : 0) + (f.firingSquad ? 6 : 0)
+      + (f.hidJews ? -20 : 0) + (f.savedBialystok ? -5 : 0) + (f.savedCommissar ? -10 : 0) + (f.refusedOrder4 ? -15 : 0) + (f.refusedOrder3 ? -10 : 0) + (f.savedTirailleurs ? -8 : 0) - 5 },
   claire: { name: 'Claire Girard', role: 'Daughter of the house where you are billeted on the Cher.', present: f => f.metClaire, base: () => -20 },
   madame: { name: 'Madame Girard', role: 'Widow. Her husband died at Verdun.', present: f => f.metClaire, base: () => -30 }
 };
@@ -41,6 +46,7 @@ SIM.personStatus = function (s, id) {
     vogel: f.vogelStays ? 'In your platoon' : (f.vogelCaught || f.vogelReported) ? 'Penal camp, Emsland moors' : f.vogelDeserted ? 'Missing' : 'Unknown',
     brandt: f.savedBrandt || (s.chapter || 0) >= 2 ? 'Platoon sergeant (Feldwebel)' : 'Squad leader',
     lenz: (s.chapter || 0) >= 2 && f.lenzFeldgendarm ? 'Feldgendarmerie' : 'Gefreiter, 3rd Company',
+    starck: 'SS-Hauptsturmführer, liaison officer',
     albrecht: (s.chapter || 0) >= 3 ? 'Hauptmann, company commander' : (s.chapter || 0) >= 1 ? 'Oberleutnant, company commander' : 'Leutnant, platoon leader'
   };
   return st[id] || '';
@@ -94,6 +100,9 @@ SIM.ITEMS = {
   tobacco:    { name: 'Tobacco', unit: 'pouch', value: 2, desc: 'Black-market tobacco, smuggled across the line.' },
   vodka:      { name: 'Vodka', unit: 'bottle', value: 2, desc: 'Soviet vodka from a village cooperative. Stronger than anything at home.' },
   icon:       { name: 'Orthodox icon', value: 10, desc: 'A small painted saint in a tin frame, taken from a church in Smolensk.' },
+  furs:       { name: 'Sheepskin coat', desc: 'A Russian sheepskin coat, the fleece turned inwards. Worth more than gold in December.' },
+  valenki:    { name: 'Felt boots', unit: 'pair', desc: 'Russian valenki: thick pressed felt. Your leather marching boots freeze; these do not.' },
+  blanket:    { name: 'Blanket', desc: 'A grey wool blanket, worn over the greatcoat like a cloak.' },
   film:       { name: 'Undeveloped film', desc: 'A roll of film from Białystok, 27 June 1941. Proof, if anyone ever asks for it. A death sentence, if the wrong person finds it.' }
 };
 SIM.has = (s, id, n = 1) => ((s.items || {})[id] || 0) >= n;
@@ -169,6 +178,50 @@ SIM.squadMod = function (s, id, d, out) {
   if (out) out.extra.push({ label: `${id === 'all' ? 'Squad' : (targets[0] ? targets[0].name.split(' ')[0] : id)} ${d.morale ? (d.morale > 0 ? 'morale +' : 'morale −') : ''}${d.loyalty ? (d.loyalty > 0 ? 'loyalty +' : 'loyalty −') : ''}${d.status && d.status !== 'ok' ? d.status : ''}`.trim(), good: (d.morale || 0) + (d.loyalty || 0) >= 0 && (!d.status || d.status === 'ok') });
 };
 
+// A replacement joins the squad.
+SIM.addMan = function (s, m) {
+  s.squad = s.squad || [];
+  if (SIM.man(s, m.id)) return;
+  s.squad.push(Object.assign({ status: 'ok', morale: 55, loyalty: 50 }, m));
+};
+
+// ── Cold ──
+// Protection from kit (0–0.8) and squad winter gear (0–3).
+SIM.coldProtection = s => Math.min(0.8, 0.15 + (SIM.has(s, 'furs') ? 0.3 : 0) + (SIM.has(s, 'valenki') ? 0.25 : 0) + (SIM.has(s, 'blanket') ? 0.1 : 0));
+SIM.coldUpkeep = function (s, d, notes) {
+  const day = SIM.today(s);
+  const temp = day.temp !== undefined ? day.temp : 0;
+  if (temp >= 0) return;
+  const drain = Math.round((-temp / 2.8) * (1 - SIM.coldProtection(s)));
+  SIM.apply(s, { warmth: -drain }, d);
+  if (s.phase === 2) SIM.apply(s, { warmth: (s.shelter || 0) * 6 }, d);
+  if (s.stats.warmth <= 20) {
+    SIM.apply(s, { health: -3, morale: -1 }, d);
+    notes.push('You are freezing. You cannot feel your toes, and your fingers will not close properly.');
+    if (Math.random() < 0.14) {
+      s.frostbites = (s.frostbites || 0) + 1;
+      SIM.apply(s, { health: -8 }, d);
+      notes.push('Frostbite. The skin on your feet has gone white and hard, then black. The medical orderly cuts away what he has to.');
+      SIM.addLog(s, 'Frostbite.');
+      SIM.woundBadge(s);   // frostbite counted as a wound for the Wound Badge
+      if (s.stats.health <= 0) s.deathCause = `Froze to death in a foxhole before Moscow, ${day.date}.`;
+    }
+  } else if (s.stats.warmth <= 40) notes.push('The cold gets into everything: your bones, your rifle, your thoughts.');
+  // At night the cold takes men from the squad.
+  if (s.phase === 2 && s.squad) {
+    const p = Math.max(0, Math.min(0.4, (-temp - 15) / 90)) * (1 - 0.25 * Math.min(3, s.squadWinter || 0)) * ((s.shelter || 0) ? 0.65 : 1);
+    if (Math.random() < p) {
+      const men = SIM.squadMen(s);
+      if (men.length) {
+        const m = men[Math.floor(Math.random() * men.length)];
+        const dead = Math.random() < 0.12;
+        SIM.loseMan(s, m.id, dead ? 'killed' : 'evacuated', null, dead ? 'from the cold' : 'with frostbite');
+        notes.push(dead ? `${m.name} went out to relieve himself in the night and did not come back. They find him in the morning, sitting in the snow.` : `${m.name}'s feet are black with frostbite. He is taken to the rear on a sledge.`);
+      }
+    }
+  }
+};
+
 // A man leaves the squad: 'killed', 'wounded' or 'evacuated'.
 SIM.FATE_TEXT = { killed: 'Killed in action', wounded: 'Wounded, evacuated', evacuated: 'Evacuated sick', gone: 'No longer with the squad' };
 SIM.loseMan = function (s, id, status, out, how) {
@@ -206,6 +259,8 @@ SIM.applyExtras = function (s, ch, x, out) {
   if (ch.items) for (const id in ch.items) x.item(id, ch.items[id]);
   if (ch.train) for (const k in ch.train) x.train(k, ch.train[k]);
   if (ch.squad) for (const id in ch.squad) x.squadMod(id, ch.squad[id]);
+  if (ch.winter) x.winter(ch.winter);
+  if (ch.shelter !== undefined) x.shelter(ch.shelter);
 };
 SIM.extendContext = function (s, x, out) {
   out.extra = out.extra || [];
@@ -226,4 +281,6 @@ SIM.extendContext = function (s, x, out) {
   x.has = (id, n) => SIM.has(s, id, n);
   x.lose = (id, status, how) => SIM.loseMan(s, id, status, out, how);
   x.casualty = (chance, how) => SIM.squadCasualty(s, out, chance, how);
+  x.winter = n => { s.squadWinter = Math.max(0, Math.min(3, (s.squadWinter || 0) + n)); out.extra.push({ label: `Squad winter kit ${n > 0 ? '▲' : '▼'}`, good: n > 0, kind: 'item' }); };
+  x.shelter = n => { s.shelter = Math.max(0, Math.min(2, n)); out.extra.push({ label: n > 0 ? 'Shelter for the night' : 'No shelter', good: n > 0, kind: 'item' }); };
 };

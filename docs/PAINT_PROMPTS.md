@@ -193,6 +193,45 @@ Chapter IV (the Soviet Union, summer 1941) reuses the existing banners. These op
 
 ---
 
+## 4c. Chapter V: winter before Moscow
+
+Chapter V uses winter versions of the scenes. Until they are painted, the game shows the drawn scenes with snow added. These are the six most useful.
+
+**Format for every image:** landscape 16:9, at least 1600 × 900 pixels, PNG. Horizon at about 55–60 % of the height. Keep everything important between 30 % and 80 % of the height; the top 30 % and bottom 15 % may be cropped away. No text, letters, numbers or signature.
+
+**Style for every image:** hand-painted gouache on textured, aged paper, with visible brush strokes and paper grain, like a 1940s book illustration. Muted, desaturated palette. NOT photorealistic.
+
+Make the morning version first, then the afternoon and night versions in the same conversation, with "The same scene and composition as the last image, repainted in … light."
+
+| Files | Scene |
+|---|---|
+| `scene-camp-winter-<phase>.png` | A German army position in a Russian birch forest in deep snow, December 1941, minus thirty. Dugouts roofed with logs and snow, a thin plume of smoke from a stovepipe, a few hunched soldiers in greatcoats with blankets over their shoulders and plain steel helmets. Night version: the stovepipe glowing, stars, bitter cold. |
+| `scene-field-winter-<phase>.png` | A vast white snowfield under a low grey sky, a dark birch wood on the horizon, a line of fence posts half buried in drifts. Small dark figures far away crossing the snow. Night version: moonlight on the snow and a single flare in the sky. |
+| `scene-village-winter-<phase>.png` | A Russian village of log houses buried in snow to the windows, smoke from chimneys, a well with a sweep pole, birch trees, a horse-drawn sledge on the road. Night version: one or two windows lit by oil lamps, deep blue snow. |
+| `scene-road-winter-<phase>.png` | A long road through deep snow, lined with abandoned trucks and a frozen horse-drawn cart, a column of small soldier silhouettes trudging west in greatcoats, a burning village on the horizon. Night version: the column black against the snow, the glow of the fire. |
+| `scene-forest-winter-<phase>.png` | A dense pine and birch forest in heavy snow, a narrow track, snow-laden branches. Night version: almost black, cold moonlight between the trunks. |
+| `scene-river-winter-<phase>.png` | A frozen river with snow on the ice, a wooden bridge, birch forest on both banks, a low winter sun. Night version: the ice glowing faintly blue under the moon. |
+
+## 4d. Portrait: Starck
+
+**`starck.png`**
+```
+Portrait, square, head and shoulders, three-quarter view, painted like a hand-coloured 1940 photograph in gouache, plain dark olive background (#3b3d34).
+
+Wolfram Starck, 35, an officer, a former schoolteacher. Tall, lean, clean-shaven, pale grey eyes, a cold, intelligent, controlled face with the faintest hint of a smile. He wears a long grey leather coat with a fur collar and a grey peaked officer's cap. Where an emblem appears, it is the sword-and-oak-leaves emblem from emblem.png.
+
+Format: square, at least 1024 x 1024 pixels, PNG. No text, letters or numbers.
+```
+
+## 4e. Medal: Eastern Front Medal
+
+**`medal-ostmedaille.png`** (start with the medal line from section 4)
+```
+Eastern Front Medal (Winter 1941/42). A round medal of dark gunmetal grey with a narrow silver rim, showing a stylised eagle above a laurel branch and a small steel helmet, hanging from its ribbon. Ribbon stripes: red 6, white 1, black 2, white 1, red 6. The eagle holds the sword-and-oak-leaves emblem.
+```
+
+---
+
 ## 5. Title image (1 image)
 
 - **File:** `title.webp`
@@ -208,7 +247,7 @@ A very quiet, dark, atmospheric image for a title screen, wide 16:9. A lone sold
 |---|---|
 | Scenes | 25 (8 scenes × 3 times of day, plus letter) |
 | Portraits | 12 |
-| Medals | 16 |
+| Medals | 17 |
 | Title image | 1 |
 
 Put them all in one zip, in any folder structure. The file names are what matter.

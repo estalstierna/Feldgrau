@@ -144,7 +144,7 @@ window.SIM = window.SIM || {};
     $('#char-rank').textContent = rankName(S.rank);
     $('#char-unit').textContent = `3rd Coy, 2nd Bn · born ${c.birthYear}, ${SIM.townName(c.hometown)}`;
     $('#char-ribbons').innerHTML = ribbonBar(S);
-    $('#stats').innerHTML = Object.keys(SIM.STATS).map(k => {
+    $('#stats').innerHTML = SIM.visibleStats(S).map(k => {
       const st = SIM.STATS[k], v = S.stats[k];
       return `<div class="stat" title="${esc(st.desc)}"><div class="stat-head"><span>${st.label}</span><span>${v}</span></div>
         <div class="bar"><div class="fill ${level(st, v)} ${st.bad ? 'bad' : ''}" style="width:${v}%"></div></div></div>`;
@@ -155,7 +155,7 @@ window.SIM = window.SIM || {};
     const log = S.log.filter(l => (l.chapter || 0) === (S.chapter || 0));
     $('#diary').innerHTML = log.length ? log.slice().reverse().map(l => `<li><span class="d-date">${esc(l.date)}</span> ${esc(l.text)}</li>`).join('') : '<li class="muted">Nothing yet.</li>';
     $('#days').innerHTML = SIM.days(S).map((d, i) => `<span class="day ${i < S.day ? 'past' : i === S.day ? 'now' : ''}">${esc(d.short.split(' ')[1])}</span>`).join('');
-    $('#mini-stats').innerHTML = `<span class="mini rank">${esc(SIM.RANKS[S.rank])}</span>` + Object.keys(SIM.STATS).map(k => {
+    $('#mini-stats').innerHTML = `<span class="mini rank">${esc(SIM.RANKS[S.rank])}</span>` + SIM.visibleStats(S).map(k => {
       const st = SIM.STATS[k], v = S.stats[k];
       return `<span class="mini ${level(st, v)}" title="${esc(st.label)}">${st.short} <b>${v}</b></span>`;
     }).join('') + `<span class="mini">RM <b>${S.marks}</b></span><button class="mini link" id="mini-profile">Soldbuch ›</button>`;
@@ -167,7 +167,7 @@ window.SIM = window.SIM || {};
   function header(ev) {
     const d = SIM.today(S);
     const place = SIM.place(S, ev.place || SIM.dayPlace(S, d)).name;
-    $('#ev-date').textContent = `${d.date} · ${ev.time || SIM.PHASE_TIME[S.phase]}`;
+    $('#ev-date').textContent = `${d.date} · ${ev.time || SIM.PHASE_TIME[S.phase]}${d.temp !== undefined ? ` · ${d.temp < 0 ? '−' : ''}${Math.abs(d.temp)} °C` : ''}`;
     $('#ev-place').textContent = place;
     const variant = SIM.chapter(S).sceneVariant;
     $('#banner').innerHTML = SIM.sceneSVG(ev.scene, S.phase, (S.day + 1) * 13 + S.phase * 5 + ev.id.length + S.chapter * 31, variant);
@@ -349,7 +349,7 @@ window.SIM = window.SIM || {};
       ${review}
       <h3>${esc(SIM.RANKS[S.rank])} ${esc(c.first)} ${esc(c.last)}, born ${c.birthYear}, ${esc(SIM.townName(c.hometown))}</h3>
       <div class="profile-ribbons">${ribbonBar(S)}</div>
-      <div class="end-stats">${Object.keys(SIM.STATS).map(k => `<div><span>${SIM.STATS[k].label}</span><b>${S.stats[k]}</b></div>`).join('')}</div>
+      <div class="end-stats">${SIM.visibleStats(S).map(k => `<div><span>${SIM.STATS[k].label}</span><b>${S.stats[k]}</b></div>`).join('')}</div>
       <h3>Diary</h3>
       <ul class="diary">${S.log.map(l => `<li><span class="d-date">${esc(l.date)}</span> ${esc(l.text)}</li>`).join('') || '<li class="muted">You wrote nothing down.</li>'}</ul>
       ${!e.final && !next ? '<p class="next-chapter">The next chapter is not yet written. Your soldier will be waiting.</p>' : ''}`;

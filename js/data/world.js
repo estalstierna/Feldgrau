@@ -8,7 +8,8 @@ SIM.STATS = {
   comrades:   { label: 'Comrades', short: 'Comr.',   desc: 'How the men in your squad see you.' },
   officers:   { label: 'Superiors', short: 'Sup.',  desc: 'How your NCOs and officers judge you.' },
   suspicion:  { label: 'Suspicion', short: 'Susp.',  desc: 'Doubts about your political reliability. At 100, you are arrested.', bad: true },
-  conscience: { label: 'Conscience', short: 'Consc.', desc: 'What is left of the person you were before.' }
+  conscience: { label: 'Conscience', short: 'Consc.', desc: 'What is left of the person you were before.' },
+  warmth:     { label: 'Warmth', short: 'Warm', desc: 'How cold you are. Below 20 you start to freeze: frostbite, and worse.', show: s => !!SIM.chapter(s).cold }
 };
 
 SIM.RANKS = ['Schütze', 'Oberschütze', 'Gefreiter', 'Obergefreiter', 'Unteroffizier', 'Feldwebel'];
@@ -66,7 +67,8 @@ SIM.CREATION = {
   ]
 };
 
-SIM.BASE_STATS = { health: 80, morale: 70, food: 70, comrades: 50, officers: 50, suspicion: 10, conscience: 60 };
+SIM.BASE_STATS = { health: 80, morale: 70, food: 70, comrades: 50, officers: 50, suspicion: 10, conscience: 60, warmth: 70 };
+SIM.visibleStats = s => Object.keys(SIM.STATS).filter(k => !SIM.STATS[k].show || SIM.STATS[k].show(s));
 SIM.BASE_MARKS = 6;
 
 SIM.serviceStart = c => ({ 1917: 'November 1937', 1918: 'November 1938', 1919: 'April 1939' }[c.birthYear] || '1938');

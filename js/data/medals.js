@@ -36,6 +36,11 @@ SIM.MEDALS = {
     stripes: [['#b3262a', 3], ['#f2f2f2', 2], ['#111', 6], ['#f2f2f2', 2], ['#b3262a', 3]],
     desc: 'The same cross without swords: for merit away from enemy fire, such as rescues, exemplary service and courage in accidents and disasters.'
   },
+  ostmedaille: {
+    name: 'Eastern Front Medal', german: 'Medaille Winterschlacht im Osten 1941/42', kind: 'ribbon', order: 45,
+    stripes: [['#b3262a', 6], ['#f2f2f2', 1], ['#111', 2], ['#f2f2f2', 1], ['#b3262a', 6]],
+    desc: 'For the winter battle in the East, 1941/42: fourteen days of combat or sixty days in the theatre, or frostbite severe enough to earn the Wound Badge. Instituted in May 1942. The soldiers called it the "Frozen Meat Order".'
+  },
   tankbadge: {
     name: 'Tank Destruction Badge', german: 'Sonderabzeichen für das Niederkämpfen von Panzerkampfwagen durch Einzelkämpfer', kind: 'badge', order: 21, shape: 'tankstripe',
     desc: 'A strip of silver braid with a small black metal tank, worn on the upper right sleeve, one for each tank destroyed single-handed with hand weapons. Instituted in March 1942 and awarded retroactively for tanks destroyed from 22 June 1941.'

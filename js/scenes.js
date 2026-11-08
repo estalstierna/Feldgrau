@@ -24,6 +24,7 @@ SIM.PHASE_NAMES = ['morning', 'afternoon', 'night'];
 SIM.SCENE_IMAGES = { camp: ['morning', 'afternoon', 'night'], forest: ['morning', 'afternoon', 'night'], field: ['morning', 'afternoon', 'night'], village: ['morning', 'afternoon', 'night'], road: ['morning', 'afternoon', 'night'], river: ['morning', 'afternoon', 'night'], city: ['morning', 'afternoon', 'night'], bridge: ['morning', 'afternoon', 'night'], letter: 'single', 'village-east': ['morning', 'afternoon', 'night'], 'road-east': ['morning', 'afternoon', 'night'], 'river-east': ['morning', 'afternoon', 'night'], 'city-east': ['morning', 'afternoon', 'night'] };
 // A chapter can have its own variant of a scene (e.g. 'village-east'); it falls back to the generic one.
 SIM.sceneImage = function (scene, phase, variant) {
+  if (variant && SIM.VARIANT_ONLY && SIM.VARIANT_ONLY.includes(variant)) return SIM.SCENE_IMAGES[`${scene}-${variant}`] ? SIM.sceneImage(`${scene}-${variant}`, phase) : null;
   if (variant && SIM.SCENE_IMAGES[`${scene}-${variant}`]) {
     const v = SIM.sceneImage(`${scene}-${variant}`, phase);
     if (v) return v;
@@ -35,9 +36,10 @@ SIM.sceneImage = function (scene, phase, variant) {
   return avail.includes(name) ? `assets/scenes/scene-${scene}-${name}.webp` : null;
 };
 
-SIM.sceneSVG = function (scene, phase, seed, variant) {
-  const img = SIM.sceneImage(scene, phase, variant);
+SIM.sceneSVG = function (scene, phase, seed, variant, drawnOnly) {
+  const img = drawnOnly ? null : SIM.sceneImage(scene, phase, variant);
   if (img) return `<img class="scene-img" src="${img}" alt="">`;
+  if (variant === 'winter' && !drawnOnly && scene !== 'letter') return SIM.winterize(SIM.sceneSVG(scene, phase, seed, null, true), phase, seed);
   const rnd = seeded(seed || 7);
   const [top, bot] = SIM.SKIES[phase] || SIM.SKIES[0];
   const night = phase === 2;
@@ -47,7 +49,7 @@ SIM.sceneSVG = function (scene, phase, seed, variant) {
 
   if (scene === 'camp') {
     body += pines(rnd, 26, 120, 40, 85, mid);
-    body += `<rect x="0" y="118" width="600" height="42" fill="${dark}"/>`;
+    body += `<rect x="0" y="134" width="600" height="26" fill="${dark}"/>`;
     [[120, 40], [200, 34], [330, 44], [460, 36]].forEach(([x, w]) => {
       body += `<polygon points="${x - w},140 ${x},${140 - w * 0.9} ${x + w},140" fill="${night ? '#151a1f' : '#5b5a45'}" stroke="${dark}" stroke-width="2"/>`;
       body += `<polygon points="${x - 5},140 ${x},${140 - w * 0.4} ${x + 5},140" fill="${dark}"/>`;
@@ -184,6 +186,33 @@ SIM.MAPS.occupied = () => ({
     <text x="120" y="162" class="m-small m-label">Cher</text>
     <text x="95" y="122" class="m-small m-label">Loire</text>`,
   towns: [[168, 72, 'Paris'], [120, 18, 'Boulogne', 'end'], [176, 92, 'Fontainebleau'], [100, 128, 'Tours', 'end'], [160, 150, 'Vierzon'], [200, 196, 'Vichy'], [140, 150, 'Saint-Avit', 'end']]
+});
+
+// Variants that must not fall back to the generic (summer) paintings.
+SIM.VARIANT_ONLY = ['winter'];
+// Turn a drawn scene into winter: pale sky, snow on the ground, falling snow.
+SIM.winterize = function (svg, phase, seed) {
+  const rnd = seeded((seed || 7) + 99);
+  const night = phase === 2;
+  const flakes = Array.from({ length: 70 }, () => `<circle cx="${(rnd() * 600).toFixed(0)}" cy="${(rnd() * 160).toFixed(0)}" r="${(rnd() * 1.4 + .4).toFixed(1)}" fill="#fff" opacity="${night ? .5 : .8}"/>`).join('');
+  const overlay = `<rect width="600" height="160" fill="${night ? '#1c2836' : '#dfe4e8'}" opacity="${night ? .25 : .35}"/>
+    <rect x="0" y="134" width="600" height="26" fill="${night ? '#5a6878' : '#eef1f3'}" opacity="${night ? .55 : .85}"/>
+    <path d="M0,136 Q80,130 160,137 T320,134 T480,138 T600,133 L600,141 L0,141 Z" fill="${night ? '#6d7b8b' : '#f6f8f9'}" opacity=".9"/>${flakes}`;
+  return svg.replace(/<\/svg>\s*$/, overlay + '</svg>');
+};
+
+SIM.MAPS.moscow = () => ({
+  label: 'Map of the approaches to Moscow, winter 1941',
+  base: `<rect width="320" height="250" class="m-land"/>
+    <path d="M0,70 C60,80 120,60 180,70 C220,76 260,60 320,64" class="m-river" opacity=".6"/>
+    <path d="M150,250 C160,210 175,180 200,160 C230,140 270,130 320,128" class="m-river"/>
+    <path d="M190,0 C192,40 196,80 205,110" class="m-river" opacity=".7"/>
+    <ellipse cx="290" cy="125" rx="14" ry="10" fill="#c5bb98"/>
+    <path d="M168,30 C190,70 205,95 222,112 C232,125 238,150 248,180 C255,205 262,225 270,250" class="m-border" stroke-dasharray="2 3" opacity=".8"/>
+    <text x="226" y="200" class="m-small m-label" transform="rotate(-62 226 200)">front, 5 Dec 1941</text>
+    <text x="10" y="232" class="m-country">SOVIET UNION</text>
+    <text x="196" y="102" class="m-small m-label">Istra</text>`,
+  towns: [[18, 150, 'Smolensk'], [90, 150, 'Vyazma'], [168, 150, 'Mozhaisk', 'end'], [165, 96, 'Volokolamsk', 'end'], [205, 58, 'Klin'], [160, 38, 'Kalinin', 'end'], [290, 125, 'Moscow', 'end', 16], [268, 226, 'Tula'], [175, 120, 'Ruza', 'end']]
 });
 
 SIM.MAPS.east = () => ({
