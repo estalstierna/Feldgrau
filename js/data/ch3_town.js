@@ -102,6 +102,7 @@ You are almost certain they are Jews from Paris trying to reach the unoccupied z
         outcome: (s, x) => {
           x.say('"Bon voyage." The barrier goes up. They walk across the bridge without hurrying and without looking back, the little girls holding hands. On the far bank the French gendarmes check the pass again and let them through.');
           if (informed(s, x)) { x.apply({ suspicion: 15 }); x.rel('lenz', -5); x.say('That evening Lenz drops by. "Kühn tells me you let a family of Jews over the bridge with a forged pass." You say the pass looked fine to you. He smiles. "Of course it did."'); }
+          s.flags.letCross = true;
           x.log('Let a Jewish family cross the bridge.');
         } },
       { text: 'Turn them back, quietly. Tell them where the river is shallow at night.', req: s => SIM.skill(s, 'french') >= 1, reqText: 'Needs French 1.', effects: { conscience: 7 }, train: { french: 1 },

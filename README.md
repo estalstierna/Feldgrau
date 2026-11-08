@@ -80,7 +80,13 @@ A **Warmth** value appears in winter, and the temperature shows in the date line
 - The squad has its own **winter kit** level. The colder it is, the more men are lost to frostbite at night.
 
 ### Starck
-SS-Hauptsturmführer **Wolfram Starck** is a recurring character from Chapter V on: a former schoolteacher and a true believer.
+SS officer **Wolfram Starck** is a recurring character from Chapter II on: a former schoolteacher and a true believer. You meet him:
+
+- by a fire at Onhaye in May 1940,
+- at Maxim's in Paris on 14 July 1940,
+- at your barrier on the Cher, travelling with Lenz,
+- on the sand roads east of the Bug in June 1941, where he speaks about the "special task forces",
+- and in Chapter V, where he remembers you.
 
 - His view of you is built from everything you have done since Chapter I.
 - He respects courage and hardness, and despises softness.
@@ -159,6 +165,7 @@ js/data/ch4.js      Chapter IV: interlude, the Bug, Białystok, the pocket
 js/data/ch4_more.js Chapter IV: Minsk road to Smolensk, random events, endings
 js/data/ch5.js      Chapter V: interlude, the offensive, Starck, the eviction
 js/data/ch5_more.js Chapter V: the counteroffensive, retreat, Christmas, endings
+js/data/starck.js   Starck's appearances in Chapters II–IV
 js/systems.js       relationships, skills, kit, squad
 js/engine.js        state, effects, event selection, saving
 js/scenes.js        SVG scene banners and the campaign map

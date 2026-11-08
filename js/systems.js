@@ -46,7 +46,7 @@ SIM.personStatus = function (s, id) {
     vogel: f.vogelStays ? 'In your platoon' : (f.vogelCaught || f.vogelReported) ? 'Penal camp, Emsland moors' : f.vogelDeserted ? 'Missing' : 'Unknown',
     brandt: f.savedBrandt || (s.chapter || 0) >= 2 ? 'Platoon sergeant (Feldwebel)' : 'Squad leader',
     lenz: (s.chapter || 0) >= 2 && f.lenzFeldgendarm ? 'Feldgendarmerie' : 'Gefreiter, 3rd Company',
-    starck: 'SS-Hauptsturmführer, liaison officer',
+    starck: (s.chapter || 0) >= 3 ? 'SS-Hauptsturmführer, liaison officer' : 'SS-Obersturmführer, liaison officer',
     albrecht: (s.chapter || 0) >= 3 ? 'Hauptmann, company commander' : (s.chapter || 0) >= 1 ? 'Oberleutnant, company commander' : 'Leutnant, platoon leader'
   };
   return st[id] || '';
