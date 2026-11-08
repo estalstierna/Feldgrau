@@ -270,3 +270,5 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
   .mini.warn b { color: var(--warn); }
   .mini.crit b { color: var(--crit); }
 }
+
+.medal-img { display: block; width: auto; object-fit: contain; }

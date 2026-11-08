@@ -88,7 +88,11 @@ SIM.ribbonSVG = function (id, w = 36, h = 11) {
   return `<svg class="ribbon" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true">${rects}<rect x=".5" y=".5" width="${w - 1}" height="${h - 1}" fill="none" stroke="rgba(0,0,0,.35)"/></svg>`;
 };
 
+// Painted medals in assets/medals/medal-<id>.png. Others use the drawn SVG.
+SIM.MEDAL_IMAGES = ['ek2'];
+
 SIM.badgeSVG = function (id, size = 44) {
+  if (SIM.MEDAL_IMAGES.includes(id)) return `<img class="medal-img" src="assets/medals/medal-${id}.png" alt="" style="height:${size}px">`;
   const m = SIM.MEDALS[id];
   if (m.kind === 'ribbon') {
     // Full medal: ribbon above a disc or cross.
