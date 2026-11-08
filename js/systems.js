@@ -24,7 +24,7 @@ SIM.PEOPLE = {
 };
 
 // Painted portraits available in assets/portraits/<id>.webp. Others fall back to initials.
-SIM.PORTRAITS = ['hartmann', 'lenz', 'rau', 'vogel', 'brandt', 'albrecht', 'sattler'];
+SIM.PORTRAITS = ['hartmann', 'lenz', 'rau', 'vogel', 'brandt', 'albrecht', 'sattler', 'brenner'];
 
 SIM.rel = (s, id) => SIM.clamp(SIM.PEOPLE[id].base(s.flags) + ((s.rel || {})[id] || 0), -100, 100);
 SIM.relLabel = v => v <= -50 ? 'Hostile' : v <= -15 ? 'Cold' : v < 15 ? 'Neutral' : v < 50 ? 'Friendly' : 'Close';
