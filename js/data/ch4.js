@@ -42,7 +42,7 @@ window.SIM = window.SIM || {};
 
   SIM.CHAPTERS.push({
     id: 'east', num: 'IV', title: 'Barbarossa', range: '21 June – 19 July 1941', year: 1941, start: [1941, 6],
-    days: DAYS, places: PLACES, map: 'east',
+    days: DAYS, places: PLACES, map: 'east', sceneVariant: 'east',
     finalEvent: 'c4_9n',
     commander: 'Hauptmann von Albrecht',
     hospital: 'Warsaw',

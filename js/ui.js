@@ -169,8 +169,9 @@ window.SIM = window.SIM || {};
     const place = SIM.place(S, ev.place || SIM.dayPlace(S, d)).name;
     $('#ev-date').textContent = `${d.date} · ${ev.time || SIM.PHASE_TIME[S.phase]}`;
     $('#ev-place').textContent = place;
-    $('#banner').innerHTML = SIM.sceneSVG(ev.scene, S.phase, (S.day + 1) * 13 + S.phase * 5 + ev.id.length + S.chapter * 31);
-    $('#banner').classList.toggle('painted', !!SIM.sceneImage(ev.scene, S.phase));
+    const variant = SIM.chapter(S).sceneVariant;
+    $('#banner').innerHTML = SIM.sceneSVG(ev.scene, S.phase, (S.day + 1) * 13 + S.phase * 5 + ev.id.length + S.chapter * 31, variant);
+    $('#banner').classList.toggle('painted', !!SIM.sceneImage(ev.scene, S.phase, variant));
   }
 
   function choiceButtons(ev, box, onPick) {

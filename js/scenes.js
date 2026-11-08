@@ -21,8 +21,13 @@ function pines(rnd, count, yBase, hMin, hMax, color) {
 
 // Painted banners in assets/scenes/scene-<scene>-<phase>.webp. Scenes not listed use the drawn art.
 SIM.PHASE_NAMES = ['morning', 'afternoon', 'night'];
-SIM.SCENE_IMAGES = { camp: ['morning', 'afternoon', 'night'], forest: ['morning', 'afternoon', 'night'], field: ['morning', 'afternoon', 'night'], village: ['morning', 'afternoon', 'night'], road: ['morning', 'afternoon', 'night'], river: ['morning', 'afternoon', 'night'], city: ['morning', 'afternoon', 'night'], bridge: ['morning', 'afternoon', 'night'], letter: 'single' };
-SIM.sceneImage = function (scene, phase) {
+SIM.SCENE_IMAGES = { camp: ['morning', 'afternoon', 'night'], forest: ['morning', 'afternoon', 'night'], field: ['morning', 'afternoon', 'night'], village: ['morning', 'afternoon', 'night'], road: ['morning', 'afternoon', 'night'], river: ['morning', 'afternoon', 'night'], city: ['morning', 'afternoon', 'night'], bridge: ['morning', 'afternoon', 'night'], letter: 'single', 'village-east': ['morning', 'afternoon', 'night'] };
+// A chapter can have its own variant of a scene (e.g. 'village-east'); it falls back to the generic one.
+SIM.sceneImage = function (scene, phase, variant) {
+  if (variant && SIM.SCENE_IMAGES[`${scene}-${variant}`]) {
+    const v = SIM.sceneImage(`${scene}-${variant}`, phase);
+    if (v) return v;
+  }
   const avail = SIM.SCENE_IMAGES[scene];
   if (!avail) return null;
   if (avail === 'single') return `assets/scenes/scene-${scene}.webp`;
@@ -30,8 +35,8 @@ SIM.sceneImage = function (scene, phase) {
   return avail.includes(name) ? `assets/scenes/scene-${scene}-${name}.webp` : null;
 };
 
-SIM.sceneSVG = function (scene, phase, seed) {
-  const img = SIM.sceneImage(scene, phase);
+SIM.sceneSVG = function (scene, phase, seed, variant) {
+  const img = SIM.sceneImage(scene, phase, variant);
   if (img) return `<img class="scene-img" src="${img}" alt="">`;
   const rnd = seeded(seed || 7);
   const [top, bot] = SIM.SKIES[phase] || SIM.SKIES[0];

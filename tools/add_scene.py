@@ -28,9 +28,9 @@ def register(scene, value):
     p = ROOT / 'js' / 'scenes.js'
     s = p.read_text()
     m = re.search(r"SIM\.SCENE_IMAGES = \{(.*?)\};", s)
-    entries = dict(re.findall(r"(\w+): (\[[^\]]*\]|'single')", m.group(1)))
+    entries = dict(re.findall(r"'?([\w-]+)'?: (\[[^\]]*\]|'single')", m.group(1)))
     entries[scene] = value
-    body = ', '.join(f"{k}: {v}" for k, v in entries.items())
+    body = ', '.join(f"{k if re.fullmatch(r'\w+', k) else repr(k)}: {v}" for k, v in entries.items())
     s = s[:m.start()] + "SIM.SCENE_IMAGES = { " + body + " };" + s[m.end():]
     p.write_text(s)
 
