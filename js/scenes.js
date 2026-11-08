@@ -181,6 +181,23 @@ SIM.MAPS.occupied = () => ({
   towns: [[168, 72, 'Paris'], [120, 18, 'Boulogne', 'end'], [176, 92, 'Fontainebleau'], [100, 128, 'Tours', 'end'], [160, 150, 'Vierzon'], [200, 196, 'Vichy'], [140, 150, 'Saint-Avit', 'end']]
 });
 
+SIM.MAPS.east = () => ({
+  label: 'Map of the Soviet borderlands, summer 1941',
+  base: `<rect width="320" height="250" class="m-land"/>
+    <path d="M44,0 C50,40 40,80 52,120 C58,150 46,190 50,250" class="m-border"/>
+    <path d="M50,250 C52,210 46,190 54,168 C60,140 52,110 58,80" class="m-river"/>
+    <path d="M186,0 C182,40 192,80 186,110 C182,140 188,180 184,250" class="m-river"/>
+    <path d="M320,62 C300,70 285,78 272,80 C262,84 256,92 252,110 C248,140 260,180 250,250" class="m-river"/>
+    <ellipse cx="140" cy="205" rx="70" ry="22" fill="#c5bb98" opacity=".6"/>
+    <text x="96" y="208" class="m-small m-label">Pripet Marshes</text>
+    <text x="56" y="152" class="m-small m-label" transform="rotate(-80 56 152)">BUG</text>
+    <text x="190" y="140" class="m-small m-label" transform="rotate(-85 190 140)">BEREZINA</text>
+    <text x="256" y="150" class="m-small m-label" transform="rotate(-80 256 150)">DNIEPER</text>
+    <text x="4" y="40" class="m-country m-small">GENERAL</text><text x="4" y="50" class="m-country m-small">GOVERNMENT</text>
+    <text x="200" y="40" class="m-country">SOVIET UNION</text>`,
+  towns: [[50, 180, 'Brest', 'end'], [60, 108, 'Białystok', 'end'], [98, 124, 'Wołkowysk'], [150, 108, 'Minsk'], [186, 96, 'Borisov'], [232, 104, 'Orsha'], [276, 76, 'Smolensk'], [14, 150, 'Warsaw']]
+});
+
 SIM.mapSVG = function (s) {
   const ch = SIM.chapter(s);
   const m = SIM.MAPS[ch.map]();

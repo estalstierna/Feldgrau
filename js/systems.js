@@ -35,11 +35,13 @@ SIM.knownPeople = s => Object.keys(SIM.PEOPLE).filter(id => {
 });
 SIM.personStatus = function (s, id) {
   const f = s.flags;
+  const sm = SIM.man(s, id);
+  if (sm && sm.status !== 'ok' && sm.fate) return sm.fate;
   const st = {
     vogel: f.vogelStays ? 'In your platoon' : (f.vogelCaught || f.vogelReported) ? 'Penal camp, Emsland moors' : f.vogelDeserted ? 'Missing' : 'Unknown',
     brandt: f.savedBrandt || (s.chapter || 0) >= 2 ? 'Platoon sergeant (Feldwebel)' : 'Squad leader',
     lenz: (s.chapter || 0) >= 2 && f.lenzFeldgendarm ? 'Feldgendarmerie' : 'Gefreiter, 3rd Company',
-    albrecht: (s.chapter || 0) >= 1 ? 'Oberleutnant, company commander' : 'Leutnant, platoon leader'
+    albrecht: (s.chapter || 0) >= 3 ? 'Hauptmann, company commander' : (s.chapter || 0) >= 1 ? 'Oberleutnant, company commander' : 'Leutnant, platoon leader'
   };
   return st[id] || '';
 };
@@ -89,7 +91,10 @@ SIM.ITEMS = {
   heine:      { name: 'Book of Heine', desc: 'Poems by a Jewish poet, banned and burned in Germany. Dangerous to own.' },
   photo:      { name: 'Photograph', desc: 'Your squad in front of the Eiffel Tower, July 1940.' },
   schnapps:   { name: 'Schnapps', unit: 'bottle', value: 2, desc: 'Cheap and fierce.' },
-  tobacco:    { name: 'Tobacco', unit: 'pouch', value: 2, desc: 'Black-market tobacco, smuggled across the line.' }
+  tobacco:    { name: 'Tobacco', unit: 'pouch', value: 2, desc: 'Black-market tobacco, smuggled across the line.' },
+  vodka:      { name: 'Vodka', unit: 'bottle', value: 2, desc: 'Soviet vodka from a village cooperative. Stronger than anything at home.' },
+  icon:       { name: 'Orthodox icon', value: 10, desc: 'A small painted saint in a tin frame, taken from a church in Smolensk.' },
+  film:       { name: 'Undeveloped film', desc: 'A roll of film from Białystok, 27 June 1941. Proof, if anyone ever asks for it. A death sentence, if the wrong person finds it.' }
 };
 SIM.has = (s, id, n = 1) => ((s.items || {})[id] || 0) >= n;
 SIM.give = function (s, id, n = 1) {
@@ -164,6 +169,36 @@ SIM.squadMod = function (s, id, d, out) {
   if (out) out.extra.push({ label: `${id === 'all' ? 'Squad' : (targets[0] ? targets[0].name.split(' ')[0] : id)} ${d.morale ? (d.morale > 0 ? 'morale +' : 'morale −') : ''}${d.loyalty ? (d.loyalty > 0 ? 'loyalty +' : 'loyalty −') : ''}${d.status && d.status !== 'ok' ? d.status : ''}`.trim(), good: (d.morale || 0) + (d.loyalty || 0) >= 0 && (!d.status || d.status === 'ok') });
 };
 
+// A man leaves the squad: 'killed', 'wounded' or 'evacuated'.
+SIM.FATE_TEXT = { killed: 'Killed in action', wounded: 'Wounded, evacuated', evacuated: 'Evacuated sick', gone: 'No longer with the squad' };
+SIM.loseMan = function (s, id, status, out, how) {
+  const m = SIM.man(s, id);
+  if (!m || m.status !== 'ok') return null;
+  m.status = status;
+  m.fate = `${SIM.FATE_TEXT[status] || status}, ${SIM.today(s).date}`;
+  s.losses = (s.losses || []).concat({ id: m.id, name: m.name, status, date: SIM.today(s).date, chapter: s.chapter || 0 });
+  if (status === 'killed') s.flags.lastKilled = m.id;
+  if (s.flags.deputy === m.id) delete s.flags.deputy;
+  if (out) out.extra.push({ label: `${m.name.split(' ')[0]}: ${status}`, good: false, kind: 'loss' });
+  SIM.squadMod(s, 'all', { morale: status === 'killed' ? -10 : -4 });
+  SIM.addLog(s, `${m.name} ${status === 'killed' ? 'was killed' : status === 'wounded' ? 'was wounded' : 'was sent to the rear'}${how ? ' ' + how : ''}.`);
+  return m;
+};
+// A chance that one man (not the player) is hit. Nervous and green men are more often hit;
+// preparation (checked kit, dug-in squad, first-aid training) lowers the odds.
+SIM.squadCasualty = function (s, out, chance, how) {
+  const f = s.flags;
+  const p = chance * (f.kitChecked ? 0.85 : 1) * (f.dugIn ? 0.85 : 1) * (f.squadAlert ? 0.9 : 1);
+  if (Math.random() >= p) return null;
+  const men = SIM.squadMen(s);
+  if (!men.length) return null;
+  const weight = m => 1 + (SIM.hasTrait(m, 'nervous') || SIM.hasTrait(m, 'green') ? 0.6 : 0) + (SIM.hasTrait(m, 'brave') ? 0.3 : 0);
+  let r = Math.random() * men.reduce((a, m) => a + weight(m), 0), pick = men[0];
+  for (const m of men) { r -= weight(m); if (r <= 0) { pick = m; break; } }
+  const killed = Math.random() < (f.medics ? 0.35 : 0.45);
+  return SIM.loseMan(s, pick.id, killed ? 'killed' : 'wounded', out, how);
+};
+
 // ───────────────────────── Hooks into choice resolution ─────────────────────────
 // Choice fields: rel: {id: n}, items: {id: n}, train: {skill: n}, squad: {id|'all': {morale, loyalty}}
 SIM.applyExtras = function (s, ch, x, out) {
@@ -189,4 +224,6 @@ SIM.extendContext = function (s, x, out) {
   x.squadMod = (id, d) => SIM.squadMod(s, id, d, out);
   x.skill = k => SIM.skill(s, k);
   x.has = (id, n) => SIM.has(s, id, n);
+  x.lose = (id, status, how) => SIM.loseMan(s, id, status, out, how);
+  x.casualty = (chance, how) => SIM.squadCasualty(s, out, chance, how);
 };

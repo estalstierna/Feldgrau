@@ -233,7 +233,7 @@ window.SIM = window.SIM || {};
         <div class="squad-sum">${miniBar('Morale', SIM.squadMorale(S))}${miniBar('Loyalty', SIM.squadLoyalty(S))}</div>` +
         S.squad.map(m => `<div class="person ${m.status !== 'ok' ? 'gone' : ''}">${avatar(m.id, m.name)}<div class="person-info">
           <div class="person-top"><b>${esc(m.name)}</b>${S.flags.deputy === m.id ? '<span class="deputy">deputy</span>' : ''}</div>
-          <span class="small muted">${esc(m.role)}, ${m.age}${m.status !== 'ok' ? ' · ' + esc(m.status) : ''}</span>
+          <span class="small muted">${esc(m.role)}, ${m.age}${m.status !== 'ok' ? ' · ' + esc(m.fate || m.status) : ''}</span>
           <div class="traits">${m.traits.map(t => `<span class="trait" title="${esc(SIM.TRAITS[t] || '')}">${esc(t)}</span>`).join('')}</div>
           ${miniBar('Morale', m.morale)}${miniBar('Loyalty', m.loyalty)}
           ${m.bio ? `<span class="small muted">${esc(m.bio)}</span>` : ''}</div></div>`).join('');

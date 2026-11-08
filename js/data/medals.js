@@ -36,6 +36,10 @@ SIM.MEDALS = {
     stripes: [['#b3262a', 3], ['#f2f2f2', 2], ['#111', 6], ['#f2f2f2', 2], ['#b3262a', 3]],
     desc: 'The same cross without swords: for merit away from enemy fire, such as rescues, exemplary service and courage in accidents and disasters.'
   },
+  tankbadge: {
+    name: 'Tank Destruction Badge', german: 'Sonderabzeichen für das Niederkämpfen von Panzerkampfwagen durch Einzelkämpfer', kind: 'badge', order: 21, shape: 'tankstripe',
+    desc: 'A strip of silver braid with a small black metal tank, worn on the upper right sleeve, one for each tank destroyed single-handed with hand weapons. Instituted in March 1942 and awarded retroactively for tanks destroyed from 22 June 1941.'
+  },
   rescue: {
     name: 'Life Saving Medal', german: 'Medaille für Rettung aus Gefahr', kind: 'ribbon', order: 40,
     stripes: [['#f2f2f2', 2], ['#d0562e', 12], ['#f2f2f2', 2]],
@@ -113,6 +117,15 @@ SIM.badgeSVG = function (id, size = 44) {
       <circle cx="22" cy="10" r="2.2" fill="#6f7563" stroke="#3d4136" stroke-width=".6"/>
       <g transform="translate(0 3)">${crossPath(22, 26, 15, '#111', '#c0c4c8')}</g>
       <ellipse cx="22" cy="44" rx="13" ry="1.6" fill="rgba(0,0,0,.25)"/>
+    </svg>`;
+  }
+  if (m.shape === 'tankstripe') {
+    return `<svg viewBox="0 0 40 50" width="${size * 0.8}" height="${size}" aria-hidden="true">
+      <rect x="6" y="4" width="28" height="42" rx="1.5" fill="#b8bcc2" stroke="#6f747a" stroke-width="1"/>
+      <rect x="6" y="4" width="28" height="4" fill="#4a4f45"/><rect x="6" y="42" width="28" height="4" fill="#4a4f45"/>
+      ${Array.from({ length: 8 }, (_, i) => `<line x1="7" y1="${10 + i * 4}" x2="33" y2="${10 + i * 4}" stroke="#d3d6da" stroke-width=".8" opacity=".7"/>`).join('')}
+      <g fill="#1a1a1a"><rect x="10" y="26" width="20" height="6" rx="2"/><rect x="14" y="21" width="10" height="5" rx="1"/><rect x="23" y="22.5" width="9" height="1.6"/>
+      <circle cx="13" cy="33" r="1.6"/><circle cx="17.5" cy="33" r="1.6"/><circle cx="22" cy="33" r="1.6"/><circle cx="26.5" cy="33" r="1.6"/></g>
     </svg>`;
   }
   if (m.shape === 'lanyard') {

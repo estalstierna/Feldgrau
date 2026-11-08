@@ -4,7 +4,7 @@ window.SIM = window.SIM || {};
 
 const peace = s => !SIM.today(s).war;
 const war = s => !!SIM.today(s).war;
-const foe = s => (s.chapter || 0) === 1 ? 'French' : 'Polish';
+const foe = s => ({ 1: 'French', 3: 'Soviet' }[s.chapter || 0] || 'Polish');
 
 SIM.POOL = [
   // ── Peace (in the camp, before 1 September) ──
@@ -41,7 +41,7 @@ SIM.POOL = [
     ]
   },
   {
-    id: 'p_sentry', chapters: [0, 1], phases: [2], scene: 'forest',
+    id: 'p_sentry', chapters: [0, 1, 3], phases: [2], scene: 'forest',
     title: 'Sentry Duty',
     text: s => `Two hours on sentry at the edge of the camp, ${war(s) ? `with ${foe(s)} stragglers somewhere in the dark` : 'staring at the dark trees toward the border'}. It is cold now, and your eyes keep closing.`,
     choices: [
@@ -56,7 +56,7 @@ SIM.POOL = [
     ]
   },
   {
-    id: 'p_blisters', chapters: [0, 1], phases: [2], scene: 'camp',
+    id: 'p_blisters', chapters: [0, 1, 3], phases: [2], scene: 'camp',
     title: 'Blisters',
     text: 'Your feet. The new boots have rubbed your heels raw, and one blister has burst and looks angry.',
     choices: [
@@ -82,7 +82,7 @@ SIM.POOL = [
 
   // ── War (in Poland, from 1 September) ──
   {
-    id: 'w_shadows', chapters: [0, 1], phases: [2], cond: war, scene: 'forest',
+    id: 'w_shadows', chapters: [0, 1, 3], phases: [2], cond: war, scene: 'forest',
     title: 'Shadows',
     text: 'You are on sentry duty at the edge of a field. Everyone is jumpy; last night someone in another company shot at a cow. Now a shape is moving toward you through the dark. Thirty metres. Twenty.',
     choices: [
@@ -100,7 +100,7 @@ SIM.POOL = [
     ]
   },
   {
-    id: 'w_burial', chapters: [0, 1], phases: [2], cond: war, scene: 'field',
+    id: 'w_burial', chapters: [0, 1, 3], phases: [2], cond: war, scene: 'field',
     title: 'Burial Detail',
     text: s => `You are told off for the burial detail. German dead first: their identity discs are broken in half, one half left with the body, one for the records. Then the ${foe(s)} dead, in a common grave at the edge of the field.`,
     choices: [
@@ -113,7 +113,7 @@ SIM.POOL = [
     ]
   },
   {
-    id: 'w_barn', chapters: [0, 1], phases: [2], cond: war, scene: 'village',
+    id: 'w_barn', chapters: [0, 1, 3], phases: [2], cond: war, scene: 'village',
     title: 'An Empty Farm',
     text: 'The squad is billeted in an abandoned farm. The family must have left in a hurry: the table is set, the stove is still warm. There are potatoes in the cellar and a pig in the sty.',
     choices: [
@@ -126,7 +126,7 @@ SIM.POOL = [
     ]
   },
   {
-    id: 'w_nightmare', chapters: [0, 1], phases: [2], cond: s => war(s) && (s.flags.firingSquad || s.flags.shotPole || s.flags.lenzKilled || s.stats.conscience < 30), weight: 3, scene: 'camp',
+    id: 'w_nightmare', chapters: [0, 1, 3], phases: [2], cond: s => war(s) && (s.flags.firingSquad || s.flags.shotPole || s.flags.lenzKilled || s.stats.conscience < 30), weight: 3, scene: 'camp',
     title: 'The Dream',
     text: s => s.flags.firingSquad
       ? 'You are back at the barn wall. The hat rolls in the dust and stops. It rolls again. And again. You wake up with your hand over your mouth.'
@@ -142,7 +142,7 @@ SIM.POOL = [
     ]
   },
   {
-    id: 'w_letter', chapters: [0, 1], phases: [2], cond: war, scene: 'letter',
+    id: 'w_letter', chapters: [0, 1, 3], phases: [2], cond: war, scene: 'letter',
     title: 'Field Post Card',
     text: 'The company clerk hands out field post cards. One line, he says: the censors are not paid to read novels.',
     choices: [

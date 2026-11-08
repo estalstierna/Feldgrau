@@ -207,7 +207,7 @@ The game would use a chapter variant if it exists and fall back to the generic o
 
 ---
 
-## 5. Campaign maps (3 files)
+## 5. Campaign maps (4 files)
 
 **File names:** `assets/maps/map-<id>.svg`.
 
@@ -323,9 +323,26 @@ The town labels may be part of the map, or can be left off, in which case the ga
 | Boulogne | 120 | 18 |
 | Saint-Avit-sur-Cher | 140 | 150 |
 
+### 5.4 `map-east.svg`: the Soviet borderlands, summer 1941 (Chapter IV)
+- **Geography:** the 1939–41 border along the Bug on the left; the Berezina and the Dnieper running north–south; the Pripet Marshes in the south.
+- **Labels:** GENERAL GOVERNMENT (left), SOVIET UNION (right), BUG, BEREZINA, DNIEPER, Pripet Marshes.
+
+| Town | x | y |
+|---|---|---|
+| Brest | 50 | 180 |
+| Białystok | 60 | 108 |
+| Wołkowysk | 98 | 124 |
+| Minsk | 150 | 108 |
+| Borisov | 186 | 96 |
+| Orsha | 232 | 104 |
+| Smolensk | 276 | 76 |
+| Warsaw | 14 | 150 |
+
+**Route stops:** Bug 54,168 · sand roads 80,158 · Białystok 60,110 · pocket 98,124 · Minsk road 150,110 · Berezina 186,98 · Dnieper 252,88 · Smolensk 274,78.
+
 ---
 
-## 6. Decorations: medals and ribbons (15 decorations)
+## 6. Decorations: medals and ribbons (16 decorations)
 
 Every decoration needs **two** images:
 
@@ -355,6 +372,7 @@ Ribbon stripes are given left to right as **colour : relative width**. They are 
 | `wound_black` | Wound Badge in Black / *Verwundetenabzeichen in Schwarz* | badge | none | Vertical oval, laurel-wreath edge, a steel helmet in profile in the centre above two crossed swords. Black lacquer finish. The **substitute emblem** on the helmet. |
 | `wound_silver` | Wound Badge in Silver | badge | none | Same design in matte silver. |
 | `wound_gold` | Wound Badge in Gold | badge | none | Same design in matte gold `#c9a240`. |
+| `tankbadge` | Tank Destruction Badge / *Sonderabzeichen für das Niederkämpfen von Panzerkampfwagen durch Einzelkämpfer* | badge | none | A vertical strip of silver braid with dark bands at top and bottom and a small black tank in side view across the middle. |
 
 **Display rules (handled by the game):** higher grades hide lower grades of the same decoration:
 - `wound_silver` hides `wound_black`,

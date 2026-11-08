@@ -105,7 +105,7 @@ SIM.pickEvent = function (s) {
   return pool[pool.length - 1];
 };
 
-SIM.choiceVisible = (s, ch) => !ch.show || ch.show(s);
+SIM.choiceVisible = (s, ch) => (!ch.show || ch.show(s)) && (!ch.assign || !SIM.squadMen || SIM.squadMen(s).length > 0);
 SIM.choiceAllowed = (s, ch) => !ch.req || ch.req(s);
 
 SIM.resolveChoice = function (s, ev, ch, man) {

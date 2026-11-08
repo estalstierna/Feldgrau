@@ -175,8 +175,21 @@ Ribbon stripes are listed left to right; the widths are relative.
 | `medal-schnur1.png` | Marksmanship Lanyard, 1st Grade. A braided silver-grey aluminium cord hanging in a U-shaped loop from a short shoulder bar. No acorns. |
 | `medal-schnur2.png` | Marksmanship Lanyard, 2nd Grade. The same braided lanyard with ONE small silver acorn hanging at the bottom. |
 | `medal-schnur3.png` | Marksmanship Lanyard, 3rd Grade. The same braided lanyard with TWO small silver acorns. |
+| `medal-tankbadge.png` | Tank Destruction Badge. A vertical strip of braided silver-aluminium cord about three times as tall as it is wide, with a thin dark band at the top and bottom, and a small black metal tank (side view, plain, no markings) fixed across the middle. No ribbon. |
 
 **Tip:** paint `medal-wound_black.png` first. Then ask for "the same badge, now in matte silver" and "…in matte gold", and do the same for the three lanyards. That keeps each set consistent.
+
+---
+
+## 4b. Optional: eastern scene banners (Chapter IV)
+
+Chapter IV (the Soviet Union, summer 1941) reuses the existing banners. These optional variants would make it look more like the East. Use the same three-light method as the other scenes.
+
+| Files | Prompt |
+|---|---|
+| `scene-village-east-<phase>.webp` | A Belarusian village in summer 1941: low wooden log houses with carved, painted window frames, a well with a long wooden sweep pole, sunflowers, a dirt road, birch trees. Civilian, no soldiers. |
+| `scene-road-east-<phase>.webp` | An endless sandy road across flat steppe-like fields under a huge sky, birch woods in the distance, a column of small marching silhouettes raising a long cloud of grey dust. |
+| `scene-river-east-<phase>.webp` | A wide, slow Russian river with low sandy banks, reeds, a wooden bridge partly destroyed, birch forest on both sides. No cliffs, no church on the bank. |
 
 ---
 
@@ -195,7 +208,7 @@ A very quiet, dark, atmospheric image for a title screen, wide 16:9. A lone sold
 |---|---|
 | Scenes | 25 (8 scenes × 3 times of day, plus letter) |
 | Portraits | 12 |
-| Medals | 15 |
+| Medals | 16 |
 | Title image | 1 |
 
 Put them all in one zip, in any folder structure. The file names are what matter.

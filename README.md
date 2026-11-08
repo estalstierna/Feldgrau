@@ -19,8 +19,10 @@ Choose with the mouse or by tapping, or press **1–4** to pick a choice and **E
 | II: The Meuse | 10 – 16 May 1940 | The Ardennes, the crossing of the Meuse at Dinant, the French counterattack, the pursuit into France |
 | *Interlude* | May – July 1940 | The armistice, the demarcation line, the company photograph |
 | III: The Line | 12 Jul – 16 Nov 1940 | Occupied France over 14 days in three places: **Paris** (5 days), the **NCO course** at Fontainebleau or the **invasion barges** at Boulogne (2 days), and **Saint-Avit-sur-Cher**, a town on the demarcation line, where you command your own post (7 days) |
+| *Interlude* | Nov 1940 – Jun 1941 | The fates of the people from France, training your squad, the troop train past the Warsaw ghetto |
+| IV: Barbarossa | 21 Jun – 19 Jul 1941 | The invasion of the Soviet Union over 10 days: the **Bug** at Brest, **Białystok** and the pocket, the road past **Minsk**, the **Berezina**, the **Dnieper** and **Smolensk** |
 
-Chapters I and II are 7 days each; Chapter III is 14 days across several places. Each day has 3 phases (morning, afternoon, night). Choices in Chapter I follow you: who you saved, who you betrayed, and who is still in your squad.
+Chapters I and II are 7 days each; Chapter III is 14 days and Chapter IV 10 days, across several places. Each day has 3 phases (morning, afternoon, night). Choices in Chapter I follow you: who you saved, who you betrayed, and who is still in your squad.
 
 ## Character and stats
 
@@ -65,6 +67,8 @@ From Chapter III you command your own men: each has a name, an age, traits and a
 
 Some orders ask you to **choose a man** for the task. What happens depends on who he is. You also choose a deputy.
 
+From Chapter IV, men can be **killed, wounded or sent to the rear**. Whom you send on dangerous tasks decides who comes home. Training in the interlude (digging in, first aid) and checking kit before battle lower the odds.
+
 ### Kit
 Things you carry follow you between chapters:
 
@@ -84,7 +88,7 @@ A promotion board sits at the end of every chapter:
 
 - **Time in service** gives one step, unless your record is stained: suspicion of 60 or more, a refused order, or being caught asleep on sentry duty.
 - **Merit** (the chapter's merit score plus your standing with your superiors) gives a recommendation. Skipping a rank requires an exceptional record.
-- **Ranks:** Schütze → Oberschütze → Gefreiter → Obergefreiter → Unteroffizier. Unteroffizier requires passing the NCO course in Chapter III. The course depends on your leadership skill, your standing with your superiors, and how you prepared.
+- **Ranks:** Schütze → Oberschütze → Gefreiter → Obergefreiter → Unteroffizier → Feldwebel. Unteroffizier requires passing the NCO course in Chapter III. The course depends on your leadership skill, your standing with your superiors, and how you prepared.
 
 As a Gefreiter you lead the machine-gun team, which opens up new choices.
 
@@ -104,6 +108,7 @@ Medals are collected in your **Soldbuch** (paybook). Open it by tapping the ID c
 | Life Saving Medal | Pulling a drowning soldier out of the Meuse |
 | Marksmanship Lanyard, grades 1–3 | The qualification shoot at the range at Wahn during the interlude (grade 3 comes in later chapters) |
 | War Merit Cross, 2nd Class (without swords) | Courage away from the front, such as rescuing a family from a house fire |
+| Tank Destruction Badge | Destroying a T-34 single-handed with a bundle charge (instituted in 1942, awarded retroactively) |
 | Long Service Award, 4 Years | Automatically after four years of service (from Chapter III for the 1917 class) |
 
 The medal artwork is simplified, and symbols of the regime are deliberately left out.
@@ -131,6 +136,8 @@ js/data/chapters.js chapter registry (Chapter I rules: promotions, awards)
 js/data/ch2.js      Chapter II: interlude, events, random events, endings
 js/data/ch3.js      Chapter III: interlude, Paris, NCO course / Boulogne
 js/data/ch3_town.js Chapter III: the town on the Cher, random events, endings
+js/data/ch4.js      Chapter IV: interlude, the Bug, Białystok, the pocket
+js/data/ch4_more.js Chapter IV: Minsk road to Smolensk, random events, endings
 js/systems.js       relationships, skills, kit, squad
 js/engine.js        state, effects, event selection, saving
 js/scenes.js        SVG scene banners and the campaign map
