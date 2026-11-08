@@ -63,6 +63,21 @@ SIM.sceneSVG = function (scene, phase, seed) {
     [[300, 104, 0.35], [292, 116, 0.55], [312, 128, 0.75], [270, 140, 1]].forEach(([x, y, k]) => {
       body += `<g transform="translate(${x},${y}) scale(${k})" fill="${dark}"><rect x="-12" y="-14" width="24" height="10"/><circle cx="-8" cy="-2" r="4"/><circle cx="8" cy="-2" r="4"/><rect x="-28" y="-18" width="5" height="14"/><circle cx="-25.5" cy="-21" r="3"/></g>`;
     });
+  } else if (scene === 'river') {
+    // A river gorge: limestone cliffs, water, a town on the far bank.
+    body += `<polygon points="0,40 70,30 140,55 190,70 190,160 0,160" fill="${night ? '#141a1f' : '#8f8c7c'}"/>`;
+    body += `<polygon points="600,35 520,28 450,50 400,72 400,160 600,160" fill="${night ? '#10161b' : '#7f7d6e'}"/>`;
+    body += pines(rnd, 10, 45, 12, 26, mid).replace(/<polygon/g, '<polygon opacity=".9"');
+    body += `<rect x="0" y="104" width="600" height="56" fill="${night ? '#0d1a22' : '#5f7a77'}"/>`;
+    for (let i = 0; i < 10; i++) body += `<line x1="${60 + i * 55}" y1="${115 + (i % 3) * 12}" x2="${85 + i * 55}" y2="${115 + (i % 3) * 12}" stroke="${night ? '#2e4652' : '#9db4b0'}" stroke-width="1.5" opacity=".7"/>`;
+    [[205, 30, 26], [240, 24, 32], [270, 34, 22], [310, 26, 30], [345, 30, 24]].forEach(([x, w, h]) => {
+      body += `<rect x="${x}" y="${104 - h}" width="${w}" height="${h}" fill="${night ? '#151a20' : '#3e3a2e'}"/>`;
+      body += `<polygon points="${x - 3},${104 - h} ${x + w / 2},${104 - h - w * 0.4} ${x + w + 3},${104 - h}" fill="${dark}"/>`;
+    });
+    body += `<rect x="285" y="40" width="16" height="64" fill="${night ? '#151a20' : '#3e3a2e'}"/><polygon points="281,40 293,14 305,40" fill="${dark}"/>`;
+    body += `<path d="M200,70 C230,40 260,60 300,30 C340,10 380,40 420,20" stroke="${night ? '#3a3a3a' : '#777'}" stroke-width="22" fill="none" opacity=".35"/>`;
+    if (night) [[230, 92], [320, 88]].forEach(([x, y]) => { body += `<circle cx="${x}" cy="${y}" r="18" fill="url(#glow)"/>`; });
+    body += `<path d="M250,132 l40,0 l-6,8 l-28,0 Z" fill="${dark}"/><g fill="${dark}">${[256, 264, 272, 280].map(x => `<circle cx="${x}" cy="129" r="2.6"/>`).join('')}</g>`;
   } else if (scene === 'letter') {
     return `<svg viewBox="0 0 600 160" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <rect width="600" height="160" fill="#3b3426"/>
@@ -84,14 +99,11 @@ SIM.sceneSVG = function (scene, phase, seed) {
   </svg>`;
 };
 
-// Schematic map of Pomerania and the Polish Corridor, 1939.
-SIM.mapSVG = function (s) {
-  const visited = SIM.DAYS.slice(0, s.day + 1).map(d => d.place).filter((p, i, a) => a.indexOf(p) === i);
-  const cur = SIM.PLACES[SIM.DAYS[Math.min(s.day, SIM.DAYS.length - 1)].place];
-  const path = visited.map(p => SIM.PLACES[p]).map((p, i) => `${i ? 'L' : 'M'}${p.x},${p.y}`).join(' ');
-  const town = (x, y, name, anchor = 'start', dx = 5) => `<circle cx="${x}" cy="${y}" r="2.2" class="m-town"/><text x="${x + (anchor === 'end' ? -dx : dx)}" y="${y + 3}" text-anchor="${anchor}" class="m-label">${name}</text>`;
-  return `<svg viewBox="0 0 320 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map of the Polish Corridor, 1939">
-    <rect width="320" height="250" class="m-land"/>
+// Campaign maps: one schematic per chapter.
+SIM.MAPS = {
+  poland: () => ({
+    label: 'Map of Pomerania and the Polish Corridor, 1939',
+    base: `<rect width="320" height="250" class="m-land"/>
     <path d="M0,0 L320,0 L320,48 C300,52 285,40 270,38 C262,50 250,58 244,46 C230,40 200,62 160,66 C120,70 80,78 40,84 L0,92 Z" class="m-sea"/>
     <text x="70" y="40" class="m-sea-label">Baltic Sea</text>
     <path d="M168,66 C172,100 178,130 176,160 C174,190 182,215 190,250" class="m-border"/>
@@ -100,16 +112,40 @@ SIM.mapSVG = function (s) {
     <text x="40" y="200" class="m-country">GERMANY</text>
     <text x="198" y="235" class="m-country">POLAND</text>
     <text x="272" y="100" class="m-country m-small">EAST</text><text x="268" y="111" class="m-country m-small">PRUSSIA</text>
-    <text x="204" y="104" class="m-small m-label" transform="rotate(-80 204 104)">CORRIDOR</text>
-    ${town(28, 108, 'Stettin')}
-    ${town(130, 146, 'Hammerstein', 'end')}
-    ${town(192, 150, 'Konitz')}
-    ${town(258, 50, 'Danzig')}
-    ${town(232, 44, 'Gdingen', 'end')}
-    ${town(250, 200, 'Bromberg', 'end')}
-    ${town(254, 168, 'Schwetz')}
+    <text x="204" y="104" class="m-small m-label" transform="rotate(-80 204 104)">CORRIDOR</text>`,
+    towns: [[28, 108, 'Stettin'], [130, 146, 'Hammerstein', 'end'], [192, 150, 'Konitz'], [258, 50, 'Danzig'], [232, 44, 'Gdingen', 'end'], [250, 200, 'Bromberg', 'end'], [254, 168, 'Schwetz']]
+  }),
+  france: () => ({
+    label: 'Map of the Ardennes and the Meuse, 1940',
+    base: `<rect width="320" height="250" class="m-land"/>
+    <path d="M0,0 L120,0 C100,20 60,30 0,34 Z" class="m-sea"/>
+    <text x="12" y="18" class="m-sea-label">North Sea</text>
+    <path d="M270,0 C268,40 276,80 272,118 C268,140 282,150 292,165" class="m-border"/>
+    <path d="M240,160 C252,150 270,152 292,165 C296,180 290,196 280,205 C262,206 248,200 240,190 Z" class="m-lux"/>
+    <path d="M0,140 C40,138 80,150 110,165 C140,180 160,192 180,196 C210,200 232,196 240,190" class="m-border"/>
+    <path d="M175,250 C176,225 178,205 172,190 C165,170 158,140 152,115 C150,100 152,90 156,80 C175,70 200,62 216,56 C235,45 250,20 255,0" class="m-river"/>
+    <text x="164" y="168" class="m-small m-label" transform="rotate(-72 164 168)">MEUSE</text>
+    <text x="282" y="70" class="m-country m-small" transform="rotate(90 282 70)">GERMANY</text>
+    <text x="70" y="95" class="m-country">BELGIUM</text>
+    <text x="60" y="215" class="m-country">FRANCE</text>
+    <text x="244" y="182" class="m-country m-small">LUX.</text>`,
+    towns: [[156, 80, 'Namur', 'end'], [216, 56, 'Liège'], [150, 116, 'Dinant', 'end'], [116, 136, 'Philippeville', 'end'], [72, 152, 'Avesnes', 'end'], [174, 197, 'Sedan', 'end'], [222, 150, 'Bastogne'], [258, 110, 'St. Vith', 'end'], [292, 112, 'Prüm', 'end'], [70, 52, 'Brussels']]
+  })
+};
+
+SIM.mapSVG = function (s) {
+  const ch = SIM.chapter(s);
+  const m = SIM.MAPS[ch.map]();
+  const days = ch.days;
+  const visited = days.slice(0, s.day + 1).map(d => d.place).filter((p, i, a) => a.indexOf(p) === i);
+  const cur = ch.places[days[Math.min(s.day, days.length - 1)].place];
+  const path = visited.map(p => ch.places[p]).map((p, i) => `${i ? 'L' : 'M'}${p.x},${p.y}`).join(' ');
+  const town = (x, y, name, anchor = 'start', dx = 5) => `<circle cx="${x}" cy="${y}" r="2.2" class="m-town"/><text x="${x + (anchor === 'end' ? -dx : dx)}" y="${y + 3}" text-anchor="${anchor}" class="m-label">${name}</text>`;
+  return `<svg viewBox="0 0 320 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${m.label}">
+    ${m.base}
+    ${m.towns.map(t => town(...t)).join('')}
     <path d="${path}" class="m-path"/>
-    ${visited.map(p => `<circle cx="${SIM.PLACES[p].x}" cy="${SIM.PLACES[p].y}" r="3" class="m-visited"/>`).join('')}
+    ${visited.map(p => `<circle cx="${ch.places[p].x}" cy="${ch.places[p].y}" r="3" class="m-visited"/>`).join('')}
     <circle cx="${cur.x}" cy="${cur.y}" r="6" class="m-you"/><circle cx="${cur.x}" cy="${cur.y}" r="10" class="m-you-ring"/>
   </svg>`;
 };

@@ -5,11 +5,14 @@ SIM.ENDINGS = {
   kia: {
     title: 'Killed in Action',
     final: true,
-    text: s => `${s.deathCause || 'Killed in Poland, September 1939.'}
+    text: s => {
+      const ch = SIM.chapter(s);
+      return `${s.deathCause || ch.deathDefault}
 
-A field post letter arrives in ${SIM.townName(s.char.hometown)} three weeks later, signed by Hauptmann Steiner. It says that ${SIM.RANKS[s.rank]} ${s.char.first} ${s.char.last} fell bravely for Führer, Volk and Vaterland, and that he did not suffer. ${s.flags.lastLetter ? 'In the same envelope is a letter in your own handwriting.' : ''}
+A field post letter arrives in ${SIM.townName(s.char.hometown)} three weeks later, signed by ${ch.commander}. It says that ${SIM.RANKS[s.rank]} ${s.char.first} ${s.char.last} fell bravely for Führer, Volk and Vaterland, and that he did not suffer. ${s.flags.lastLetter ? 'In the same envelope is a letter in your own handwriting.' : ''}${SIM.hasMedal(s, 'ek2') ? ' His Iron Cross is enclosed.' : ''}
 
-You were ${1939 - s.char.birthYear} years old. Around 16,000 German soldiers and 66,000 Polish soldiers were killed in the September campaign. Tens of thousands of Polish civilians died with them.`
+You were ${ch.year - s.char.birthYear} years old. ${ch.casualties}`;
+    }
   },
   arrested: {
     title: 'Arrested',
@@ -25,7 +28,7 @@ Most men in those units did not live to see the end of the war.`
     final: true,
     text: s => `It happens in the middle of an ordinary moment. You simply stop. You sit down at the side of the road and you cannot get up again, and you cannot stop shaking, and when Brandt shouts at you, you cannot even hear him.
 
-The medical officer writes "nervous exhaustion" on your tag. In 1939 the army does not have a better word for it. You are sent to a military hospital in Stettin, and then to a "special ward", where the doctors are less interested in curing you than in deciding whether you are a malingerer.
+The medical officer writes "nervous exhaustion" on your tag. In ${SIM.chapter(s).year} the army does not have a better word for it. You are sent to a military hospital in ${SIM.chapter(s).hospital}, and then to a "special ward", where the doctors are less interested in curing you than in deciding whether you are a malingerer.
 
 The war goes on without you. For now.`
   },
@@ -110,10 +113,10 @@ Poland will fall within a month. Your regiment will be sent west. The war that H
   }
 };
 
-// Chooses the end-of-chapter ending from final state.
+// Chooses the end-of-chapter ending for Chapter I.
 SIM.chapterEnding = function (s) {
   if (s.stats.health < 35) return 'wounded';
-  if (s.merit >= 6 && s.stats.officers >= 58 && !s.flags.refusedOrder) return 'decorated';
+  if (s.chMerit >= 6 && s.stats.officers >= 58 && !s.flags.refusedOrder) return 'decorated';
   if (s.stats.suspicion >= 55 || s.flags.refusedOrder) return 'marked';
   if (s.stats.conscience <= 25) return 'hardened';
   if (s.stats.conscience >= 70) return 'witness';

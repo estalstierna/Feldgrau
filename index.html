@@ -31,7 +31,7 @@
         <button class="btn primary" id="btn-new">New game</button>
         <button class="btn" id="btn-continue" hidden>Continue</button>
       </div>
-      <p class="muted small">Chapter I: The Corridor · 28 August – 3 September 1939</p>
+      <p class="muted small chapters-list" id="title-chapters"></p>
     </div>
   </section>
 
@@ -62,15 +62,16 @@
   <section id="game" class="screen" hidden>
     <div class="layout">
       <aside class="sidebar">
-        <div class="card id-card">
-          <div class="kicker">Soldbuch</div>
-          <div id="char-name" class="char-name"></div>
-          <div id="char-rank" class="char-rank"></div>
-          <div id="char-unit" class="muted small"></div>
-        </div>
+        <button class="card id-card" id="id-card" type="button" aria-label="Open your Soldbuch">
+          <span class="kicker">Soldbuch <span class="open-hint">open ›</span></span>
+          <span id="char-name" class="char-name"></span>
+          <span id="char-rank" class="char-rank"></span>
+          <span id="char-unit" class="muted small"></span>
+          <span id="char-ribbons" class="char-ribbons"></span>
+        </button>
         <div class="card"><div id="stats"></div></div>
         <div class="card">
-          <div class="kicker small">Aug – Sep 1939</div>
+          <div class="kicker small" id="map-title"></div>
           <div id="days" class="days"></div>
           <div id="map" class="map"></div>
         </div>
@@ -104,14 +105,45 @@
       <h2 id="end-title"></h2>
       <div id="end-text" class="ev-text"></div>
       <div id="end-summary" class="end-summary"></div>
-      <div class="btn-row"><button class="btn primary" id="btn-again">Play again</button></div>
+      <div class="btn-row">
+        <button class="btn primary" id="btn-next-chapter" hidden>Continue</button>
+        <button class="btn" id="btn-end-profile">Soldbuch</button>
+        <button class="btn" id="btn-again">Play again</button>
+      </div>
     </div>
   </section>
+
+  <!-- Interlude between chapters -->
+  <section id="interlude" class="screen" hidden>
+    <div class="page">
+      <div class="kicker" id="interlude-kicker"></div>
+      <h2 id="interlude-title"></h2>
+      <div id="interlude-body" class="timeline"></div>
+      <div class="interlude-event">
+        <h3 id="interlude-ev-title"></h3>
+        <div id="interlude-ev-text" class="ev-text"></div>
+        <div id="interlude-choices" class="choices"></div>
+        <div id="interlude-result" class="result" hidden></div>
+      </div>
+      <div class="btn-row"><button class="btn" id="btn-interlude-profile">Soldbuch</button></div>
+    </div>
+  </section>
+
+  <!-- Profile overlay -->
+  <div id="profile" class="overlay" hidden role="dialog" aria-modal="true" aria-label="Soldbuch">
+    <div class="overlay-card">
+      <button class="btn small close" id="btn-close-profile" aria-label="Close">✕</button>
+      <div id="profile-body"></div>
+    </div>
+  </div>
 
   <script src="js/data/world.js"></script>
   <script src="js/data/events.js"></script>
   <script src="js/data/pool.js"></script>
   <script src="js/data/endings.js"></script>
+  <script src="js/data/medals.js"></script>
+  <script src="js/data/chapters.js"></script>
+  <script src="js/data/ch2.js"></script>
   <script src="js/engine.js"></script>
   <script src="js/scenes.js"></script>
   <script src="js/ui.js"></script>

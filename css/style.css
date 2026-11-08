@@ -108,6 +108,7 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
 .map svg { width: 100%; height: auto; display: block; }
 .m-land { fill: #d4c9a8; }
 .m-sea { fill: #9fb0aa; }
+.m-lux { fill: #cbbf9c; stroke: #6b2a20; stroke-width: 1.2; stroke-dasharray: 5 3; }
 .m-sea-label { fill: #55665f; font: italic 10px var(--serif); }
 .m-border { fill: none; stroke: #6b2a20; stroke-width: 1.4; stroke-dasharray: 5 3; }
 .m-river { fill: none; stroke: #6f8f98; stroke-width: 2; }
@@ -161,6 +162,43 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
 .chip.bad { background: rgba(154,47,34,.15); color: var(--crit); }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
+/* Soldbuch card, ribbons and medals */
+.id-card { display: flex; flex-direction: column; align-items: flex-start; gap: .1rem; width: 100%; text-align: left; font: inherit; color: inherit; border: 0; cursor: pointer; }
+.id-card:hover .open-hint { opacity: 1; }
+.open-hint { float: right; opacity: .55; letter-spacing: .05em; text-transform: none; margin-left: .6em; }
+.char-ribbons { margin-top: .5rem; }
+.ribbon-bar { display: flex; flex-wrap: wrap; gap: 2px; max-width: 120px; }
+.ribbon-bar svg { display: block; }
+.badge-row { display: flex; gap: 6px; margin-top: 5px; align-items: flex-end; }
+.badge-row svg { display: block; }
+.medal-card { display: flex; gap: .9rem; align-items: center; padding: .7rem 0; border-bottom: 1px dotted var(--line); }
+.medal-art { flex: 0 0 56px; display: flex; justify-content: center; }
+.medal-info { display: flex; flex-direction: column; gap: .15rem; line-height: 1.4; }
+.award-box { border: 1px solid var(--warn); background: rgba(176,128,45,.1); padding: .6rem 1rem; margin: 0 0 1.2rem; animation: fade .6s ease; }
+.review { border: 1px solid var(--line); background: rgba(255,255,255,.3); padding: 1rem 1.2rem; margin-bottom: 1rem; }
+.review-rank { font-size: 1.1rem; margin: .4rem 0; }
+.review-rank .arrow { color: var(--accent); }
+.plain { list-style: none; padding: 0; margin: .3rem 0; }
+.plain li { padding: .2em 0; }
+.chapters-list { white-space: pre-line; }
+.interlude-event { margin-top: 1.5rem; border-top: 2px solid var(--feldgrau); padding-top: .5rem; }
+.interlude-event h3 { font-size: 1.4rem; margin: .6rem 0; }
+.interlude-event .choices, .interlude-event .result, .interlude-event .ev-text { padding: 0; }
+
+/* Overlay */
+.overlay { position: fixed; inset: 0; background: rgba(10,10,8,.75); display: flex; align-items: flex-start; justify-content: center; padding: 24px 16px; overflow-y: auto; z-index: 10; }
+.overlay-card { position: relative; background: var(--paper); max-width: 640px; width: 100%; padding: 1.6rem clamp(16px, 4vw, 2.2rem); box-shadow: 0 10px 40px rgba(0,0,0,.6); border-top: 6px solid var(--feldgrau); }
+.overlay-card h2 { margin: .2rem 0 0; font-size: 1.8rem; }
+.overlay-card h3 { margin: 1.4rem 0 .4rem; font-size: 1.05rem; }
+.close { position: absolute; top: 10px; right: 10px; min-height: 0; }
+.profile-rank { font-style: italic; margin: .2rem 0 1rem; }
+.profile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: .3rem 1rem; font-size: .9rem; }
+.profile-grid div { display: flex; flex-direction: column; border-bottom: 1px dotted var(--line); padding-bottom: .2rem; }
+.profile-grid span { color: var(--ink-soft); font-size: .8rem; }
+.profile-ribbons { margin: .5rem 0; }
+.mini.rank { font-family: var(--type); color: var(--accent); }
+.mini.link { margin-left: auto; text-decoration: underline dotted; font-size: inherit; color: var(--accent); }
+
 /* Ending */
 .end-summary { margin-top: 2rem; border-top: 1px solid var(--line); padding-top: 1rem; }
 .end-summary h3 { font-size: 1.05rem; margin: 1.2rem 0 .6rem; }
@@ -178,6 +216,7 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
   .btn-row .btn { flex: 1 1 auto; }
   #result .btn { width: 100%; }
   .opts { grid-template-columns: 1fr; }
+  .profile-grid { grid-template-columns: 1fr 1fr; }
   .tl-item { grid-template-columns: 1fr; gap: 0; }
   .mini-stats { display: flex; flex-wrap: wrap; gap: .3rem .7rem; padding: .5rem 16px; font-size: .78rem; border-bottom: 1px solid var(--line); background: rgba(0,0,0,.04); }
   .mini b { font-weight: 600; }

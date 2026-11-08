@@ -353,12 +353,12 @@ Your company advances across a stubble field toward a railway embankment. The bo
 Brandt is shouting. Everyone is shouting.`,
     choices: [
       { text: 'Advance in short rushes, using cover as you were trained.',
-        effects: { merit: 1 },
+        effects: { merit: 1 }, assault: true,
         risk: { chance: s => s.flags.knowsTerrain ? 0.08 : 0.16, dmg: [10, 28], cause: 'Killed in the first hour of the war, in a stubble field near the border.',
           hit: 'Something hits your arm like a hammer. You look down and see the blood soaking your sleeve before you feel it.',
           miss: 'Up, run, down. Up, run, down. Dirt kicks up next to your face. Then you are in the lee of the embankment, alive, gasping.' } },
       { text: 'Charge ahead of the others.',
-        effects: { merit: 3, officers: 6 },
+        effects: { merit: 3, officers: 6 }, assault: true,
         set: { charged: true },
         risk: { chance: 0.35, dmg: [15, 45], cause: 'Killed charging a Polish machine-gun post on the first morning of the war.',
           hit: 'You are halfway there when the bullet finds you. You are on the ground and do not remember falling.',
@@ -435,7 +435,7 @@ The Polish machine gun opens fire from the trees at forty metres. The column bre
 ${s.flags.trainedDig ? 'Your hands, still raw from digging, are already scraping at the sand.' : ''}`,
     choices: [
       { text: 'Flank the gun through the trees with Hartmann.',
-        effects: { merit: 3, officers: 8 },
+        effects: { merit: 3, officers: 8 }, assault: true,
         set: { flanked: true },
         risk: { chance: s => s.flags.knowsTerrain ? 0.3 : 0.4, dmg: [18, 50], cause: 'Killed in the Tuchel Heath while attacking a Polish machine-gun nest.',
           hit: 'You are ten metres from the gun when a Polish rifleman you never saw fires. The impact spins you around. Hartmann throws the grenade.',

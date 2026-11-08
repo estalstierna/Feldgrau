@@ -40,9 +40,9 @@ SIM.LAST_NAMES = ['Müller', 'Schmidt', 'Becker', 'Hoffmann', 'Krüger', 'Wagner
 
 SIM.CREATION = {
   birthYear: [
-    { id: 1917, label: '1917', desc: 'Called up in November 1937. Nearly two years in uniform. You know the drill.', effects: { officers: 5, comrades: 3 } },
+    { id: 1917, label: '1917', desc: 'Called up in November 1937. Nearly two years in uniform. You know the drill.', effects: { officers: 5, comrades: 3 }, medal: 'sudeten', medalReason: 'Marched into the Sudetenland with the regiment, October 1938.', medalDate: 'December 1938' },
     { id: 1918, label: '1918', desc: 'Called up in November 1938. Basic training done, still learning.', effects: {} },
-    { id: 1919, label: '1919', desc: 'Called up in spring 1939. Green, barely trained.', effects: { morale: -5, officers: -3 } }
+    { id: 1919, label: '1919', desc: 'Called up in spring 1939. Green, barely trained.', effects: { morale: -5, officers: -3 }, medal: 'westwall', medalReason: 'Labour Service on the West Wall fortifications, summer 1938.', medalDate: 'January 1939' }
   ],
   hometown: [
     { id: 'berlin',  label: 'Berlin (Wedding)',     desc: 'A red working-class district, once.', effects: { comrades: 3 } },
@@ -68,6 +68,8 @@ SIM.CREATION = {
 
 SIM.BASE_STATS = { health: 80, morale: 70, food: 70, comrades: 50, officers: 50, suspicion: 10, conscience: 60 };
 SIM.BASE_MARKS = 6;
+
+SIM.serviceStart = c => ({ 1917: 'November 1937', 1918: 'November 1938', 1919: 'April 1939' }[c.birthYear] || '1938');
 
 SIM.townName = function (id) {
   const t = SIM.CREATION.hometown.find(h => h.id === id);

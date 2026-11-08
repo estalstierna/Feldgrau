@@ -2,8 +2,9 @@
 // { id, phases:[...], cond?, weight?, scene, title, text, choices }
 window.SIM = window.SIM || {};
 
-const peace = s => !SIM.DAYS[s.day].war;
-const war = s => !!SIM.DAYS[s.day].war;
+const peace = s => !SIM.today(s).war;
+const war = s => !!SIM.today(s).war;
+const foe = s => (s.chapter || 0) === 1 ? 'French' : 'Polish';
 
 SIM.POOL = [
   // ── Peace (in the camp, before 1 September) ──
@@ -40,22 +41,22 @@ SIM.POOL = [
     ]
   },
   {
-    id: 'p_sentry', phases: [2], scene: 'forest',
+    id: 'p_sentry', chapters: [0, 1], phases: [2], scene: 'forest',
     title: 'Sentry Duty',
-    text: s => `Two hours on sentry at the edge of the camp, ${war(s) ? 'with Polish stragglers somewhere in the woods' : 'staring at the dark trees toward the border'}. It is cold now, and your eyes keep closing.`,
+    text: s => `Two hours on sentry at the edge of the camp, ${war(s) ? `with ${foe(s)} stragglers somewhere in the dark` : 'staring at the dark trees toward the border'}. It is cold now, and your eyes keep closing.`,
     choices: [
       { text: 'Stay alert. Pinch yourself, walk, count stars.', effects: { health: -4, officers: 2 },
         result: 'Two hours feel like two days. But when the duty officer comes round, you are awake.' },
       { text: 'Sit down against a tree. Just for a minute.',
         outcome: (s, x) => {
           x.apply({ health: 4 });
-          if (x.roll(war(s) ? 0.45 : 0.3)) { x.apply({ officers: -12, suspicion: 5, morale: -4 }); x.say('You wake to a boot in your ribs and Brandt\'s face above you. "Asleep on sentry in the field. Do you know what that\'s worth? I could have you shot." He doesn\'t. But he writes it down.'); x.log('Caught asleep on sentry duty.'); }
+          if (x.roll(war(s) ? 0.45 : 0.3)) { x.apply({ officers: -12, suspicion: 5, morale: -4 }); x.say('You wake to a boot in your ribs and Brandt\'s face above you. "Asleep on sentry in the field. Do you know what that\'s worth? I could have you shot." He doesn\'t. But he writes it down.'); x.log('Caught asleep on sentry duty.'); s.flags['asleep_' + (s.chapter || 0)] = true; }
           else x.say('You wake with a jerk an hour later. Nothing has happened. Nobody saw. Your heart doesn\'t slow down until morning.');
         } }
     ]
   },
   {
-    id: 'p_blisters', phases: [2], scene: 'camp',
+    id: 'p_blisters', chapters: [0, 1], phases: [2], scene: 'camp',
     title: 'Blisters',
     text: 'Your feet. The new boots have rubbed your heels raw, and one blister has burst and looks angry.',
     choices: [
@@ -81,38 +82,38 @@ SIM.POOL = [
 
   // ── War (in Poland, from 1 September) ──
   {
-    id: 'w_shadows', phases: [2], cond: war, scene: 'forest',
+    id: 'w_shadows', chapters: [0, 1], phases: [2], cond: war, scene: 'forest',
     title: 'Shadows',
     text: 'You are on sentry duty at the edge of a field. Everyone is jumpy; last night someone in another company shot at a cow. Now a shape is moving toward you through the dark. Thirty metres. Twenty.',
     choices: [
       { text: 'Challenge it: "Halt! Password!"',
-        risk: { chance: 0.15, dmg: [10, 25], cause: 'Killed on sentry duty in Poland by a Polish straggler in the dark.',
-          hit: 'A rifle cracks from the dark and you feel a blow in your side. Other sentries open fire; when they find the Polish straggler at dawn, he is already dead.',
+        risk: { chance: 0.15, dmg: [10, 25], cause: 'Killed on sentry duty by an enemy straggler in the dark.',
+          hit: 'A rifle cracks from the dark and you feel a blow in your side. Other sentries open fire; when they find the straggler at dawn, he is already dead.',
           miss: '"Dorn!" comes the answer, the right password, in a voice you know. It\'s a reservist coming back from the latrine. He almost faints when he sees your rifle.' } },
       { text: 'Fire first.',
         outcome: (s, x) => {
           const r = Math.random();
           if (r < 0.4) { x.apply({ morale: -2 }); x.say('Your shot tears through the dark. In the morning you find the cow. The whole company laughs at you for days.'); }
-          else if (r < 0.75) { x.apply({ conscience: -6, morale: -5 }); x.say('In the morning they find a Polish soldier in the grass with his rifle slung across his back. He may have been coming to surrender. You will never know.'); x.log('Shot a man in the dark. He may have been surrendering.'); }
+          else if (r < 0.75) { x.apply({ conscience: -6, morale: -5 }); x.say(`In the morning they find a ${foe(s)} soldier in the grass with his rifle slung across his back. He may have been coming to surrender. You will never know.`); x.log('Shot a man in the dark. He may have been surrendering.'); }
           else { x.apply({ comrades: -12, officers: -8, morale: -12, conscience: -4 }); x.say('Someone screams in German. It\'s a reservist from the second platoon, coming back from the latrine. He will live. He might keep his leg.'); x.log('Shot one of our own in the dark.'); }
         } }
     ]
   },
   {
-    id: 'w_burial', phases: [2], cond: war, scene: 'field',
+    id: 'w_burial', chapters: [0, 1], phases: [2], cond: war, scene: 'field',
     title: 'Burial Detail',
-    text: 'You are told off for the burial detail. German dead first: their identity discs are broken in half, one half left with the body, one for the records. Then the Polish dead, in a common grave at the edge of the field.',
+    text: s => `You are told off for the burial detail. German dead first: their identity discs are broken in half, one half left with the body, one for the records. Then the ${foe(s)} dead, in a common grave at the edge of the field.`,
     choices: [
-      { text: 'Work, and say a prayer over the Polish grave too.', effects: { conscience: 4, morale: -4 },
+      { text: s => `Work, and say a prayer over the ${foe(s)} grave too.`, effects: { conscience: 4, morale: -4 },
         result: 'An Our Father, mumbled. Some of the men look at you oddly. One of them takes his helmet off.' },
-      { text: 'Take a dead Pole\'s boots. Better than yours.', effects: { health: 4, conscience: -4 }, set: { goodBoots: true },
+      { text: s => `Take a dead ${foe(s)} soldier's boots. Better than yours.`, effects: { health: 4, conscience: -4 }, set: { goodBoots: true },
         result: 'Good leather, nearly new. They fit. You try not to think about it.' },
       { text: 'Work fast and don\'t look at the faces.', effects: { morale: -6 },
         result: 'You look at them anyway. One of them could have been your cousin.' }
     ]
   },
   {
-    id: 'w_barn', phases: [2], cond: war, scene: 'village',
+    id: 'w_barn', chapters: [0, 1], phases: [2], cond: war, scene: 'village',
     title: 'An Empty Farm',
     text: 'The squad is billeted in an abandoned farm. The family must have left in a hurry: the table is set, the stove is still warm. There are potatoes in the cellar and a pig in the sty.',
     choices: [
@@ -125,7 +126,7 @@ SIM.POOL = [
     ]
   },
   {
-    id: 'w_nightmare', phases: [2], cond: s => war(s) && (s.flags.firingSquad || s.flags.shotPole || s.flags.lenzKilled || s.stats.conscience < 30), weight: 3, scene: 'camp',
+    id: 'w_nightmare', chapters: [0, 1], phases: [2], cond: s => war(s) && (s.flags.firingSquad || s.flags.shotPole || s.flags.lenzKilled || s.stats.conscience < 30), weight: 3, scene: 'camp',
     title: 'The Dream',
     text: s => s.flags.firingSquad
       ? 'You are back at the barn wall. The hat rolls in the dust and stops. It rolls again. And again. You wake up with your hand over your mouth.'
@@ -141,7 +142,7 @@ SIM.POOL = [
     ]
   },
   {
-    id: 'w_letter', phases: [2], cond: war, scene: 'letter',
+    id: 'w_letter', chapters: [0, 1], phases: [2], cond: war, scene: 'letter',
     title: 'Field Post Card',
     text: 'The company clerk hands out field post cards. One line, he says: the censors are not paid to read novels.',
     choices: [

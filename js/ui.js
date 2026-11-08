@@ -6,6 +6,7 @@ window.SIM = window.SIM || {};
   const esc = t => String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const paras = t => esc(t).split(/\n\s*\n/).map(p => p.trim()).filter(Boolean).map(p => `<p>${p}</p>`).join('');
   const pick = a => a[Math.floor(Math.random() * a.length)];
+  const rankName = r => `${SIM.RANKS[r]} (${SIM.RANK_EN[r]})`;
 
   let S = null;        // game state
   let current = null;  // current event object
@@ -15,10 +16,18 @@ window.SIM = window.SIM || {};
     window.scrollTo(0, 0);
   }
 
+  function resumable(s) {
+    if (!s) return false;
+    if (s.stage === 'event') return !!s.current;
+    if (s.stage === 'interlude') return true;
+    if (s.stage === 'ending') return SIM.hasNextChapter(s);
+    return false;
+  }
+
   // ── Title ──
   function renderTitle() {
-    const saved = SIM.load();
-    $('#btn-continue').hidden = !(saved && !saved.ending && saved.current);
+    $('#btn-continue').hidden = !resumable(SIM.load());
+    $('#title-chapters').textContent = SIM.CHAPTERS.map(c => `Chapter ${c.num}: ${c.title} · ${c.range}`).join('\n');
     show('title');
   }
 
@@ -31,7 +40,7 @@ window.SIM = window.SIM || {};
         <label class="opt ${draft[key] === o.id ? 'sel' : ''}">
           <input type="radio" name="${key}" value="${o.id}" ${draft[key] === o.id ? 'checked' : ''}>
           <span class="opt-title">${esc(o.label)}</span>
-          <span class="opt-desc">${esc(o.desc)}</span>
+          <span class="opt-desc">${esc(o.desc)}${o.medal ? ` <em>Starts with the ${esc(SIM.MEDALS[o.medal].name)}.</em>` : ''}</span>
         </label>`).join('')}</div></fieldset>`;
   }
 
@@ -66,52 +75,101 @@ window.SIM = window.SIM || {};
     c.last = (c.last || '').trim() || pick(SIM.LAST_NAMES);
     S = SIM.newState(c);
     $('#prologue-name').textContent = `${c.first} ${c.last}`;
-    $('#prologue-body').innerHTML = SIM.backstory(c).map(b => `<div class="tl-item"><div class="tl-year">${esc(b.year)}</div><div class="tl-text">${paras(b.text)}</div></div>`).join('');
+    $('#prologue-body').innerHTML = timeline(SIM.backstory(c));
     show('prologue');
   }
 
+  const timeline = items => items.map(b => `<div class="tl-item"><div class="tl-year">${esc(b.year)}</div><div class="tl-text">${paras(b.text)}</div></div>`).join('');
+
+  // ── Medals ──
+  function ribbonBar(s) {
+    const shown = SIM.displayMedals(s);
+    const ribbons = shown.filter(m => SIM.MEDALS[m.id].kind === 'ribbon');
+    const badges = shown.filter(m => SIM.MEDALS[m.id].kind === 'badge');
+    if (!shown.length) return '<span class="muted small">No decorations.</span>';
+    return `${ribbons.length ? `<div class="ribbon-bar">${ribbons.map(m => `<span title="${esc(SIM.MEDALS[m.id].name)}">${SIM.ribbonSVG(m.id)}</span>`).join('')}</div>` : ''}
+      ${badges.length ? `<div class="badge-row">${badges.map(m => `<span title="${esc(SIM.MEDALS[m.id].name)}">${SIM.badgeSVG(m.id, 26)}</span>`).join('')}</div>` : ''}`;
+  }
+
+  function medalCards(ids, s) {
+    return ids.map(id => {
+      const m = SIM.MEDALS[id];
+      const rec = s && s.medals.find(r => r.id === id);
+      return `<div class="medal-card">
+        <div class="medal-art">${SIM.badgeSVG(id, 52)}</div>
+        <div class="medal-info"><b>${esc(m.name)}</b><span class="muted small"><i>${esc(m.german)}</i></span>
+        ${rec ? `<span class="small">${esc(rec.date)}${rec.reason ? ' · ' + esc(rec.reason) : ''}</span>` : ''}
+        <span class="small muted">${esc(m.desc)}</span></div></div>`;
+    }).join('');
+  }
+
+  // ── Profile (Soldbuch) ──
+  function openProfile() {
+    const s = S, c = s.char;
+    const shown = SIM.displayMedals(s);
+    const chaptersDone = Object.keys(s.reviews).map(Number).map(i => `Chapter ${SIM.CHAPTERS[i].num}: ${SIM.CHAPTERS[i].title} (${SIM.CHAPTERS[i].range})`);
+    $('#profile-body').innerHTML = `
+      <div class="kicker">Soldbuch · Paybook</div>
+      <h2>${esc(c.first)} ${esc(c.last)}</h2>
+      <p class="profile-rank">${esc(rankName(s.rank))}</p>
+      <div class="profile-grid">
+        <div><span>Born</span><b>${c.birthYear}, ${esc(SIM.townName(c.hometown))}</b></div>
+        <div><span>Unit</span><b>3rd Company, 2nd Battalion</b></div>
+        <div><span>In service since</span><b>${esc(SIM.serviceStart(c))}</b></div>
+        <div><span>Wounds</span><b>${s.wounds || 0}</b></div>
+        <div><span>Assault days</span><b>${s.assaultDays.length}</b></div>
+        <div><span>Reichsmarks</span><b>${s.marks} RM</b></div>
+      </div>
+      <h3>Decorations</h3>
+      <div class="profile-ribbons">${ribbonBar(s)}</div>
+      ${shown.length ? medalCards(shown.map(m => m.id), s) : '<p class="muted">None yet.</p>'}
+      <h3>Rank history</h3>
+      <ul class="plain">${s.rankHistory.map(r => `<li><span class="d-date">${esc(r.date)}</span> ${esc(rankName(r.rank))}</li>`).join('')}</ul>
+      <h3>Campaigns</h3>
+      <ul class="plain">${chaptersDone.map(t => `<li>${esc(t)}</li>`).join('') || `<li>Chapter ${SIM.chapter(s).num}: ${esc(SIM.chapter(s).title)} (in progress)</li>`}</ul>
+      <p class="small muted">Symbols of the regime have been left out of the medal artwork.</p>`;
+    $('#profile').hidden = false;
+    $('#btn-close-profile').focus();
+  }
+  function closeProfile() { $('#profile').hidden = true; }
+
   // ── Sidebar ──
+  function level(st, v) { return st.bad ? (v >= 70 ? 'crit' : v >= 40 ? 'warn' : 'ok') : (v <= 20 ? 'crit' : v <= 40 ? 'warn' : 'ok'); }
+
   function renderSidebar() {
     const c = S.char;
     $('#char-name').textContent = `${c.first} ${c.last}`;
-    $('#char-rank').textContent = `${SIM.RANKS[S.rank]} (${SIM.RANK_EN[S.rank]})`;
+    $('#char-rank').textContent = rankName(S.rank);
     $('#char-unit').textContent = `3rd Coy, 2nd Bn · born ${c.birthYear}, ${SIM.townName(c.hometown)}`;
+    $('#char-ribbons').innerHTML = ribbonBar(S);
     $('#stats').innerHTML = Object.keys(SIM.STATS).map(k => {
       const st = SIM.STATS[k], v = S.stats[k];
-      const level = st.bad ? (v >= 70 ? 'crit' : v >= 40 ? 'warn' : 'ok') : (v <= 20 ? 'crit' : v <= 40 ? 'warn' : 'ok');
       return `<div class="stat" title="${esc(st.desc)}"><div class="stat-head"><span>${st.label}</span><span>${v}</span></div>
-        <div class="bar"><div class="fill ${level} ${st.bad ? 'bad' : ''}" style="width:${v}%"></div></div></div>`;
+        <div class="bar"><div class="fill ${level(st, v)} ${st.bad ? 'bad' : ''}" style="width:${v}%"></div></div></div>`;
     }).join('') + `<div class="stat money"><span>Reichsmarks</span><span>${S.marks} RM</span></div>`;
     $('#map').innerHTML = SIM.mapSVG(S);
-    $('#diary').innerHTML = S.log.length ? S.log.slice().reverse().map(l => `<li><span class="d-date">${esc(l.date)}</span> ${esc(l.text)}</li>`).join('') : '<li class="muted">Nothing yet.</li>';
-    $('#days').innerHTML = SIM.DAYS.map((d, i) => `<span class="day ${i < S.day ? 'past' : i === S.day ? 'now' : ''}">${esc(d.short.split(' ')[1])}</span>`).join('');
-    $('#mini-stats').innerHTML = Object.keys(SIM.STATS).map(k => {
+    const ch = SIM.chapter(S);
+    $('#map-title').textContent = `Chapter ${ch.num} · ${ch.range}`;
+    const log = S.log.filter(l => (l.chapter || 0) === (S.chapter || 0));
+    $('#diary').innerHTML = log.length ? log.slice().reverse().map(l => `<li><span class="d-date">${esc(l.date)}</span> ${esc(l.text)}</li>`).join('') : '<li class="muted">Nothing yet.</li>';
+    $('#days').innerHTML = SIM.days(S).map((d, i) => `<span class="day ${i < S.day ? 'past' : i === S.day ? 'now' : ''}">${esc(d.short.split(' ')[1])}</span>`).join('');
+    $('#mini-stats').innerHTML = `<span class="mini rank">${esc(SIM.RANKS[S.rank])}</span>` + Object.keys(SIM.STATS).map(k => {
       const st = SIM.STATS[k], v = S.stats[k];
-      const level = st.bad ? (v >= 70 ? 'crit' : v >= 40 ? 'warn' : 'ok') : (v <= 20 ? 'crit' : v <= 40 ? 'warn' : 'ok');
-      return `<span class="mini ${level}" title="${esc(st.label)}">${st.short} <b>${v}</b></span>`;
-    }).join('') + `<span class="mini">RM <b>${S.marks}</b></span>`;
+      return `<span class="mini ${level(st, v)}" title="${esc(st.label)}">${st.short} <b>${v}</b></span>`;
+    }).join('') + `<span class="mini">RM <b>${S.marks}</b></span><button class="mini link" id="mini-profile">Soldbuch ›</button>`;
+    $('#mini-profile').onclick = openProfile;
   }
 
   // ── Events ──
   function header(ev) {
-    const d = SIM.DAYS[S.day];
-    const place = SIM.PLACES[ev.place || d.place].name;
+    const d = SIM.today(S);
+    const place = SIM.place(S, ev.place || d.place).name;
     $('#ev-date').textContent = `${d.date} · ${ev.time || SIM.PHASE_TIME[S.phase]}`;
     $('#ev-place').textContent = place;
-    $('#banner').innerHTML = SIM.sceneSVG(ev.scene, S.phase, (S.day + 1) * 13 + S.phase * 5 + ev.id.length);
+    $('#banner').innerHTML = SIM.sceneSVG(ev.scene, S.phase, (S.day + 1) * 13 + S.phase * 5 + ev.id.length + S.chapter * 31);
   }
 
-  function renderEvent(ev) {
-    current = ev;
-    S.current = ev.id;
-    SIM.save(S);
-    renderSidebar();
-    header(ev);
-    $('#notes').innerHTML = (S.notes || []).map(n => `<div class="note">${esc(n)}</div>`).join('');
-    $('#ev-title').textContent = ev.title;
-    $('#ev-text').innerHTML = paras(SIM.fmt(S, ev.text));
-    $('#result').hidden = true;
-    const box = $('#choices');
+  function choiceButtons(ev, box, onPick) {
     box.hidden = false;
     box.innerHTML = '';
     ev.choices.filter(ch => SIM.choiceVisible(S, ch)).forEach((ch, i) => {
@@ -120,9 +178,24 @@ window.SIM = window.SIM || {};
       b.className = 'choice';
       b.disabled = !ok;
       b.innerHTML = `<span class="ch-num">${i + 1}</span><span class="ch-text">${esc(SIM.fmt(S, ch.text))}${!ok && ch.reqText ? `<small>${esc(ch.reqText)}</small>` : ''}${ch.risk ? '<small class="risky">Dangerous</small>' : ''}</span>`;
-      b.onclick = () => choose(ch);
+      b.onclick = () => onPick(ch);
       box.appendChild(b);
     });
+  }
+
+  function renderEvent(ev) {
+    current = ev;
+    S.current = ev.id;
+    S.stage = 'event';
+    SIM.save(S);
+    show('game');
+    renderSidebar();
+    header(ev);
+    $('#notes').innerHTML = (S.notes || []).map(n => `<div class="note">${esc(n)}</div>`).join('');
+    $('#ev-title').textContent = ev.title;
+    $('#ev-text').innerHTML = paras(SIM.fmt(S, ev.text));
+    $('#result').hidden = true;
+    choiceButtons(ev, $('#choices'), choose);
     $('#main').focus({ preventScroll: true });
     window.scrollTo(0, 0);
   }
@@ -136,52 +209,105 @@ window.SIM = window.SIM || {};
     }).join('');
   }
 
-  function choose(ch) {
-    const out = SIM.resolveChoice(S, current, ch);
-    $('#choices').hidden = true;
-    const r = $('#result');
-    r.hidden = false;
-    r.innerHTML = `<div class="chosen">“${esc(SIM.fmt(S, ch.text))}”</div>${paras(out.texts.join('\n\n'))}<div class="chips">${chips(out.deltas)}</div><button class="btn primary" id="btn-next">Continue</button>`;
-    renderSidebar();
-    SIM.save(S);
-    $('#btn-next').onclick = () => proceed(out);
-    $('#btn-next').focus({ preventScroll: true });
+  function resultHTML(ch, out, btnLabel, btnId = 'btn-next') {
+    const awards = (out.awards || []).length ? `<div class="award-box"><div class="kicker">Awarded</div>${medalCards(out.awards, S)}</div>` : '';
+    return `<div class="chosen">“${esc(SIM.fmt(S, ch.text))}”</div>${paras(out.texts.join('\n\n'))}<div class="chips">${chips(out.deltas)}</div>${awards}<button class="btn primary" id="${btnId}">${btnLabel}</button>`;
+  }
+
+  function revealResult(r, btnId = 'btn-next') {
+    $('#' + btnId).focus({ preventScroll: true });
     // On small screens the outcome appears below the fold; bring it into view.
     const top = r.getBoundingClientRect().top;
     if (top > window.innerHeight * 0.6) window.scrollTo({ top: window.scrollY + top - 16, behavior: 'smooth' });
   }
 
-  function proceed(out) {
-    if (out.end) return renderEnding(SIM.finish(S, out.end));
-    const f = SIM.fatal(S);
-    if (f) return renderEnding(SIM.finish(S, f));
-    if (out.next) { S.notes = []; return renderEvent(SIM.findEvent(out.next)); }
-    if (current.id === 'd6n') return renderEnding(SIM.finish(S, SIM.chapterEnding(S)));
-    const res = SIM.advance(S);
-    const f2 = SIM.fatal(S);
-    if (f2) return renderEnding(SIM.finish(S, f2));
-    if (res === 'chapterEnd') return renderEnding(SIM.finish(S, SIM.chapterEnding(S)));
-    const ev = SIM.pickEvent(S);
-    if (!ev) { return proceed({}); }
-    renderEvent(ev);
+  function choose(ch) {
+    const ev = current;
+    const out = SIM.resolveChoice(S, ev, ch);
+    $('#choices').hidden = true;
+    const r = $('#result');
+    r.hidden = false;
+    r.innerHTML = resultHTML(ch, out, 'Continue');
+    renderSidebar();
+    SIM.save(S);
+    $('#btn-next').onclick = () => {
+      const next = SIM.step(S, ev, out);
+      if (next.type === 'ending') renderEnding(next.id);
+      else renderEvent(next.ev);
+    };
+    revealResult(r);
   }
 
-  // ── Ending ──
+  // ── Ending (final or end of chapter) ──
   function renderEnding(id) {
     const e = SIM.ENDINGS[id];
+    const ch = SIM.chapter(S);
     S.current = null;
     SIM.save(S);
-    $('#end-kicker').textContent = e.final ? 'The End' : 'End of Chapter I: The Corridor';
+    $('#end-kicker').textContent = e.final ? 'The End' : `End of Chapter ${ch.num}: ${ch.title}`;
     $('#end-title').textContent = e.title;
     $('#end-text').innerHTML = paras(SIM.fmt(S, e.text));
     const c = S.char;
+    const rv = !e.final && S.reviews[S.chapter];
+    const next = SIM.hasNextChapter(S) && SIM.CHAPTERS[S.chapter + 1];
+    const review = rv ? `
+      <div class="review">
+        <div class="kicker">Promotion board · ${esc(ch.promoDate)}</div>
+        <p class="review-rank">${rv.to > rv.from ? `${esc(rankName(rv.from))} <span class="arrow">→</span> <b>${esc(rankName(rv.to))}</b>` : `Remains ${esc(rankName(rv.from))}`}</p>
+        <ul class="plain small">${rv.reasons.map(r => `<li>${esc(r)}</li>`).join('')}</ul>
+        ${rv.awards.length ? `<div class="kicker" style="margin-top:1rem">Decorations</div>${medalCards(rv.awards, S)}` : ''}
+      </div>` : '';
     $('#end-summary').innerHTML = `
+      ${review}
       <h3>${esc(SIM.RANKS[S.rank])} ${esc(c.first)} ${esc(c.last)}, born ${c.birthYear}, ${esc(SIM.townName(c.hometown))}</h3>
+      <div class="profile-ribbons">${ribbonBar(S)}</div>
       <div class="end-stats">${Object.keys(SIM.STATS).map(k => `<div><span>${SIM.STATS[k].label}</span><b>${S.stats[k]}</b></div>`).join('')}</div>
       <h3>Diary</h3>
       <ul class="diary">${S.log.map(l => `<li><span class="d-date">${esc(l.date)}</span> ${esc(l.text)}</li>`).join('') || '<li class="muted">You wrote nothing down.</li>'}</ul>
-      ${e.final ? '' : '<p class="next-chapter">Chapter II (France, 1940) is not yet written. Your soldier will be waiting.</p>'}`;
+      ${!e.final && !next ? '<p class="next-chapter">The next chapter is not yet written. Your soldier will be waiting.</p>' : ''}`;
+    $('#btn-again').hidden = false;
+    $('#btn-again').textContent = e.final ? 'Play again' : 'New game';
+    $('#btn-next-chapter').hidden = !next;
+    if (next) $('#btn-next-chapter').textContent = `Continue to Chapter ${next.num}`;
+    $('#btn-end-profile').hidden = false;
     show('ending');
+  }
+
+  // ── Interlude between chapters ──
+  function renderInterlude() {
+    if (S.stage !== 'interlude') SIM.enterInterlude(S);
+    SIM.save(S);
+    const ch = SIM.chapter(S);
+    $('#interlude-kicker').textContent = `Before Chapter ${ch.num}`;
+    $('#interlude-title').textContent = ch.interludeTitle;
+    $('#interlude-body').innerHTML = timeline(ch.interlude(S));
+    const ev = SIM.INTERLUDE_EVENTS[ch.interludeEvent];
+    const done = S.seen[ev.id];
+    $('#interlude-ev-title').textContent = ev.title;
+    $('#interlude-ev-text').innerHTML = paras(SIM.fmt(S, ev.text));
+    const r = $('#interlude-result');
+    const begin = () => {
+      const first = SIM.startChapter(S);
+      renderEvent(first);
+    };
+    if (done) {
+      $('#interlude-choices').hidden = true;
+      r.hidden = false;
+      r.innerHTML = `<button class="btn primary" id="btn-inext">Begin Chapter ${ch.num}: ${esc(ch.title)}</button>`;
+      $('#btn-inext').onclick = begin;
+    } else {
+      r.hidden = true;
+      choiceButtons(ev, $('#interlude-choices'), chc => {
+        const out = SIM.resolveChoice(S, ev, chc);
+        $('#interlude-choices').hidden = true;
+        r.hidden = false;
+        r.innerHTML = resultHTML(chc, out, `Begin Chapter ${ch.num}: ${esc(ch.title)}`, 'btn-inext');
+        SIM.save(S);
+        $('#btn-inext').onclick = begin;
+        revealResult(r, 'btn-inext');
+      });
+    }
+    show('interlude');
   }
 
   // ── Wiring ──
@@ -189,23 +315,38 @@ window.SIM = window.SIM || {};
     $('#btn-new').onclick = () => { draft.first = ''; renderCreate(); };
     $('#btn-continue').onclick = () => {
       const saved = SIM.load();
-      if (!saved || !saved.current) return renderTitle();
+      if (!resumable(saved)) return renderTitle();
       S = saved;
-      show('game');
-      renderEvent(SIM.findEvent(saved.current));
+      if (S.stage === 'event') return renderEvent(SIM.findEvent(S.current));
+      if (S.stage === 'interlude') return renderInterlude();
+      return renderEnding(S.ending);
     };
     $('#btn-create').onclick = renderPrologue;
     $('#btn-back').onclick = renderTitle;
-    $('#btn-start').onclick = () => { S.notes = []; show('game'); renderEvent(SIM.pickEvent(S)); };
-    $('#btn-again').onclick = () => { SIM.clearSave(); renderTitle(); };
+    $('#btn-start').onclick = () => { S.notes = []; renderEvent(SIM.pickEvent(S)); };
+    $('#btn-again').onclick = () => {
+      if (SIM.hasNextChapter(S) && !confirm('Start a new soldier? This one\'s story will be lost.')) return;
+      SIM.clearSave(); renderTitle();
+    };
+    $('#btn-next-chapter').onclick = renderInterlude;
+    $('#btn-end-profile').onclick = openProfile;
+    $('#btn-interlude-profile').onclick = openProfile;
     $('#btn-quit').onclick = () => { if (confirm('Return to the title screen? Your progress is saved.')) renderTitle(); };
     $('#toggle-diary').onclick = () => { const d = $('#diary-wrap'); d.hidden = !d.hidden; };
+    $('#id-card').onclick = openProfile;
+    $('#btn-close-profile').onclick = closeProfile;
+    $('#profile').onclick = e => { if (e.target.id === 'profile') closeProfile(); };
     document.addEventListener('keydown', e => {
-      if ($('#game').hidden) return;
-      if (e.key === 'Enter' && !$('#result').hidden) { $('#btn-next').click(); return; }
+      if (!$('#profile').hidden) { if (e.key === 'Escape') closeProfile(); return; }
+      const screen = !$('#game').hidden ? 'game' : !$('#interlude').hidden ? 'interlude' : null;
+      if (!screen) return;
+      const res = screen === 'game' ? $('#result') : $('#interlude-result');
+      const box = screen === 'game' ? $('#choices') : $('#interlude-choices');
+      const nextBtn = res.querySelector('.btn.primary');
+      if (e.key === 'Enter' && !res.hidden && nextBtn) { e.preventDefault(); nextBtn.click(); return; }
       const n = parseInt(e.key, 10);
-      if (n >= 1 && !$('#choices').hidden) {
-        const btns = [...document.querySelectorAll('#choices .choice')];
+      if (n >= 1 && !box.hidden) {
+        const btns = [...box.querySelectorAll('.choice')];
         if (btns[n - 1] && !btns[n - 1].disabled) btns[n - 1].click();
       }
     });
