@@ -110,7 +110,7 @@ One scene is used across several countries (for example `village` appears in Pol
 - **Mood:** waiting, tired, crowded, quiet.
 
 ### 4.2 `forest`: dense pine forest
-- **Used:** 5 times.
+- **Used:** 7 times.
 - **Example events:** Vogel's Secret, Sentry Duty, The Voice from London, Shadows, Felled Trees, Ambush on the Forest Road, Live Grenade Drill.
 - **Content:** two layers of pines, dark foreground trunks, a narrow sandy track disappearing between them. Optionally a felled trunk across the track.
 - **Night:** almost black, cold blue moonlight through the trees.
@@ -132,7 +132,7 @@ One scene is used across several countries (for example `village` appears in Pol
 - **Mood:** ordinary lives disturbed. Civilian, not military.
 
 ### 4.5 `road`: road with refugees or a column
-- **Used:** 7 times.
+- **Used:** 5 times.
 - **Example events:** Refugees on the Road, Sunday Broadcast, The Column, Tirailleurs, Encore.
 - **Content:** a straight road in perspective, lined with poplars, receding to the horizon. Small silhouettes of a horse-cart, a handcart and walking figures carrying bundles. Keep it ambiguous whether they are refugees or soldiers.
 - **Night:** an empty road, moonlit.
@@ -160,7 +160,7 @@ One scene is used across several countries (for example `village` appears in Pol
 - **Mood:** a border inside one country. Quiet, tense.
 
 ### 4.9 `letter`: letters, paperwork (one file is enough)
-__ROAD__
+- **Used:** 7 times.
 - **Example events:** Feldpost, Field Post Card, Christmas Leave, A Letter in French, News from Home, A Parcel Home, Pohl's Letter.
 - **Content:** a top-down still life on a dark wooden table: a handwritten letter on yellowed paper (illegible scribble, no real words), an envelope with a plain stamp shape (no symbols), a pencil, maybe a small photograph face-down.
 - **File:** `scene-letter.webp` (no phase variants needed; optionally `-night` with candlelight).
