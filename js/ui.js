@@ -6,7 +6,7 @@ window.SIM = window.SIM || {};
   const esc = t => String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const paras = t => esc(t).split(/\n\s*\n/).map(p => p.trim()).filter(Boolean).map(p => `<p>${p}</p>`).join('');
   const pick = a => a[Math.floor(Math.random() * a.length)];
-  const rankName = r => `${SIM.RANKS[r]} (${SIM.RANK_EN[r]})`;
+  const rankName = r => `${SIM.rankTitle(S, r)} (${SIM.RANK_EN[r]})`;
 
   let S = null;        // game state
   let current = null;  // current event object
@@ -155,7 +155,7 @@ window.SIM = window.SIM || {};
     const log = S.log.filter(l => (l.chapter || 0) === (S.chapter || 0));
     $('#diary').innerHTML = log.length ? log.slice().reverse().map(l => `<li><span class="d-date">${esc(l.date)}</span> ${esc(l.text)}</li>`).join('') : '<li class="muted">Nothing yet.</li>';
     $('#days').innerHTML = SIM.days(S).map((d, i) => `<span class="day ${i < S.day ? 'past' : i === S.day ? 'now' : ''}">${esc(d.short.split(' ')[1])}</span>`).join('');
-    $('#mini-stats').innerHTML = `<span class="mini rank">${esc(SIM.RANKS[S.rank])}</span>` + SIM.visibleStats(S).map(k => {
+    $('#mini-stats').innerHTML = `<span class="mini rank">${esc(SIM.rankTitle(S))}</span>` + SIM.visibleStats(S).map(k => {
       const st = SIM.STATS[k], v = S.stats[k];
       return `<span class="mini ${level(st, v)}" title="${esc(st.label)}">${st.short} <b>${v}</b></span>`;
     }).join('') + `<span class="mini">RM <b>${S.marks}</b></span><button class="mini link" id="mini-profile">Soldbuch ›</button>`;
@@ -347,7 +347,7 @@ window.SIM = window.SIM || {};
       </div>` : '';
     $('#end-summary').innerHTML = `
       ${review}
-      <h3>${esc(SIM.RANKS[S.rank])} ${esc(c.first)} ${esc(c.last)}, born ${c.birthYear}, ${esc(SIM.townName(c.hometown))}</h3>
+      <h3>${esc(SIM.rankTitle(S))} ${esc(c.first)} ${esc(c.last)}, born ${c.birthYear}, ${esc(SIM.townName(c.hometown))}</h3>
       <div class="profile-ribbons">${ribbonBar(S)}</div>
       <div class="end-stats">${SIM.visibleStats(S).map(k => `<div><span>${SIM.STATS[k].label}</span><b>${S.stats[k]}</b></div>`).join('')}</div>
       <h3>Diary</h3>
@@ -384,8 +384,8 @@ window.SIM = window.SIM || {};
       $('#interlude-ev-title').textContent = ev.title;
       $('#interlude-ev-text').innerHTML = paras(SIM.fmt(S, ev.text));
       r.hidden = true;
-      choiceButtons(ev, $('#interlude-choices'), chc => {
-        const out = SIM.resolveChoice(S, ev, chc);
+      choiceButtons(ev, $('#interlude-choices'), (chc, man) => {
+        const out = SIM.resolveChoice(S, ev, chc, man);
         const more = SIM.pendingInterlude(S).length > 0;
         $('#interlude-choices').hidden = true;
         r.hidden = false;

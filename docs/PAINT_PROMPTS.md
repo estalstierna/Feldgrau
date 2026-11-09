@@ -230,6 +230,127 @@ Format: square, at least 1024 x 1024 pixels, PNG. No text, letters or numbers.
 Eastern Front Medal (Winter 1941/42). A round medal of dark gunmetal grey with a narrow silver rim, showing a stylised eagle above a laurel branch and a small steel helmet, hanging from its ribbon. Ribbon stripes: red 6, white 1, black 2, white 1, red 6. The eagle holds the sword-and-oak-leaves emblem.
 ```
 
+## 4f. Chapter VI: scenes at home
+
+**Format for every image:** landscape 16:9, at least 1600 × 900 pixels, PNG. Keep everything important between 30 % and 80 % of the height. No text, letters, numbers or signature.
+
+**Style for every image:** hand-painted gouache on textured, aged paper, visible brush strokes and paper grain, like a 1940s book illustration. Muted, desaturated palette. NOT photorealistic.
+
+| Files | Scene |
+|---|---|
+| `scene-street-morning.png`, `-afternoon.png`, `-night.png` | A German city street in spring 1942: four-storey apartment buildings, a tram line, a corner bakery with a queue of women, chestnut trees in flower, blackout paper on some windows. A few people, no soldiers marching. Night version: total blackout, searchlights in the sky. |
+| `scene-station.png` (one image) | A German railway station platform in 1942: an iron and glass roof, a steam train, soldiers with packs and women saying goodbye, steam and smoke. Flags hang from the roof beams; where a flag shows an emblem, it is the sword-and-oak-leaves emblem from emblem.png. |
+| `scene-kitchen.png` (one image) | A small working-class kitchen in 1942 at evening: a scrubbed wooden table with plates of potatoes and cabbage, a coal stove, a radio on a shelf, a crucifix or a framed photograph on the wall, lamplight. |
+| `scene-cellar.png` (one image) | An air-raid shelter in the cellar of an apartment building, 1942: whitewashed brick walls, wooden benches, families in coats with suitcases, a single bulb, dust falling from the ceiling. |
+| `scene-church.png` (one image) | A small registry office or parish church in a German town in spring 1942: plain wooden pews, light through tall windows, a bunch of lilies of the valley on a table. |
+
+## 4g. Chapter VI: portraits
+
+### The Waffen-SS section (for players who transferred)
+
+Rank insignia are set for each man and follow the 1942 Waffen-SS pattern, with the runes on the right collar patch replaced by the sword-and-oak-leaves emblem.
+
+| Man | Rank | Left collar patch | Sleeve |
+|---|---|---|---|
+| Voss | SS-Rottenführer | two silver stripes | two chevrons |
+| Wendt, Mayr, Brück | SS-Sturmmann | one silver stripe | one chevron |
+| Nowak, Haas | SS-Schütze | plain black | none |
+
+**`voss.png`**
+```
+Portrait, square, head and shoulders, three-quarter view, painted like a hand-coloured 1942 photograph in gouache, plain dark olive background (#3b3d34).
+
+Erich Voss, mid-twenties, a hardened veteran section deputy and machine gunner. Lean, weather-beaten, short fair hair, hard pale-blue eyes, a thin scar through one eyebrow, a confident, unsmiling face.
+
+Uniform, painted accurately: a field-grey wool tunic of 1942 with a dark field-grey collar and silver-grey buttons. BLACK collar patches on both sides of the collar. The RIGHT collar patch shows the sword-and-oak-leaves emblem from emblem.png in silver. Black shoulder straps with thin white piping. A small silver eagle on the upper left sleeve, its wreath holding the sword-and-oak-leaves emblem. On his head a field-grey side cap (a soft, boat-shaped forage cap) with a small silver eagle on its left side and a small silver skull-and-crossbones on the front. The LEFT collar patch is black with TWO thin parallel silver stripes across its lower part. TWO small silver chevrons, point down, on the upper left sleeve below the eagle.
+
+Format: square, at least 1024 x 1024 pixels, PNG. No text, letters or numbers.
+```
+
+**`wendt.png`**
+```
+Portrait, square, head and shoulders, three-quarter view, painted like a hand-coloured 1942 photograph in gouache, plain dark olive background (#3b3d34).
+
+Theo Wendt, mid-twenties, a former office clerk from Hamburg and the section joker. Narrow, lively face, dark hair a little too long, a crooked grin, laughter lines at the eyes.
+
+Uniform, painted accurately: a field-grey wool tunic of 1942 with a dark field-grey collar and silver-grey buttons. BLACK collar patches on both sides of the collar. The RIGHT collar patch shows the sword-and-oak-leaves emblem from emblem.png in silver. Black shoulder straps with thin white piping. A small silver eagle on the upper left sleeve, its wreath holding the sword-and-oak-leaves emblem. On his head a field-grey side cap (a soft, boat-shaped forage cap) with a small silver eagle on its left side and a small silver skull-and-crossbones on the front. The LEFT collar patch is black with ONE thin silver stripe across its lower part. ONE small silver chevron, point down, on the upper left sleeve below the eagle.
+
+Format: square, at least 1024 x 1024 pixels, PNG. No text, letters or numbers.
+```
+
+**`mayr.png`**
+```
+Portrait, square, head and shoulders, three-quarter view, painted like a hand-coloured 1942 photograph in gouache, plain dark olive background (#3b3d34).
+
+Anton Mayr, about thirty, a former policeman from the Tyrol mountains. Broad, weathered, tired face, black stubble, a heavy moustache, watchful dark eyes that have seen too much.
+
+Uniform, painted accurately: a field-grey wool tunic of 1942 with a dark field-grey collar and silver-grey buttons. BLACK collar patches on both sides of the collar. The RIGHT collar patch shows the sword-and-oak-leaves emblem from emblem.png in silver. Black shoulder straps with thin white piping. A small silver eagle on the upper left sleeve, its wreath holding the sword-and-oak-leaves emblem. On his head a field-grey side cap (a soft, boat-shaped forage cap) with a small silver eagle on its left side and a small silver skull-and-crossbones on the front. The LEFT collar patch is black with ONE thin silver stripe across its lower part. ONE small silver chevron, point down, on the upper left sleeve below the eagle.
+
+Format: square, at least 1024 x 1024 pixels, PNG. No text, letters or numbers.
+```
+
+**`brueck.png`**
+```
+Portrait, square, head and shoulders, three-quarter view, painted like a hand-coloured 1942 photograph in gouache, plain dark olive background (#3b3d34).
+
+Karl-Heinz Brück, late twenties, a former coal miner from the Ruhr. A huge man with a thick neck, a broad flat face, small calculating grey eyes and a closed, watchful expression.
+
+Uniform, painted accurately: a field-grey wool tunic of 1942 with a dark field-grey collar and silver-grey buttons. BLACK collar patches on both sides of the collar. The RIGHT collar patch shows the sword-and-oak-leaves emblem from emblem.png in silver. Black shoulder straps with thin white piping. A small silver eagle on the upper left sleeve, its wreath holding the sword-and-oak-leaves emblem. On his head a field-grey side cap (a soft, boat-shaped forage cap) with a small silver eagle on its left side and a small silver skull-and-crossbones on the front. The LEFT collar patch is black with ONE thin silver stripe across its lower part. ONE small silver chevron, point down, on the upper left sleeve below the eagle.
+
+Format: square, at least 1024 x 1024 pixels, PNG. No text, letters or numbers.
+```
+
+**`nowak.png`**
+```
+Portrait, square, head and shoulders, three-quarter view, painted like a hand-coloured 1942 photograph in gouache, plain dark olive background (#3b3d34).
+
+Paul Nowak, early twenties, from a German family in Łódź. Slim, pale, dark-haired, sensitive face, anxious brown eyes, looking slightly away.
+
+Uniform, painted accurately: a field-grey wool tunic of 1942 with a dark field-grey collar and silver-grey buttons. BLACK collar patches on both sides of the collar. The RIGHT collar patch shows the sword-and-oak-leaves emblem from emblem.png in silver. Black shoulder straps with thin white piping. A small silver eagle on the upper left sleeve, its wreath holding the sword-and-oak-leaves emblem. On his head a field-grey side cap (a soft, boat-shaped forage cap) with a small silver eagle on its left side and a small silver skull-and-crossbones on the front. The LEFT collar patch is plain black with no insignia at all. No sleeve chevrons.
+
+Format: square, at least 1024 x 1024 pixels, PNG. No text, letters or numbers.
+```
+
+**`haas.png`**
+```
+Portrait, square, head and shoulders, three-quarter view, painted like a hand-coloured 1942 photograph in gouache, plain dark olive background (#3b3d34).
+
+Jürgen Haas, early twenties, an eager new recruit. Fresh, clean-shaven, earnest face, neatly combed blond hair, bright eyes full of conviction, chin raised.
+
+Uniform, painted accurately: a field-grey wool tunic of 1942 with a dark field-grey collar and silver-grey buttons. BLACK collar patches on both sides of the collar. The RIGHT collar patch shows the sword-and-oak-leaves emblem from emblem.png in silver. Black shoulder straps with thin white piping. A small silver eagle on the upper left sleeve, its wreath holding the sword-and-oak-leaves emblem. On his head a field-grey side cap (a soft, boat-shaped forage cap) with a small silver eagle on its left side and a small silver skull-and-crossbones on the front. The LEFT collar patch is plain black with no insignia at all. No sleeve chevrons.
+
+Format: square, at least 1024 x 1024 pixels, PNG. No text, letters or numbers.
+```
+
+### Home
+
+**`mother.png`**
+```
+Portrait, square, head and shoulders, three-quarter view, painted like a hand-coloured 1942 photograph in gouache, plain dark olive background (#3b3d34).
+
+A German working-class mother, about fifty, in 1942. A thin, kind, tired face, grey-streaked brown hair pinned up in a bun, a plain dark blue dress with a small white collar and a knitted cardigan, an apron. Warm, worried eyes.
+
+Format: square, at least 1024 x 1024 pixels, PNG. No text, letters or numbers.
+```
+
+**`father.png`**
+```
+Portrait, square, head and shoulders, three-quarter view, painted like a hand-coloured 1942 photograph in gouache, plain dark olive background (#3b3d34).
+
+A German working man, about fifty-five, in 1942, a veteran of the First World War. A lined, stern, closed face, short grey hair, a grey moustache, a worn dark suit jacket over a waistcoat and a collarless white shirt. No badges or pins.
+
+Format: square, at least 1024 x 1024 pixels, PNG. No text, letters or numbers.
+```
+
+**`liesel.png`**
+```
+Portrait, square, head and shoulders, three-quarter view, painted like a hand-coloured 1942 photograph in gouache, plain dark olive background (#3b3d34).
+
+Liesel, a young German woman in her early twenties who works at the post office, in 1942. A frank, warm face, light brown hair in soft waves to the collar, a small smile, a blue wool coat over a white blouse.
+
+Format: square, at least 1024 x 1024 pixels, PNG. No text, letters or numbers.
+```
+
 ---
 
 ## 5. Title image (1 image)

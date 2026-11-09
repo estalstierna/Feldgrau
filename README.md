@@ -23,6 +23,8 @@ Choose with the mouse or by tapping, or press **1–4** to pick a choice and **E
 | IV: Barbarossa | 21 Jun – 19 Jul 1941 | The invasion of the Soviet Union over 10 days: the **Bug** at Brest, **Białystok** and the pocket, the road past **Minsk**, the **Berezina**, the **Dnieper** and **Smolensk** |
 | *Interlude* | Jul – Nov 1941 | Kiev and Vyazma, the mud of the rasputitsa, preparing your squad for the winter |
 | V: Before Moscow | 15 Nov – 24 Dec 1941 | The last offensive and the Soviet counteroffensive over 12 days, from the Volokolamsk highway to thirty kilometres from Moscow and back to the Ruza. Introduces **SS-Hauptsturmführer Wolfram Starck** |
+| *Interlude* | Jan – Apr 1942 | Army: the winter line holds. Waffen-SS: training in Bohemia and a new section of six men |
+| VI: Leave | 20 – 26 April 1942 | Fourteen days at home in your home town. The family, Liesel (and a war wedding), the empty flat of the Jewish neighbours, an air raid, the Gestapo, forced labourers, and the film from Białystok |
 
 Chapters I and II are 7 days each; Chapter III is 14 days, Chapter IV 10 days and Chapter V 12 days, across several places. Each day has 3 phases (morning, afternoon, night). Choices in Chapter I follow you: who you saved, who you betrayed, and who is still in your squad.
 
@@ -106,6 +108,19 @@ Your five skills are Shooting, French, First aid, Leadership and Scrounging. Eac
 - **Practice** raises them.
 - **Higher levels** open up new options and improve your chances.
 
+## Army or Waffen-SS
+
+From Chapter VI the player who accepted Starck's offer wears **Waffen-SS rank titles**:
+
+| Army | Waffen-SS |
+|---|---|
+| Gefreiter | SS-Sturmmann |
+| Obergefreiter | SS-Rottenführer |
+| Unteroffizier | SS-Unterscharführer |
+| Feldwebel | SS-Oberscharführer |
+
+They also lead a **new section** of six men, and home receives the black collar patches differently from the field grey.
+
 ## Promotions
 
 A promotion board sits at the end of every chapter:
@@ -165,6 +180,8 @@ js/data/ch4.js      Chapter IV: interlude, the Bug, Białystok, the pocket
 js/data/ch4_more.js Chapter IV: Minsk road to Smolensk, random events, endings
 js/data/ch5.js      Chapter V: interlude, the offensive, Starck, the eviction
 js/data/ch5_more.js Chapter V: the counteroffensive, retreat, Christmas, endings
+js/data/ch6.js      Chapter VI: interludes (Army / SS), days 0–3 at home
+js/data/ch6_more.js Chapter VI: days 4–6, random events, endings
 js/data/starck.js   Starck's appearances in Chapters II–IV
 js/systems.js       relationships, skills, kit, squad
 js/engine.js        state, effects, event selection, saving

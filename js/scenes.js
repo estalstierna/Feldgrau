@@ -41,6 +41,7 @@ SIM.sceneSVG = function (scene, phase, seed, variant, drawnOnly) {
   const img = drawnOnly ? null : SIM.sceneImage(scene, phase, variant);
   if (img) return `<img class="scene-img" src="${img}" alt="">`;
   if (variant === 'winter' && !drawnOnly && scene !== 'letter') return SIM.winterize(SIM.sceneSVG(scene, phase, seed, null, true), phase, seed);
+  if (SIM.SCENE_FALLBACK[scene]) return SIM.sceneSVG(SIM.SCENE_FALLBACK[scene], phase, seed, null, true);
   const rnd = seeded(seed || 7);
   const [top, bot] = SIM.SKIES[phase] || SIM.SKIES[0];
   const night = phase === 2;
@@ -189,6 +190,9 @@ SIM.MAPS.occupied = () => ({
   towns: [[168, 72, 'Paris'], [120, 18, 'Boulogne', 'end'], [176, 92, 'Fontainebleau'], [100, 128, 'Tours', 'end'], [160, 150, 'Vierzon'], [200, 196, 'Vichy'], [140, 150, 'Saint-Avit', 'end']]
 });
 
+// New scenes without art yet borrow a drawn scene.
+SIM.SCENE_FALLBACK = { street: 'village', station: 'road', kitchen: 'letter', cellar: 'camp', church: 'village' };
+
 // Variants that must not fall back to the generic (summer) paintings.
 SIM.VARIANT_ONLY = ['winter'];
 // Turn a drawn scene into winter: pale sky, snow on the ground, falling snow.
@@ -201,6 +205,19 @@ SIM.winterize = function (svg, phase, seed) {
     <path d="M0,136 Q80,130 160,137 T320,134 T480,138 T600,133 L600,141 L0,141 Z" fill="${night ? '#6d7b8b' : '#f6f8f9'}" opacity=".9"/>${flakes}`;
   return svg.replace(/<\/svg>\s*$/, overlay + '</svg>');
 };
+
+SIM.MAPS.germany = () => ({
+  label: 'Map of Germany, 1942',
+  base: `<rect width="320" height="250" class="m-land"/>
+    <path d="M0,0 L320,0 L320,30 C280,34 250,40 215,44 C190,48 172,52 160,58 C150,52 138,40 130,34 C110,30 92,36 80,48 L60,56 L40,30 L0,40 Z" class="m-sea"/>
+    <text x="150" y="20" class="m-sea-label">Baltic Sea</text><text x="8" y="22" class="m-sea-label">North Sea</text>
+    <path d="M40,60 C30,100 28,140 40,170 C45,200 60,220 90,240 L150,248 C200,246 230,236 250,220 C270,200 300,180 312,150 C300,120 296,90 300,60" class="m-border" opacity=".6"/>
+    <path d="M140,70 C150,110 160,140 175,160" class="m-river" opacity=".6"/>
+    <path d="M205,60 C210,90 220,130 230,175" class="m-river" opacity=".5"/>
+    <path d="M60,90 C58,130 62,170 70,210" class="m-river" opacity=".6"/>
+    <text x="110" y="200" class="m-country">GERMANY</text>`,
+  towns: [[140, 72, 'Hamburg', 'end'], [205, 105, 'Berlin'], [165, 222, 'Munich'], [255, 158, 'Breslau'], [236, 44, 'Stolp'], [160, 60, 'Lübeck'], [182, 52, 'Rostock'], [62, 140, 'Cologne']]
+});
 
 SIM.MAPS.moscow = () => ({
   label: 'Map of the approaches to Moscow, winter 1941',

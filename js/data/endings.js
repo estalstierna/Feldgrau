@@ -7,6 +7,7 @@ SIM.ENDINGS = {
     final: true,
     text: s => {
       const ch = SIM.chapter(s);
+      if (ch.kiaText) return ch.kiaText(s);
       return `${s.deathCause || ch.deathDefault}
 
 A field post letter arrives in ${SIM.townName(s.char.hometown)} three weeks later, signed by ${ch.commander}. It says that ${SIM.RANKS[s.rank]} ${s.char.first} ${s.char.last} fell bravely for Führer, Volk and Vaterland, and that he did not suffer. ${s.flags.lastLetter ? 'In the same envelope is a letter in your own handwriting.' : ''}${SIM.hasMedal(s, 'ek2') ? ' His Iron Cross is enclosed.' : ''}

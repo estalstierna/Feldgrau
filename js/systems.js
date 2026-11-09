@@ -19,6 +19,10 @@ SIM.PEOPLE = {
   albrecht: { name: 'Joachim von Albrecht', role: 'Your company commander. A Junker\'s son who believes in the rules of war.',
     base: f => (f.stoppedReprisal ? 25 : 0) + (f.triedToStop ? 10 : 0) + (f.savedTirailleurs ? 20 : 0) + (f.savedPole ? 5 : 0) + (f.firstWave ? 10 : 0) + (f.tookBoat ? 10 : 0) + (f.refusedOrder2 ? -20 : 0) },
   sattler: { name: 'Bruno Sattler', role: 'Berliner. Can get you anything, for a price.', present: f => f.metSattler, base: () => 0 },
+  liesel: { name: 'Liesel', role: 'Works at the post office. You met at a dance at Christmas 1939.', present: f => f.sweetheart, base: f => 45 + (f.married ? 15 : 0) },
+  mother: { name: 'Your mother', role: 'Writes every week. Keeps your room exactly as you left it.', present: f => f.homeLeave, base: f => 60 },
+  father: { name: 'Your father', role: 'Fought at Verdun in 1916. Says little about it.', present: f => f.homeLeave,
+    base: f => (f.party ? 40 : f.catholic ? 25 : 20) + (f.joinedSS ? (f.party ? 20 : f.spd ? -50 : f.catholic ? -25 : -5) : 0) },
   starck: { name: 'Wolfram Starck', role: 'SS-Hauptsturmführer. A schoolteacher from Brunswick who believes every word.', present: f => f.metStarck,
     // He respects courage and hardness, and despises what he calls softness.
     base: f => (f.party ? 10 : 0) + (f.spd ? -15 : 0) + (f.tankKill4 ? 15 : 0) + (f.tankKill ? 8 : 0) + (f.tookBoat ? 5 : 0) + (f.firstWave ? 5 : 0)
@@ -182,6 +186,27 @@ SIM.squadMod = function (s, id, d, out) {
     if (d.status) m.status = d.status;
   });
   if (out) out.extra.push({ label: `${id === 'all' ? 'Squad' : (targets[0] ? targets[0].name.split(' ')[0] : id)} ${d.morale ? (d.morale > 0 ? 'morale +' : 'morale −') : ''}${d.loyalty ? (d.loyalty > 0 ? 'loyalty +' : 'loyalty −') : ''}${d.status && d.status !== 'ok' ? d.status : ''}`.trim(), good: (d.morale || 0) + (d.loyalty || 0) >= 0 && (!d.status || d.status === 'ok') });
+};
+
+// Transfer to the Waffen-SS: the old squad stays with the Army; Starck gives the player a new one.
+SIM.makeSSSquad = function (s) {
+  if (s.flags.ssSquad) return;
+  s.flags.ssSquad = true;
+  s.oldSquad = s.squad;
+  s.squad = [
+    { id: 'voss', name: 'Erich Voss', role: 'Deputy, MG gunner', age: 24, traits: ['zealot', 'brave'], loyalty: 55, morale: 75, rank: 3,
+      bio: 'A Saxon who joined the SS at eighteen. Fought in Poland and France. Would follow Starck into the sea.' },
+    { id: 'wendt', name: 'Theo Wendt', role: 'Rifleman', age: 23, traits: ['joker', 'steady'], loyalty: 55, morale: 70, rank: 2,
+      bio: 'A Hamburg clerk who volunteered "for the adventure". Jokes about everything except the Führer.' },
+    { id: 'mayr', name: 'Anton Mayr', role: 'Rifleman', age: 31, traits: ['tired', 'steady'], loyalty: 50, morale: 50, rank: 2,
+      bio: 'A former policeman from Tyrol. Saw things in Poland in 1939 that he does not talk about.' },
+    { id: 'brueck', name: 'Karl-Heinz Brück', role: 'Rifleman', age: 26, traits: ['strong', 'informer'], loyalty: 45, morale: 65, rank: 2,
+      bio: 'A Ruhr miner. Huge, quiet, and in regular contact with the SD officer at battalion.' },
+    { id: 'nowak', name: 'Paul Nowak', role: 'Rifleman', age: 21, traits: ['nervous', 'devout'], loyalty: 55, morale: 50, rank: 0,
+      bio: 'An ethnic German from Łódź. Speaks Polish at home and is ashamed of it here.' },
+    { id: 'haas', name: 'Jürgen Haas', role: 'Ammunition carrier', age: 19, traits: ['green', 'zealot'], loyalty: 60, morale: 75, rank: 0,
+      bio: 'Straight from the Hitler Youth. Has read every word of the Führer\'s book, twice.' }
+  ].map(m => Object.assign({ status: 'ok' }, m));
 };
 
 // A replacement joins the squad.

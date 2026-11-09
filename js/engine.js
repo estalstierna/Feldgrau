@@ -311,7 +311,7 @@ SIM.checkService = function (s) {
 };
 
 // Interlude events still to be played, in order.
-SIM.pendingInterlude = s => (SIM.chapter(s).interludeEvents || []).map(id => SIM.INTERLUDE_EVENTS[id]).filter(ev => ev && !s.seen[ev.id]);
+SIM.pendingInterlude = s => (SIM.chapter(s).interludeEvents || []).map(id => SIM.INTERLUDE_EVENTS[id]).filter(ev => ev && !s.seen[ev.id] && (!ev.cond || ev.cond(s)));
 
 SIM.hasNextChapter = s => !!SIM.CHAPTERS[(s.chapter || 0) + 1] && s.ending && !SIM.ENDINGS[s.ending].final;
 

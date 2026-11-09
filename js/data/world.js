@@ -15,6 +15,10 @@ SIM.STATS = {
 SIM.RANKS = ['Schütze', 'Oberschütze', 'Gefreiter', 'Obergefreiter', 'Unteroffizier', 'Feldwebel'];
 SIM.RANK_EN = ['Private', 'Senior Private', 'Lance Corporal', 'Corporal', 'Sergeant', 'Staff Sergeant'];
 
+// Waffen-SS equivalents of the Army ranks, used once the player has transferred.
+SIM.SS_RANKS = ['SS-Schütze', 'SS-Oberschütze', 'SS-Sturmmann', 'SS-Rottenführer', 'SS-Unterscharführer', 'SS-Oberscharführer'];
+SIM.rankTitle = (s, r) => ((s && s.flags && s.flags.joinedSS) ? SIM.SS_RANKS : SIM.RANKS)[r === undefined ? s.rank : r];
+
 SIM.PHASES = ['Morning', 'Afternoon', 'Night'];
 SIM.PHASE_TIME = ['06:30', '14:00', '21:30'];
 
