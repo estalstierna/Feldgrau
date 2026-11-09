@@ -33,7 +33,7 @@ SIM.PEOPLE = {
 };
 
 // Painted portraits available in assets/portraits/<id>.webp. Others fall back to initials.
-SIM.PORTRAITS = ['hartmann', 'lenz', 'rau', 'vogel', 'brandt', 'albrecht', 'sattler', 'brenner', 'kuehn', 'claire', 'madame', 'pohl', 'starck', 'brandes'];
+SIM.PORTRAITS = ['hartmann', 'lenz', 'rau', 'vogel', 'brandt', 'albrecht', 'sattler', 'brenner', 'kuehn', 'claire', 'madame', 'pohl', 'starck', 'brandes', 'voss', 'wendt', 'mayr', 'brueck', 'nowak', 'haas', 'mother', 'father', 'liesel'];
 
 // Some people have more than one portrait, chosen by chapter (e.g. summer and winter uniform).
 SIM.PORTRAIT_FILE = {
@@ -196,7 +196,7 @@ SIM.makeSSSquad = function (s) {
   s.squad = [
     { id: 'voss', name: 'Erich Voss', role: 'Deputy, MG gunner', age: 24, traits: ['zealot', 'brave'], loyalty: 55, morale: 75, rank: 3,
       bio: 'A Saxon who joined the SS at eighteen. Fought in Poland and France. Would follow Starck into the sea.' },
-    { id: 'wendt', name: 'Theo Wendt', role: 'Rifleman', age: 23, traits: ['joker', 'steady'], loyalty: 55, morale: 70, rank: 2,
+    { id: 'wendt', name: 'Theo Wendt', role: 'Rifleman', age: 23, traits: ['joker', 'steady'], loyalty: 55, morale: 70, rank: 3,
       bio: 'A Hamburg clerk who volunteered "for the adventure". Jokes about everything except the Führer.' },
     { id: 'mayr', name: 'Anton Mayr', role: 'Rifleman', age: 31, traits: ['tired', 'steady'], loyalty: 50, morale: 50, rank: 2,
       bio: 'A former policeman from Tyrol. Saw things in Poland in 1939 that he does not talk about.' },
