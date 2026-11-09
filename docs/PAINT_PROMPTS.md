@@ -252,8 +252,8 @@ Rank insignia are set for each man and follow the 1942 Waffen-SS pattern, with t
 
 | Man | Rank | Left collar patch | Sleeve |
 |---|---|---|---|
-| Voss, Wendt | SS-Rottenführer | two silver stripes | two chevrons |
-| Mayr, Brück | SS-Sturmmann | one silver stripe | one chevron |
+| Voss | SS-Rottenführer | two silver stripes | two chevrons |
+| Wendt, Mayr, Brück | SS-Sturmmann | one silver stripe | one chevron |
 | Nowak, Haas | SS-Schütze | plain black | none |
 
 **`voss.png`**
