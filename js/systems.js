@@ -38,8 +38,14 @@ Object.assign(SIM.PEOPLE, SIM.EXTRA_PEOPLE || {});
 SIM.PORTRAITS = ['hartmann', 'lenz', 'rau', 'vogel', 'brandt', 'albrecht', 'sattler', 'brenner', 'kuehn', 'claire', 'madame', 'pohl', 'starck', 'brandes', 'voss', 'wendt', 'mayr', 'brueck', 'nowak', 'haas', 'mother', 'father', 'liesel', 'grischa', 'kessler', 'vera', 'belov', 'wiese', 'rehm', 'tamas', 'lorenz', 'kraus', 'dorn', 'saal', 'fink'];
 
 // Some people have more than one portrait, chosen by chapter (e.g. summer and winter uniform).
+// Characters whose look changes with the chapter (rank, uniform, captivity).
 SIM.PORTRAIT_FILE = {
-  starck: s => (s.chapter || 0) >= 4 ? 'starck' : 'starck-summer'
+  // Summer 1940 (Obersturmführer) until Chapter V, winter coat (Hauptsturmführer) from then, disguised as a private in the camp.
+  starck: s => (s.chapter || 0) >= 7 && s.flags.track8 === 'camp' ? 'starck-pow' : (s.chapter || 0) >= 4 ? 'starck' : 'starck-summer',
+  // A young Leutnant in 1939–40, a Hauptmann from Chapter III.
+  albrecht: s => (s.chapter || 0) >= 2 ? 'albrecht' : 'albrecht-young',
+  // A Gefreiter in the squad in 1939–40; a military policeman with the gorget once he joins the Feldgendarmerie.
+  lenz: s => (s.chapter || 0) >= 2 && s.flags.lenzFeldgendarm ? 'lenz' : 'lenz-young'
 };
 // Words in the story text that mean a character. Default: the last word of the name.
 SIM.CAST_WORDS = {
