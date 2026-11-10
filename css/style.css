@@ -308,3 +308,6 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
 .result .cast { margin-top: 0; }
 @media (max-width: 600px) { .cast-p.featured { width: 104px; margin-left: .8rem; } .cast-p.featured img { width: 92px; height: 92px; } .cast-p img { width: 56px; height: 56px; } }
 .ev-text::after { content: ''; display: block; clear: both; }
+
+.people-group { font: .72rem var(--type); letter-spacing: .14em; text-transform: uppercase; color: var(--warn, #8a5a1a); margin: 1.1rem 0 .3rem; padding-bottom: .25rem; border-bottom: 1px solid var(--line); }
+.people-group:first-of-type { margin-top: .4rem; }

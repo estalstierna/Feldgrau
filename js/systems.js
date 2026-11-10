@@ -92,6 +92,22 @@ SIM.portraitFile = (s, id) => SIM.PORTRAIT_FILE[id] ? SIM.PORTRAIT_FILE[id](s) :
 
 SIM.rel = (s, id) => SIM.clamp(SIM.PEOPLE[id].base(s.flags) + ((s.rel || {})[id] || 0), -100, 100);
 SIM.relLabel = v => v <= -50 ? 'Hostile' : v <= -15 ? 'Cold' : v < 15 ? 'Neutral' : v < 50 ? 'Friendly' : 'Close';
+// Groups for the Comrades tab, in display order.
+SIM.PEOPLE_GROUPS = [
+  { id: 'family', name: 'Family and home', ids: ['mother', 'father', 'liesel'] },
+  { id: 'company', name: s => s.flags.joinedSS ? 'Your old Army company' : 'Your company', ids: ['hartmann', 'rau', 'vogel', 'brandt', 'albrecht', 'sattler', 'lenz'] },
+  { id: 'platoon', name: 'Your platoon, 1943', ids: ['dorn', 'saal'] },
+  { id: 'ss', name: 'Waffen-SS', ids: ['starck'] },
+  { id: 'police', name: 'Military police', ids: ['kessler'] },
+  { id: 'france', name: 'France', ids: ['claire', 'madame'] },
+  { id: 'camp', name: 'In captivity', ids: ['vera', 'belov', 'wiese'] }
+];
+// Which group a person belongs to now (Lenz moves to the military police).
+SIM.personGroup = (s, id) => {
+  if (id === 'lenz' && (s.chapter || 0) >= 2 && s.flags.lenzFeldgendarm) return 'police';
+  const g = SIM.PEOPLE_GROUPS.find(g => g.ids.includes(id));
+  return g ? g.id : 'other';
+};
 SIM.knownPeople = s => Object.keys(SIM.PEOPLE).filter(id => {
   const p = SIM.PEOPLE[id];
   if (p.present) return p.present(s.flags) || (s.rel && s.rel[id] !== undefined);

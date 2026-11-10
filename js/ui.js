@@ -254,11 +254,16 @@ window.SIM = window.SIM || {};
   function panelHTML(name) {
     if (name === 'comrades') {
       const people = SIM.knownPeople(S);
-      return `<div class="kicker">Comrades &amp; people</div>` + people.map(id => {
+      const card = id => {
         const p = SIM.PEOPLE[id], v = SIM.rel(S, id);
         return `<div class="person">${avatar(id, p.name)}<div class="person-info">
           <div class="person-top"><b>${esc(p.name)}</b><span class="rel-label ${v < -15 ? 'neg' : v >= 15 ? 'pos' : ''}">${SIM.relLabel(v)}</span></div>
           ${relBar(v)}<span class="small muted">${esc(SIM.personStatus(S, id) || p.role)}</span></div></div>`;
+      };
+      const groups = SIM.PEOPLE_GROUPS.concat({ id: 'other', name: 'Others' });
+      return `<div class="kicker">Comrades &amp; people</div>` + groups.map(g => {
+        const ids = people.filter(id => SIM.personGroup(S, id) === g.id);
+        return ids.length ? `<h4 class="people-group">${esc(typeof g.name === 'function' ? g.name(S) : g.name)}</h4>${ids.map(card).join('')}` : '';
       }).join('');
     }
     if (name === 'squad') {
