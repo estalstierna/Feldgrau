@@ -12,7 +12,7 @@ You do **not** need to match the exact pixel sizes or formats, or make backgroun
 The ribbon bars and maps from the earlier code-drawn pack are kept. The medals get their own prompts (section 4).
 
 **Attach two images** together with the master prompt:
-- `docs/emblem.png`: the emblem used on flags, caps and medals.
+- `docs/emblem-sheet.png`: the emblem alone, on a flag, on a medal and held by an eagle (preferred; it shows the eagle without a wreath). `docs/emblem.png` is the emblem alone.
 - `docs/style-reference.png`: the painting style (only the style, not the subjects).
 
 **Wording:** these prompts describe only what should be visible. Image models' safety filters react to certain historical words (even in sentences like "do not draw…"), so the prompts avoid them on purpose. If a prompt is still refused, try a neutral scene such as `village` first, to find out whether it is the master prompt or one asset prompt that is blocked.

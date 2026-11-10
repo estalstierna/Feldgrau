@@ -20,7 +20,11 @@
   - **Vehicles and equipment**: the real type and its recognisable features (engines, wheels, tracks,
     turret), painted plain with no markings.
 - Keep them **censor-friendly**: no swastikas, SS runes or real regime symbols. Where an emblem would
-  appear, use the sword-and-oak-leaves emblem from `docs/emblem.png` (attach it). Avoid naming
+  appear, use the sword-and-oak-leaves emblem. Ask the owner to attach `docs/emblem-sheet.png` (the emblem
+  alone, on a red flag with a white disc, on a medal, and held by a breast eagle with NO wreath) and refer
+  to it in the prompt, e.g. "a grey woven eagle exactly like the eagle in the attached emblem-sheet.png,
+  holding only the sword-and-oak-leaves emblem, with no wreath and no circle". Image models tend to add a
+  wreath with their own symbol under a small eagle; when that happens, crop the portrait above the eagle. Avoid naming
   sensitive historical terms when a neutral description works.
 - Scenes: landscape 16:9, at least 1600 × 900, horizon at 55–60 % of the height, important things
   between 30 % and 80 % of the height, hand-painted gouache style (`docs/style-reference.png`).
