@@ -22,7 +22,9 @@ window.SIM = window.SIM || {};
     if (!s) return false;
     if (s.stage === 'event') return !!s.current;
     if (s.stage === 'interlude') return true;
-    if (s.stage === 'ending') return SIM.hasNextChapter(s);
+    // A chapter ending that is not the end of the soldier's story stays resumable,
+    // even before the next chapter is written.
+    if (s.stage === 'ending') return !!s.ending && !!SIM.ENDINGS[s.ending] && !SIM.ENDINGS[s.ending].final;
     return false;
   }
 
@@ -319,9 +321,12 @@ window.SIM = window.SIM || {};
     r.hidden = false;
     r.innerHTML = resultHTML(ch, out, 'Continue');
     renderSidebar();
+    // Move on at once, so a save made while the result is on screen resumes at the next
+    // event instead of replaying this one (and applying its effects twice).
+    const next = SIM.step(S, ev, out);
+    if (next.type === 'event') S.current = next.ev.id;
     SIM.save(S);
     $('#btn-next').onclick = () => {
-      const next = SIM.step(S, ev, out);
       if (next.type === 'ending') renderEnding(next.id);
       else renderEvent(next.ev);
     };
