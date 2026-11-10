@@ -498,16 +498,122 @@ Portrait, square, head and shoulders, three-quarter view, painted like a hand-co
 | File | Description |
 |---|---|
 | `kessler.png` | Major Ludwig Kessler, about 50, an officer of the German army field police in 1943. A neat, grey, forgettable face, rimless round glasses, thinning grey hair combed flat, clean-shaven, a calm, attentive, faintly tired expression, a fountain pen in his breast pocket. A well-pressed field-grey officer's tunic with a dark bottle-green collar; on BOTH sides of the collar an officer's patch of two parallel silver embroidered bars on dark green. Shoulder boards of a major: BRAIDED, interwoven silver cord in a plaited pattern, with NO stars. Above the right breast pocket a small silver-grey eagle holding the sword-and-oak-leaves emblem from emblem.png (attach it). No medals or ribbons. (In the army, rank was shown on the shoulder boards, not the collar.) |
-| `vera.png` | Dr. Vera Lipatova, about 38, a Soviet army doctor. A small, tired, intelligent face, dark hair pulled back under a white headscarf, a white doctor's coat over a padded khaki jacket, a stethoscope round her neck. Firm, sad eyes. No badges, no stars. |
-| `belov.png` | Captain Arkady Belov, about 40, a Soviet officer and interrogator. A long, clever, ironic face, dark hair with grey at the temples, a khaki tunic with a standing collar and plain shoulder boards, a cigarette between two fingers. No badges, no stars, no emblems. |
-| `wiese.png` | Konrad Wiese, 28, a German prisoner who now works with the Soviets. A fair, open, earnest face, short fair hair, round wire glasses, a clean khaki tunic with no insignia at all, a book under his arm. |
-| `rehm.png` | Paul Rehm, 17, a German soldier, 1943. A very young, round, eager face, fair hair, a field-grey wool tunic with a dark field-grey collar and plain grey collar tabs, a plain steel helmet a little too big for him. No badges, no eagle. |
-| `tamas.png` | Andreas Tamás, 23, an ethnic German machine gunner from Romania, 1943. A dark, calm, serious face, black hair, a small wooden rosary cross at his throat, a field-grey wool tunic with plain grey collar tabs. No badges, no eagle. |
-| `lorenz.png` | Ewald Lorenz, 38, a former air force mechanic turned infantryman, 1943. A cheerful, lined, sunburnt face, a big moustache, a blue-grey air force side cap with no badge pushed back on his head, a field-grey tunic. No badges, no eagle. |
-| `fink.png` | Georg Fink, 26, a German soldier, 1943. Broad, strong, a broken nose, a sly grin, a cigarette behind his ear, a field-grey tunic with the sleeves rolled up, plain grey collar tabs. No badges, no eagle. |
-| `dorn.png` | Heinz Dorn, 25, a German squad leader, 1943. A hard, handsome, reckless face, a fresh scar on the chin, dark hair under a battered side cap, a field-grey tunic with plain grey collar tabs and a thin silver braid on the collar, a machine pistol strap over his shoulder. No badges, no eagle. |
-| `saal.png` | Wilhelm Saal, 41, a German squad leader and former carpenter, 1943. A broad, calm, weathered face, grey stubble, steady brown eyes, a steel helmet pushed back, a field-grey tunic with plain grey collar tabs and a thin silver braid on the collar, a pipe in his breast pocket. No badges, no eagle. |
-| `kraus.png` | Martin Kraus, 19, a baker's apprentice in uniform, 1943. A thin, gentle, anxious face, soft brown hair, a field-grey tunic with plain grey collar tabs, a pencil and a folded letter in his hand. No badges, no eagle. |
+
+#### The replacements and the squad leaders (front track)
+
+All five replacements and both squad leaders wear the Army's 1943 pattern: an M43 field-grey wool tunic with a field-grey collar (no dark green), four pleated pockets with straight flaps, six grey-painted buttons, and plain mouse-grey collar tabs (two short parallel bars on field-grey). Field-grey shoulder straps with thin white piping (infantry). Rank is shown as given for each man. Where a breast eagle appears, it holds the sword-and-oak-leaves emblem from `emblem.png` (attach it). If a prompt is refused, replace the eagle sentence with "No eagle."
+
+**`rehm.png`** (Grenadier, no rank insignia)
+```
+Portrait, square, head and shoulders, three-quarter view facing slightly left, painted like a hand-coloured 1943 photograph in gouache, soft daylight from the left, plain dark olive background (#3b3d34). No text, letters or numbers.
+
+Paul Rehm, 17, a brand-new German infantryman in spring 1943 who lied about his age to join. A very young, round, beardless face with pink cheeks and a few freckles, short fair hair cut high at the back, wide pale-blue eyes, eager and a little too proud, a slightly nervous half-smile.
+
+Uniform, painted accurately: a new, still stiff M43 field-grey wool tunic with a field-grey collar, buttoned to the throat, plain mouse-grey collar tabs with two short parallel bars, plain field-grey shoulder straps with thin white piping and NO rank insignia. Above the right breast pocket, a small grey woven eagle whose talons hold the sword-and-oak-leaves emblem from emblem.png. A plain field-grey steel helmet, a size too big, sitting low on his ears, its leather chin strap hanging loose. A black leather Y-strap over the shoulders.
+
+Format: square, at least 1024 x 1024 pixels, PNG.
+```
+
+**`tamas.png`** (Gefreiter, machine gunner)
+```
+Portrait, square, head and shoulders, three-quarter view facing slightly right, painted like a hand-coloured 1943 photograph in gouache, warm light from the right, plain dark olive background (#3b3d34). No text, letters or numbers.
+
+Andreas Tamás, 23, an ethnic German from the Banat in Romania, a machine gunner in 1943. A lean, dark, serious face with high cheekbones, black hair combed back, heavy dark eyebrows, deep-set brown eyes, a two-day shadow of beard. Calm, watchful, devout. A small plain wooden cross on a leather thong just visible at his open collar.
+
+Uniform, painted accurately: a worn M43 field-grey wool tunic with a field-grey collar, top button undone, plain mouse-grey collar tabs with two short parallel bars, field-grey shoulder straps with thin white piping. On the upper LEFT sleeve, ONE silver-grey chevron (an inverted V of braid, point down) for the rank of Gefreiter. Above the right breast pocket, a small grey woven eagle whose talons hold the sword-and-oak-leaves emblem from emblem.png. A belt of machine-gun ammunition, brass cartridges glinting, slung over one shoulder and across his chest; a field-grey side cap with no badge, worn slightly tilted.
+
+Format: square, at least 1024 x 1024 pixels, PNG.
+```
+
+**`lorenz.png`** (Gefreiter, transferred from the air force)
+```
+Portrait, square, head and shoulders, three-quarter view facing slightly left, painted like a hand-coloured 1943 photograph in gouache, bright summer light, plain dark olive background (#3b3d34). No text, letters or numbers.
+
+Ewald Lorenz, 38, a former air force aircraft mechanic transferred to the infantry in 1943. A cheerful, lined, sunburnt face, a big drooping brown moustache with grey in it, laughing crow's feet round small blue eyes, a slightly crooked nose, thinning brown hair. A joker's grin, an unlit pipe in the corner of his mouth.
+
+Uniform, painted accurately: an army M43 field-grey wool tunic with a field-grey collar, collar open over a grey wool shirt, plain mouse-grey collar tabs with two short parallel bars, field-grey shoulder straps with thin white piping. On the upper LEFT sleeve, ONE silver-grey chevron (an inverted V of braid, point down) for the rank of Gefreiter. On his head, his old blue-grey air force side cap (a soft boat-shaped cap) with no badge, pushed back on his head. A smear of engine grease on one cheek. No eagle.
+
+Format: square, at least 1024 x 1024 pixels, PNG.
+```
+
+**`fink.png`** (Oberschütze, back from a penal company)
+```
+Portrait, square, head and shoulders, three-quarter view facing slightly right, painted like a hand-coloured 1943 photograph in gouache, hard side light from the right, plain dark olive background (#3b3d34). No text, letters or numbers.
+
+Georg Fink, 26, a German infantryman and black-marketeer in 1943. A broad, strong, heavy-jawed face, a nose broken more than once, a small scar through the left eyebrow, close-cropped dark-blond hair, shrewd grey eyes, a sly, knowing grin. A cigarette tucked behind his ear. Thick neck, big shoulders.
+
+Uniform, painted accurately: a faded, much-mended M43 field-grey wool tunic with a field-grey collar, collar open, sleeves pushed up to the elbows showing hairy forearms, plain mouse-grey collar tabs with two short parallel bars, field-grey shoulder straps with thin white piping. On the upper LEFT sleeve, ONE small round silver-grey pip on a circular field-grey patch, for the rank of Oberschütze. A field-grey side cap with no badge folded under one shoulder strap. A Russian leather map case slung across his chest, bulging with things that are not maps. No eagle.
+
+Format: square, at least 1024 x 1024 pixels, PNG.
+```
+
+**`kraus.png`** (Grenadier, ammunition carrier)
+```
+Portrait, square, head and shoulders, three-quarter view facing slightly left, painted like a hand-coloured 1943 photograph in gouache, soft evening light, plain dark olive background (#3b3d34). No text, letters or numbers.
+
+Martin Kraus, 19, a baker's apprentice from Würzburg, an ammunition carrier in 1943. A thin, gentle, pale face, soft brown hair falling over his forehead, large anxious brown eyes, a sensitive mouth, ears that stick out a little. He holds a short pencil and a folded letter against his chest.
+
+Uniform, painted accurately: an M43 field-grey wool tunic with a field-grey collar, slightly too large for his narrow shoulders, plain mouse-grey collar tabs with two short parallel bars, plain field-grey shoulder straps with thin white piping and NO rank insignia. Above the right breast pocket, a small grey woven eagle whose talons hold the sword-and-oak-leaves emblem from emblem.png. A black leather Y-strap over the shoulders. A plain field-grey steel helmet hanging from his belt, just visible at the bottom of the picture.
+
+Format: square, at least 1024 x 1024 pixels, PNG.
+```
+
+**`dorn.png`** (Unteroffizier, leader of the 2nd squad)
+```
+Portrait, square, head and shoulders, three-quarter view facing slightly right, painted like a hand-coloured 1943 photograph in gouache, strong summer sun from the right, plain dark olive background (#3b3d34). No text, letters or numbers.
+
+Heinz Dorn, 25, a miner's son from the Ruhr, a bold squad leader in 1943. A hard, handsome, reckless face, a lean jaw with a fresh pink scar along the chin, dark hair cut short at the sides, quick dark eyes, a cocky half-smile. Dust in the creases of his face.
+
+Uniform, painted accurately: a sweat-stained M43 field-grey wool tunic with a field-grey collar, plain mouse-grey collar tabs with two short parallel bars. The rank of Unteroffizier: a band of silver-grey braid running along the edge of the whole collar, and field-grey shoulder straps with thin white piping edged with the same silver-grey braid. Above the right breast pocket, a small grey woven eagle whose talons hold the sword-and-oak-leaves emblem from emblem.png. A short black-white-red ribbon of the Iron Cross 2nd class threaded through the second buttonhole of the tunic. A battered field-grey side cap with no badge, pushed back. The canvas strap of a machine pistol over one shoulder and three long magazine pouches on his belt.
+
+Format: square, at least 1024 x 1024 pixels, PNG.
+```
+
+**`saal.png`** (Unteroffizier, leader of the 3rd squad)
+```
+Portrait, square, head and shoulders, three-quarter view facing slightly left, painted like a hand-coloured 1943 photograph in gouache, soft overcast light, plain dark olive background (#3b3d34). No text, letters or numbers.
+
+Wilhelm Saal, 41, a carpenter from Franconia, a reservist squad leader since 1939. A broad, calm, weathered face, deep lines across the forehead, grey stubble, a grey moustache, steady patient brown eyes, big rough hands. A pencil stub behind one ear and a short pipe in his breast pocket.
+
+Uniform, painted accurately: an older M40 field-grey wool tunic with a dark green collar, well worn and neatly mended, plain mouse-grey collar tabs with two short parallel bars. The rank of Unteroffizier: a band of silver-grey braid running along the edge of the whole collar, and field-grey shoulder straps with thin white piping edged with the same silver-grey braid. Above the right breast pocket, a small grey woven eagle whose talons hold the sword-and-oak-leaves emblem from emblem.png. A field-grey steel helmet pushed back on his head, its chin strap hanging. Binoculars on a leather strap round his neck.
+
+Format: square, at least 1024 x 1024 pixels, PNG.
+```
+
+#### The camp (captivity track)
+
+**`vera.png`** (Soviet military doctor)
+```
+Portrait, square, head and shoulders, three-quarter view facing slightly right, painted like a hand-coloured 1943 photograph in gouache, cold grey window light from the right, plain dark olive background (#3b3d34). No text, letters or numbers.
+
+Dr. Vera Lipatova, about 38, a Soviet army doctor running a prison camp hospital in winter 1943. A small, thin, intelligent face, prominent cheekbones, tired grey-green eyes with dark shadows under them, a firm, unsmiling mouth, no make-up. Dark brown hair with a first streak of grey, pulled back tightly under a white cotton cap.
+
+Clothing, painted accurately: a white doctor's coat, washed thin and buttoned to the neck, worn over a padded khaki winter jacket whose quilted collar shows at the throat; the coat hides her shoulders, so no rank is visible. A rubber stethoscope round her neck. Her hands, red from cold water, hold a thin cardboard file against her chest. No badges, no stars, no emblems.
+
+Format: square, at least 1024 x 1024 pixels, PNG.
+```
+
+**`belov.png`** (NKVD captain)
+```
+Portrait, square, head and shoulders, three-quarter view facing slightly left, painted like a hand-coloured 1943 photograph in gouache, the warm light of a desk lamp from below left, plain dark olive background (#3b3d34). No text, letters or numbers.
+
+Captain Arkady Belov, about 40, a Soviet security officer and interrogator in 1943. A long, clever, ironic face, a high forehead, dark hair combed straight back with grey at the temples, heavy-lidded dark eyes, a thin mouth with the faintest trace of a smile. A cigarette held between two long fingers, a thin line of smoke rising.
+
+Uniform, painted accurately: a well-fitted khaki wool officer's tunic of 1943 with a standing collar and two breast pockets, stiff shoulder boards in khaki with a single narrow lengthwise stripe and four small plain metal rank pips. A peaked cap with a dark blue crown and a deep red band, with no badge, set straight on his head. No medals, no emblems.
+
+Format: square, at least 1024 x 1024 pixels, PNG.
+```
+
+**`wiese.png`** (German prisoner, "Antifa" instructor)
+```
+Portrait, square, head and shoulders, three-quarter view facing slightly right, painted like a hand-coloured 1943 photograph in gouache, soft summer light, plain dark olive background (#3b3d34). No text, letters or numbers.
+
+Konrad Wiese, 28, a German prisoner of war who now works with the Soviets, summer 1943. A fair, open, earnest face, thin from captivity, short fair hair, round steel-rimmed glasses mended at one hinge with wire, clear blue eyes, an intense, persuasive expression. A worn book held against his chest.
+
+Clothing, painted accurately: his old German field-grey wool tunic, clean and pressed, with EVERY insignia removed: no collar tabs, no shoulder straps, only faint outlines and loose threads where the eagle and the badges used to be. On the left breast a small ribbon bow in three horizontal colours, black, white and red. No other badges, no emblems.
+
+Format: square, at least 1024 x 1024 pixels, PNG.
+```
 
 ---
 
