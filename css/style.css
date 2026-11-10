@@ -140,7 +140,7 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
 .banner svg { width: 100%; height: 100%; display: block; }
 .banner.painted { height: 230px; }
 .banner .scene-img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: 50% 60%; animation: fade .5s ease; }
-.ev-head, .main h2, .ev-text, .choices, .result, #notes { padding: 0 clamp(16px, 4vw, 2.4rem); }
+.ev-head, .main h2, .ev-text, .choices, .result, #notes, #ev-cast { padding: 0 clamp(16px, 4vw, 2.4rem); }
 .ev-head { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-top: .8rem; padding-bottom: .6rem; }
 .ev-date { color: var(--accent); }
 .ev-place { font-style: italic; color: var(--ink-soft); font-size: .92rem; }
@@ -295,3 +295,16 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
 .plt-actions { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .3rem; }
 .plt-actions .use-btn { margin-top: 0; }
 .plt-btn { display: inline-flex; flex-direction: column; }
+
+/* Portraits of the people in a scene */
+.cast { display: flex; flex-wrap: wrap; gap: .9rem; margin: .2rem 0 1rem; align-items: flex-end; }
+.cast-p { margin: 0; width: 76px; display: flex; flex-direction: column; align-items: center; gap: .3rem; }
+.cast-p img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--feldgrau); background: #3b3d34; box-shadow: 0 2px 6px rgba(0,0,0,.25); }
+.cast-p figcaption { font-size: .72rem; line-height: 1.2; text-align: center; opacity: .8; }
+.cast-p.featured { width: 128px; float: right; margin: .2rem 0 .6rem 1.2rem; }
+.cast-p.featured img { width: 112px; height: 112px; border-width: 3px; }
+.cast-p.featured figcaption { font-size: .82rem; font-weight: 600; opacity: 1; }
+.cast-p.gone img { filter: grayscale(1); opacity: .75; }
+.result .cast { margin-top: 0; }
+@media (max-width: 600px) { .cast-p.featured { width: 104px; margin-left: .8rem; } .cast-p.featured img { width: 92px; height: 92px; } .cast-p img { width: 56px; height: 56px; } }
+.ev-text::after { content: ''; display: block; clear: both; }

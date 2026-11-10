@@ -41,6 +41,47 @@ SIM.PORTRAITS = ['hartmann', 'lenz', 'rau', 'vogel', 'brandt', 'albrecht', 'satt
 SIM.PORTRAIT_FILE = {
   starck: s => (s.chapter || 0) >= 4 ? 'starck' : 'starck-summer'
 };
+// Words in the story text that mean a character. Default: the last word of the name.
+SIM.CAST_WORDS = {
+  hartmann: ['Hartmann', 'Willi'], albrecht: ['Albrecht'], mother: ['your mother', 'Your mother'], father: ['your father', 'Your father'],
+  starck: ['Starck', 'Brandau'], claire: ['Claire'], madame: ['Madame Girard', 'Madame'], vera: ['Lipatova', 'Vera'],
+  liesel: ['Liesel'], grischa: ['Grischa', 'Weber'], brandes: ['Brandes']
+};
+// The characters with a portrait who are named in a text, in order of first mention (at most `max`).
+// People must be known to the player; squad men must be in the squad (the dead only when allowDead).
+SIM.castIn = function (s, text, title, opts = {}) {
+  if (!text && !title) return [];
+  const max = opts.max || 4, hay = `${title || ''}\n${text || ''}`;
+  const cands = {};
+  const add = (id, name, alive, stranger) => { if ((SIM.PORTRAITS || []).includes(id) && !cands[id]) cands[id] = { id, name, alive, stranger }; };
+  (s.squad || []).forEach(m => { if (m.status === 'ok' || opts.allowDead) add(m.id, m.name, m.status === 'ok'); });
+  Object.keys(SIM.PEOPLE).forEach(id => {
+    const p = SIM.PEOPLE[id], m = SIM.man(s, id);
+    if (m && m.status !== 'ok' && !opts.allowDead) return;
+    const known = id === 'mother' || id === 'father' || !p.present || p.present(s.flags) || (s.rel && s.rel[id] !== undefined);
+    // Someone not met yet appears only when the title names them or the text gives the full name.
+    add(id, /^Your /.test(p.name) ? p.short : p.name, !m || m.status === 'ok', !known);
+  });
+  const firsts = {};
+  Object.values(cands).forEach(c => { const f = c.name.split(' ')[0]; firsts[f] = (firsts[f] || 0) + 1; });
+  const found = [];
+  Object.values(cands).forEach(c => {
+    let words = SIM.CAST_WORDS[c.id];
+    if (!words) { const parts = c.name.replace(/"[^"]*"/g, '').split(' ').filter(Boolean); words = [parts[parts.length - 1]]; if (parts.length > 1 && firsts[parts[0]] === 1 && (s.squad || []).some(m => m.id === c.id)) words.push(parts[0]); }
+    let at = -1, inTitle = false;
+    const full = c.name.replace(/"[^"]*" /, '');
+    if (c.stranger) words = words.map(w => (title || '').includes(w) ? w : full);
+    words.forEach(w => {
+      const re = new RegExp(`(^|[^A-Za-zÀ-ž])${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![A-Za-zÀ-ž])`);
+      const i = hay.search(re);
+      if (i >= 0 && (at < 0 || i < at)) at = i;
+      if (title && re.test(title)) inTitle = true;
+    });
+    if (at >= 0) found.push(Object.assign({ at, featured: inTitle }, c));
+  });
+  found.sort((a, b) => (b.featured - a.featured) || (a.at - b.at));
+  return found.slice(0, max);
+};
 SIM.portraitFile = (s, id) => SIM.PORTRAIT_FILE[id] ? SIM.PORTRAIT_FILE[id](s) : id;
 
 SIM.rel = (s, id) => SIM.clamp(SIM.PEOPLE[id].base(s.flags) + ((s.rel || {})[id] || 0), -100, 100);
@@ -392,7 +433,8 @@ SIM.extendContext = function (s, x, out) {
     s.rel = s.rel || {};
     s.rel[id] = (s.rel[id] || 0) + n;
     const p = SIM.PEOPLE[id];
-    out.extra.push({ label: `${p.short || p.name.split(' ')[0]} ${n > 0 ? '▲' : '▼'}`, good: n > 0, kind: 'rel' });
+    const chip = { claire: 'Claire', madame: 'Madame Girard', vera: 'Dr. Lipatova', liesel: 'Liesel' }[id] || p.short || p.name.split(' ').pop();
+    out.extra.push({ label: `${chip} ${n > 0 ? '▲' : '▼'}`, good: n > 0, kind: 'rel' });
   };
   x.item = (id, n) => {
     SIM.give(s, id, n);

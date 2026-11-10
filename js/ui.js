@@ -328,6 +328,14 @@ window.SIM = window.SIM || {};
     $('#btn-close-profile').focus();
   }
 
+  // Portraits of the people in a scene. The one named in the title is shown larger.
+  function castHTML(list) {
+    if (!list.length) return '';
+    const fig = c => `<figure class="cast-p${c.featured ? ' featured' : ''}${c.alive ? '' : ' gone'}"><img src="assets/portraits/${SIM.portraitFile(S, c.id)}.webp" alt="" loading="lazy"><figcaption>${esc(c.name)}</figcaption></figure>`;
+    const main = list.find(c => c.featured), rest = list.filter(c => c !== main);
+    return `${rest.length ? `<div class="cast">${rest.map(fig).join('')}</div>` : ''}${main ? fig(main) : ''}`;
+  }
+
   function renderEvent(ev) {
     current = ev;
     S.current = ev.id;
@@ -338,7 +346,10 @@ window.SIM = window.SIM || {};
     header(ev);
     $('#notes').innerHTML = (S.notes || []).map(n => `<div class="note">${esc(n)}</div>`).join('');
     $('#ev-title').textContent = ev.title;
-    $('#ev-text').innerHTML = paras(SIM.fmt(S, ev.text));
+    const evText = SIM.fmt(S, ev.text);
+    current.cast = SIM.castIn(S, evText, ev.title);
+    $('#ev-cast').innerHTML = '';
+    $('#ev-text').innerHTML = castHTML(current.cast) + paras(evText);
     $('#result').hidden = true;
     choiceButtons(ev, $('#choices'), choose);
     $('#main').focus({ preventScroll: true });
@@ -358,7 +369,10 @@ window.SIM = window.SIM || {};
   function resultHTML(ch, out, btnLabel, btnId = 'btn-next') {
     const awards = (out.awards || []).length ? `<div class="award-box"><div class="kicker">Awarded</div>${medalCards(out.awards, S)}</div>` : '';
     const said = SIM.fmt(S, ch.text);
-    return `<div class="chosen">${/^["“]/.test(said) ? esc(said) : `“${esc(said)}”`}</div>${paras(out.texts.join('\n\n'))}<div class="chips">${chips(out.deltas)}${extraChips(out.extra)}</div>${awards}<button class="btn primary" id="${btnId}">${btnLabel}</button>`;
+    // People who appear only in the outcome (a man hit, a visitor): show them too, the dead in grey.
+    const shown = ((current && current.cast) || []).map(c => c.id);
+    const extra = SIM.castIn(S, out.texts.join('\n'), '', { allowDead: true, max: 3 }).filter(c => !shown.includes(c.id)).map(c => Object.assign(c, { featured: false }));
+    return `${castHTML(extra)}<div class="chosen">${/^["“]/.test(said) ? esc(said) : `“${esc(said)}”`}</div>${paras(out.texts.join('\n\n'))}<div class="chips">${chips(out.deltas)}${extraChips(out.extra)}</div>${awards}<button class="btn primary" id="${btnId}">${btnLabel}</button>`;
   }
 
   function revealResult(r, btnId = 'btn-next') {
@@ -444,7 +458,8 @@ window.SIM = window.SIM || {};
       $('#btn-inext').onclick = begin;
     } else {
       $('#interlude-ev-title').textContent = ev.title;
-      $('#interlude-ev-text').innerHTML = paras(SIM.fmt(S, ev.text));
+      const iText = SIM.fmt(S, ev.text);
+      $('#interlude-ev-text').innerHTML = castHTML(SIM.castIn(S, iText, ev.title)) + paras(iText);
       r.hidden = true;
       choiceButtons(ev, $('#interlude-choices'), (chc, man) => {
         const out = SIM.resolveChoice(S, ev, chc, man);
