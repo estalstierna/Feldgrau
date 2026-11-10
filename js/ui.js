@@ -97,8 +97,9 @@ window.SIM = window.SIM || {};
     return ids.map(id => {
       const m = SIM.MEDALS[id];
       const rec = s && s.medals.find(r => r.id === id);
-      return `<div class="medal-card">
-        <div class="medal-art">${SIM.badgeSVG(id, 52)}</div>
+      const wide = m.shape === 'clasp';
+      return `<div class="medal-card${wide ? ' wide' : ''}">
+        <div class="medal-art">${SIM.badgeSVG(id, wide ? 40 : 52)}</div>
         <div class="medal-info"><b>${esc(m.name)}</b><span class="muted small"><i>${esc(m.german)}</i></span>
         ${rec ? `<span class="small">${esc(rec.date)}${rec.reason ? ' · ' + esc(rec.reason) : ''}</span>` : ''}
         <span class="small muted">${esc(m.desc)}</span></div></div>`;
