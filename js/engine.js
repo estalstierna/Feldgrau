@@ -190,6 +190,7 @@ SIM.upkeep = function (s) {
   const dayDrain = SIM.today(s).foodDrain;
   SIM.apply(s, { food: (dayDrain !== undefined ? dayDrain : ch.warFoodDrain !== undefined && atWar ? ch.warFoodDrain : drain !== undefined && !atWar ? drain : (atWar ? -7 : -5)) + (s.flags.farm ? 1 : 0) }, d);
   if (SIM.supplyUpkeep) SIM.supplyUpkeep(s, d, notes);
+  if (s.phase === 2 && SIM.chapter(s).onNight) SIM.chapter(s).onNight(s, d, notes);
   if (!atWar && s.phase === 2) { SIM.apply(s, { food: 8 }, d); notes.push(SIM.chapter(s).kitchenNote || 'The field kitchen comes round with pea soup.'); }
   if (atWar && s.phase === 2 && Math.random() < 0.6) { SIM.apply(s, { food: 12 }, d); notes.push('The field kitchen catches up with the company at last: lukewarm stew and bread.'); }
   if (s.stats.food <= 15) {
@@ -289,12 +290,12 @@ SIM.review = function (s) {
   let steps = 0;
   const black = ch.blackMarks ? ch.blackMarks(s) : [];
   if (s.stats.suspicion >= 60) black.push('Political reliability in doubt.');
-  if (!black.length) { steps++; reasons.push(ch.routineReason); }
+  if (!black.length) { steps++; reasons.push(SIM.chv(s, 'routineReason')); }
   else reasons.push(...black.map(b => 'Routine promotion withheld: ' + b));
   const score = (s.chMerit || 0) + (s.stats.officers - 50) / 10;
   const bar = ch.meritBar || 6;
   if (score >= bar) {
-    reasons.push(ch.meritReason);
+    reasons.push(SIM.chv(s, 'meritReason'));
     // Skipping a rank needs both a clean record and an exceptional recommendation.
     if (steps === 0 || score >= bar * 1.6) steps++;
     if (steps === 2) reasons.push('Promoted ahead of time for exceptional conduct.');
@@ -302,7 +303,8 @@ SIM.review = function (s) {
   const maxRank = typeof ch.maxRank === 'function' ? ch.maxRank(s) : ch.maxRank;
   const to = Math.min(from + steps, Math.max(from, maxRank));
   if (to > from) { s.rank = to; s.rankHistory.push({ rank: to, date: ch.promoDate }); }
-  if (from + steps > to && to >= 3) { s.flags.ncoCandidate = true; reasons.push('Recommended for the NCO course. Unteroffizier rank requires it.'); }
+  if (from + steps > to && to === 3 && !s.flags.passedCourse) { s.flags.ncoCandidate = true; reasons.push('Recommended for the NCO course. Unteroffizier rank requires it.'); }
+  else if (from + steps > to && to > 3) reasons.push('No higher rank is open to you yet.');
   else if (to === from && steps > 0) reasons.push('No higher rank is open to you yet.');
   if (ch.awards) ch.awards(s, score);
   s.reviews[key] = { from, to, reasons, awards: s.newAwards.slice(), score };

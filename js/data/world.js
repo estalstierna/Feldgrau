@@ -13,11 +13,11 @@ SIM.STATS = {
   hope:       { label: 'Hope', short: 'Hope', desc: 'Whether you still believe you will go home. Below 20 the body follows the mind.', show: s => !!SIM.chv(s, 'hope') && s.stats.hope !== undefined }
 };
 
-SIM.RANKS = ['Schütze', 'Oberschütze', 'Gefreiter', 'Obergefreiter', 'Unteroffizier', 'Feldwebel'];
-SIM.RANK_EN = ['Private', 'Senior Private', 'Lance Corporal', 'Corporal', 'Sergeant', 'Staff Sergeant'];
+SIM.RANKS = ['Schütze', 'Oberschütze', 'Gefreiter', 'Obergefreiter', 'Unteroffizier', 'Feldwebel', 'Oberfeldwebel'];
+SIM.RANK_EN = ['Private', 'Senior Private', 'Lance Corporal', 'Corporal', 'Sergeant', 'Staff Sergeant', 'Master Sergeant'];
 
 // Waffen-SS equivalents of the Army ranks, used once the player has transferred.
-SIM.SS_RANKS = ['SS-Schütze', 'SS-Oberschütze', 'SS-Sturmmann', 'SS-Rottenführer', 'SS-Unterscharführer', 'SS-Oberscharführer'];
+SIM.SS_RANKS = ['SS-Schütze', 'SS-Oberschütze', 'SS-Sturmmann', 'SS-Rottenführer', 'SS-Unterscharführer', 'SS-Oberscharführer', 'SS-Hauptscharführer'];
 SIM.rankTitle = (s, r) => ((s && s.flags && s.flags.joinedSS) ? SIM.SS_RANKS : SIM.RANKS)[r === undefined ? s.rank : r];
 
 SIM.PHASES = ['Morning', 'Afternoon', 'Night'];

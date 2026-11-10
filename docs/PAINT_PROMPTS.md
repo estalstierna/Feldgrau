@@ -505,6 +505,8 @@ Portrait, square, head and shoulders, three-quarter view, painted like a hand-co
 | `tamas.png` | Andreas Tamás, 23, an ethnic German machine gunner from Romania, 1943. A dark, calm, serious face, black hair, a small wooden rosary cross at his throat, a field-grey wool tunic with plain grey collar tabs. No badges, no eagle. |
 | `lorenz.png` | Ewald Lorenz, 38, a former air force mechanic turned infantryman, 1943. A cheerful, lined, sunburnt face, a big moustache, a blue-grey air force side cap with no badge pushed back on his head, a field-grey tunic. No badges, no eagle. |
 | `fink.png` | Georg Fink, 26, a German soldier, 1943. Broad, strong, a broken nose, a sly grin, a cigarette behind his ear, a field-grey tunic with the sleeves rolled up, plain grey collar tabs. No badges, no eagle. |
+| `dorn.png` | Heinz Dorn, 25, a German squad leader, 1943. A hard, handsome, reckless face, a fresh scar on the chin, dark hair under a battered side cap, a field-grey tunic with plain grey collar tabs and a thin silver braid on the collar, a machine pistol strap over his shoulder. No badges, no eagle. |
+| `saal.png` | Wilhelm Saal, 41, a German squad leader and former carpenter, 1943. A broad, calm, weathered face, grey stubble, steady brown eyes, a steel helmet pushed back, a field-grey tunic with plain grey collar tabs and a thin silver braid on the collar, a pipe in his breast pocket. No badges, no eagle. |
 | `kraus.png` | Martin Kraus, 19, a baker's apprentice in uniform, 1943. A thin, gentle, anxious face, soft brown hair, a field-grey tunic with plain grey collar tabs, a pencil and a folded letter in his hand. No badges, no eagle. |
 
 ---

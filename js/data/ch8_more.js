@@ -115,6 +115,15 @@ window.SIM = window.SIM || {};
     if (s.flags.penal && !s.flags.penalCleared) return 'tr_probation';
     return 'tr_citadel';
   };
+  const platoonLine = s => {
+    const p = s.platoon;
+    if (!p || !p.active) return '';
+    const d = p.squads.dorn, sa = p.squads.saal;
+    const sqd = (q, n) => q.alive ? `${q.short}'s squad, ${q.strength} men` : `the ${n} squad, ${q.strength} men, without ${q.short}`;
+    let t = `\n\nYour platoon: your own squad, ${sqd(d, '2nd')}, and ${sqd(sa, '3rd')}.`;
+    if (s.flags.officerOffer) { t += ' At the end of July the Hauptmann sends for you. "I have put your name forward for the officer candidate course," he says. "The army needs Leutnants who have been at the front. You would leave the platoon." He gives you until the autumn to decide.'; }
+    return t;
+  };
   const campCast = s => {
     const out = [];
     if (s.flags.starckFarewell || s.flags.starckTaken || s.flags.starckReported || s.flags.starckSecret) out.push(s.flags.starckReported ? 'Starck was taken away by the NKVD because of you. You do not know what happened to him. You do not know whether you want to know.' : 'Starck was taken away in July. Years later you will hear that a man called Brandau, or Starck, died in a camp at Vorkuta in 1947, still refusing to sign anything.');
@@ -124,12 +133,13 @@ window.SIM = window.SIM || {};
     else if (g && g.status === 'killed') out.push('Grischa is dead. You think of him every time you hear Russian spoken kindly.');
     if (s.flags.nameOnRadio) out.push(`Somewhere in ${SIM.townName(s.char.hometown)}, perhaps, someone heard your name on Radio Moscow.`);
     if (men(s).length) out.push(`${men(s).map(m => m.name.split(' ')[0]).join(', ')}: still with you.`);
+    if (s.flags.brigadier && s.brigade) out.push(s.brigade.morale >= 60 ? 'Your brigade would follow you anywhere. In a camp, that is a kind of power the Soviets notice.' : s.brigade.morale <= 35 ? 'Your brigade does what you say, and hates you for it.' : 'Your brigade trusts you, mostly.');
     return out.join(' ');
   };
   Object.assign(SIM.ENDINGS, {
     tr_free: { title: 'Free Germany', text: s => `You signed. In Germany, a Gestapo officer adds your name to a list of traitors, and a polite man in a grey suit visits your family. In the camp, you eat a little better, and some of the officers will not speak to you.\n\n${campCast(s)}\n\nThe war goes on without you. You are alive. You are a prisoner. You are, according to the radio in Moscow, the future of Germany.` },
     tr_oath: { title: 'The Oath', text: s => `You did not sign. Some of the men respect you for it; some think you a fool. The Soviets put your name on a different list. The oath you swore in 1938 is the one thing you still own.\n\n${campCast(s)}\n\nThe war goes on without you. You are alive. You are a prisoner. ${s.stats.hope >= 50 ? 'You still believe you will see home.' : 'Some nights you are no longer sure you will see home.'}` },
     tr_probation: { title: 'Probation', text: s => `Kessler's court sentenced you to a probation unit. Your rank badges are gone; the men who are left of your squad salute you anyway, when no officer is looking.\n\nCitadel is over. The German army will never attack in the East again. From now on there is only the long road back west, and you will walk it in front of everyone else.` },
-    tr_citadel: { title: 'Citadel', text: s => `Operation Citadel is over. Seven days of attack, and then everything given back. The Soviets do not stop: in August they take Orel and Belgorod and Kharkov, for the last time.\n\n${s.flags.penalCleared ? 'Your probation sentence has been struck out. Your rank is restored. Kessler sends a short note: "As promised."' : s.flags.kesslerInformer ? 'Kessler sends you a postcard from Kharkov. It says nothing. It does not need to.' : 'Kessler\'s file on you is closed.'} ${s.flags.daughter ? `In your paybook is a photograph of ${s.flags.daughter}, four months old.` : ''}\n\nYou were at Stalingrad and at Kursk, and you are alive. Your ${ss(s) ? 'section' : 'squad'}: ${men(s).length ? men(s).map(m => m.name.split(' ')[0]).join(', ') : 'gone'}.` }
+    tr_citadel: { title: 'Citadel', text: s => `Operation Citadel is over. Seven days of attack, and then everything given back. The Soviets do not stop: in August they take Orel and Belgorod and Kharkov, for the last time.\n\n${s.flags.penalCleared ? 'Your probation sentence has been struck out. Your rank is restored. Kessler sends a short note: "As promised."' : s.flags.kesslerInformer ? 'Kessler sends you a postcard from Kharkov. It says nothing. It does not need to.' : 'Kessler\'s file on you is closed.'} ${s.flags.daughter ? `In your paybook is a photograph of ${s.flags.daughter}, four months old.` : ''}\n\nYou were at Stalingrad and at Kursk, and you are alive. Your ${ss(s) ? 'section' : 'squad'}: ${men(s).length ? men(s).map(m => m.name.split(' ')[0]).join(', ') : 'gone'}.${platoonLine(s)}` }
   });
 })();

@@ -101,6 +101,14 @@ In the camp, **Hope** replaces the squad's supplies. Letters, faith, comrades an
 ### Statements on record (Chapter VIII, front)
 Major Kessler of the Secret Field Police asks every man who got out of Stalingrad how he did it, more than once. What you tell him is kept **on record** (shown in the Soldbuch). He compares: telling the same lie twice is safer than changing your story, and the truth is safest of all, unless the truth is a crime.
 
+### Command (Chapter VIII)
+- **Front: Zugführer.** In 1943 there were too few officers, and experienced Feldwebel often led platoons. If your superiors think well of you (or you hold the Iron Cross), you take over the platoon at Kharkov, with a field promotion to Feldwebel. Otherwise you may get a second chance in May. A platoon commander can rise to **Oberfeldwebel**, and the best are offered the **officer candidate course**.
+  - Three squads: your own and two led by **Heinz Dorn** (bold: strong in the attack, loses men, may charge when told to hold) and **Wilhelm Saal** (careful: steady fire support, slow in the attack). Each squad has strength, morale and ammunition, shown in the Squad tab.
+  - In battle you give **orders**: who attacks, who gives fire support, who is the reserve. The squad leaders carry them out in their own way, and can be killed.
+  - In the Squad tab you can **transfer** your men to another squad or **take** a man from one (one move per phase), and **recommend** two men this summer for promotion or the Iron Cross.
+  - **Discipline**: a sentry asleep, prisoners shot, a man who ran. You decide how much the army learns.
+- **Camp: Brigadier.** A prisoner the others respect can be made leader of a work brigade of sixty men: the bread, the norm, the names the NKVD wants. The brigade's morale shows in the Squad tab.
+
 ### Using supplies and kit yourself
 When your **food is below 60** you can eat one of the squad's rations; when your **health is below 70** you can use the medical kit. Some kit can be used too: drink vodka or schnapps, brew coffee, smoke. Each once per morning, afternoon or night, from the Status panel or the Kit tab.
 

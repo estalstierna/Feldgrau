@@ -263,14 +263,16 @@ window.SIM = window.SIM || {};
     }
     if (name === 'squad') {
       if (!S.squad) return `<div class="kicker">Squad</div><p class="muted small">You do not command any men yet. That may change.</p>`;
-      return `<div class="kicker">Your squad</div>
+      const plt = SIM.platoonActive && SIM.platoonActive(S);
+      const brig = S.flags.brigadier && S.brigade && SIM.track(S) === 'camp' ? `<div class="kicker">Your work brigade</div><div class="item"><div class="person-top"><b>${S.brigade.men} men</b><span>Brigadier</span></div>${miniBar('Morale', S.brigade.morale)}<span class="small muted">You answer for the norm, the bread and the count. They answer to you.</span></div>` : '';
+      return brig + (plt ? platoonHTML() : '') + `<div class="kicker">Your squad</div>
         <div class="squad-sum">${miniBar('Morale', SIM.squadMorale(S))}${miniBar('Loyalty', SIM.squadLoyalty(S))}</div>` +
         S.squad.map(m => `<div class="person ${m.status !== 'ok' ? 'gone' : ''}">${avatar(m.id, m.name)}<div class="person-info">
           <div class="person-top"><b>${esc(m.name)}</b>${S.flags.deputy === m.id ? '<span class="deputy">deputy</span>' : ''}</div>
           <span class="small muted">${esc(m.role)}, ${m.age}${m.status !== 'ok' ? ' · ' + esc(m.fate || m.status) : ''}</span>
           <div class="traits">${m.traits.map(t => `<span class="trait" title="${esc(SIM.TRAITS[t] || '')}">${esc(t)}</span>`).join('')}</div>
           ${miniBar('Morale', m.morale)}${miniBar('Loyalty', m.loyalty)}
-          ${m.bio ? `<span class="small muted">${esc(m.bio)}</span>` : ''}</div></div>`).join('');
+          ${m.bio ? `<span class="small muted">${esc(m.bio)}</span>` : ''}${plt && m.status === 'ok' ? manActions(m) : ''}</div></div>`).join('');
     }
     if (name === 'kit') {
       const ids = Object.keys(S.items || {}).filter(id => S.items[id] > 0);
@@ -290,6 +292,27 @@ window.SIM = window.SIM || {};
     }
     return '';
   }
+  // ── The platoon (Chapter VIII) ──
+  function pltButton(kind, a, b, label) {
+    const why = SIM.platoonBlock(S, kind, a);
+    return `<span class="plt-btn"><button class="use-btn" data-plt="${kind}" data-a="${a}" data-b="${b || ''}"${why ? ` disabled title="${esc(why)}"` : ''}>${esc(label)}</button>${why ? `<span class="use-why">${esc(why)}</span>` : ''}</span>`;
+  }
+  function manActions(m) {
+    const q = S.platoon.squads;
+    return `<div class="plt-actions">${['dorn', 'saal'].map(id => pltButton('give', m.id, id, `To ${q[id].alive ? q[id].short : (id === 'dorn' ? '2nd' : '3rd') + ' squad'}`)).join('')}${pltButton('recommend', m.id, '', 'Recommend for promotion')}</div>`;
+  }
+  function platoonHTML() {
+    const p = S.platoon;
+    const left = 2 - p.recs;
+    return `<div class="kicker">Your platoon</div><p class="small muted">You command three squads. In battle you give the orders; your squad leaders carry them out in their own way. Recommendations left this summer: ${left}.</p>` +
+      ['dorn', 'saal'].map((id, i) => { const q = p.squads[id]; const v = SIM.rel(S, id);
+        return `<div class="person">${q.alive ? avatar(id, q.name) : avatar(id + '_x', (i ? '3rd' : '2nd') + ' squad')}<div class="person-info">
+          <div class="person-top"><b>${q.alive ? esc(q.name) : `${i ? '3rd' : '2nd'} squad`}</b>${q.alive ? `<span class="rel-label ${v < -15 ? 'neg' : v >= 15 ? 'pos' : ''}">${SIM.relLabel(v)}</span>` : '<span class="rel-label neg">leader killed</span>'}</div>
+          <span class="small muted">${i ? '3rd' : '2nd'} squad · ${q.strength} men · ${esc(SIM.PLATOON_TRAITS[q.trait])}</span>
+          ${miniBar('Morale', q.morale)}${miniBar('Ammunition', Math.round(100 * q.ammo / 12))}
+          <div class="plt-actions">${pltButton('take', id, '', 'Take a man into your squad')}${q.alive ? pltButton('recommend', id, '', 'Recommend him for the Iron Cross') : ''}</div></div></div>`; }).join('');
+  }
+
   let activeTab = 'status';
   function renderTab() {
     document.querySelectorAll('#tabs .tab').forEach(t => t.classList.toggle('on', t.dataset.tab === activeTab));
@@ -473,8 +496,9 @@ window.SIM = window.SIM || {};
     $('#id-card').onclick = openProfile;
     $('#btn-close-profile').onclick = closeProfile;
     document.addEventListener('click', e => {
-      const b = e.target.closest('[data-use], [data-item]');
+      const b = e.target.closest('[data-use], [data-item], [data-plt]');
       if (!b || b.disabled || !S || S.stage !== 'event') return;
+      if (b.dataset.plt) return afterUse(SIM.platoonDo(S, b.dataset.plt, b.dataset.a, b.dataset.b));
       afterUse(b.dataset.use ? SIM.useSupply(S, b.dataset.use) : SIM.useItem(S, b.dataset.item));
     });
     $('#profile').onclick = e => { if (e.target.id === 'profile') closeProfile(); };

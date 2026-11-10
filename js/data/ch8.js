@@ -92,15 +92,17 @@ window.SIM = window.SIM || {};
     casualties: '',
     warFoodDrain: -5,
     promoDate: '20 July 1943',
-    maxRank: s => camp(s) ? s.rank : (s.rank >= 4 ? ((s.flags.passedCourse && score(s) >= 14) ? 5 : 4) : 4),
+    // A platoon commander can rise to Oberfeldwebel; a squad leader to Feldwebel.
+    maxRank: s => camp(s) ? s.rank : (s.platoon && s.platoon.active ? (score(s) >= 10 ? 6 : 5) : (s.rank >= 4 && score(s) >= 12 ? 5 : Math.max(4, s.rank))),
     meritBar: 8,
     routineReason: 'Time in service.',
-    meritReason: 'Recommended for conduct in Operation Citadel.',
+    meritReason: s => s.platoon && s.platoon.active ? 'Recommended for leading a platoon in Operation Citadel.' : 'Recommended for conduct in Operation Citadel.',
     interludeDate: 'February 1943',
     interludeTitle: 'February 1943',
     blackMarks: s => camp(s) ? ['In Soviet captivity since 31 January 1943.'] : (s.flags.penal && !s.flags.penalCleared ? ['Sentenced by court-martial.'] : []),
     awards: (s, sc) => {
       if (camp(s)) return;
+      if (s.platoon && s.platoon.active && sc >= 12) s.flags.officerOffer = true;
       if (s.flags.tankKill) SIM.award(s, 'tankbadge', 'For destroying a Soviet tank single-handed near Oboyan, July 1943.', 'July 1943');
       const close = (s.assaultDays || []).filter(k => k.startsWith('7-')).length;
       if (close >= 3) SIM.award(s, 'nahkampf', 'For close combat in Operation Citadel, July 1943.', 'July 1943');
