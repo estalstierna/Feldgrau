@@ -21,15 +21,17 @@
     turret), painted plain with no markings.
 - Keep them **censor-friendly**: no swastikas, SS runes or real regime symbols. Where an emblem would
   appear, use the sword-and-oak-leaves emblem. Ask the owner to attach `docs/emblem-sheet.png` (the emblem
-  alone, on a red flag with a white disc, on a medal, and held by a breast eagle with NO wreath) and refer
+  alone, on a red flag with a white disc, on a medal, held by a breast eagle with NO wreath, and a round
+  silver cap badge with two crossed swords and an acorn, alone and on a side cap) and refer
   to it in the prompt, e.g. "a grey woven eagle exactly like the eagle in the attached emblem-sheet.png,
   holding only the sword-and-oak-leaves emblem, with no wreath and no circle". Image models tend to add a
   wreath with their own symbol under a small eagle; when that happens, crop the portrait above the eagle. Avoid naming
   sensitive historical terms when a neutral description works. For Waffen-SS portraits, never write the
   word "SS" or rank names like "SS-Rottenführer": describe only the insignia ("his rank: two thin silver
   stripes"). Do not describe fanaticism (zealous eyes, "joined at eighteen", ideological books) or put
-  weapons across the chest; the combination with a skull badge gets prompts refused. Fallback for the
-  skull: "a small round silver button on the front".
+  weapons across the chest; the combination with a skull badge gets prompts refused. Instead of the
+  skull, use the cap badge from the sheet: "the round silver cap badge (two crossed swords with an acorn)
+  from the attached emblem-sheet.png". Last resort: "a small round silver button on the front".
 - Scenes: landscape 16:9, at least 1600 × 900, horizon at 55–60 % of the height, important things
   between 30 % and 80 % of the height, hand-painted gouache style (`docs/style-reference.png`).
   Portraits: square, 1024 × 1024, plain dark olive background (#3b3d34).
