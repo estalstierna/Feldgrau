@@ -14,8 +14,8 @@ window.SIM = window.SIM || {};
   const nco = s => SIM.rankTitle(s, 4);
 
   SIM.EXTRA_PEOPLE = Object.assign(SIM.EXTRA_PEOPLE || {}, {
-    dorn: { name: 'Heinz Dorn', role: 'Leader of the platoon\'s 2nd squad. Twenty-five, from the Ruhr, Iron Cross at Rzhev. Attacks first and thinks afterwards.', present: f => f.hadPlatoon, base: () => 5 },
-    saal: { name: 'Wilhelm Saal', role: 'Leader of the platoon\'s 3rd squad. Forty-one, a carpenter from Franconia, a reservist since 1939. Careful, slow, never loses a man he does not have to.', present: f => f.hadPlatoon, base: () => 10 }
+    dorn: { name: 'Heinz Dorn', roleSS: 'Leader of the platoon\'s 2nd squad. Twenty-five, from the Ruhr, a veteran of the division since France 1940, Iron Cross at Kharkov. Attacks first and thinks afterwards.', role: 'Leader of the platoon\'s 2nd squad. Twenty-five, from the Ruhr, Iron Cross at Rzhev. Attacks first and thinks afterwards.', present: f => f.hadPlatoon, base: () => 5 },
+    saal: { name: 'Wilhelm Saal', roleSS: 'Leader of the platoon\'s 3rd squad. Thirty-eight, a carpenter from Franconia, transferred from the police divisions in 1942. Careful, slow, never loses a man he does not have to.', role: 'Leader of the platoon\'s 3rd squad. Forty-one, a carpenter from Franconia, a reservist since 1939. Careful, slow, never loses a man he does not have to.', present: f => f.hadPlatoon, base: () => 10 }
   });
 
   // ───────────────────────── The platoon ─────────────────────────
@@ -153,7 +153,7 @@ window.SIM = window.SIM || {};
 The company commander calls the NCOs together by candlelight. "The battalion has no officers to send. One of you takes the platoon." He looks round the room${deserves(s) ? ', and stops at you. "You were at Stalingrad. The men know it. Can you do it?"' : '. His eyes pass over you, and stop at an Oberfeldwebel from the 1st platoon. "Hagen. You take it."'}`,
     choices: [
       { text: '"Yes, Herr Hauptmann."', show: deserves, effects: { officers: 4, morale: 6 }, squad: { all: { morale: 4, loyalty: 4 } },
-        outcome: (s, x) => { fieldPromotion(s, x, '16 March 1943'); x.say(`Three squads, thirty-odd men. Your own, and two more: Heinz Dorn's, a young firebrand with an Iron Cross from Rzhev, and Wilhelm Saal's, a forty-year-old carpenter who has been a reservist since 1939. ${s.rank === 5 ? `By morning you are ${SIM.rankTitle(s, 5)}, on a field promotion.` : ''}`); } },
+        outcome: (s, x) => { fieldPromotion(s, x, '16 March 1943'); x.say(`Three squads, thirty-odd men. Your own, and two more: Heinz Dorn's, a young firebrand with an Iron Cross, and Wilhelm Saal's, a careful carpenter in his late thirties. ${s.rank === 5 ? `By morning you are ${SIM.rankTitle(s, 5)}, on a field promotion.` : ''}`); } },
       { text: '"I would rather keep my squad."', show: deserves, effects: { officers: -4 }, squad: { all: { loyalty: 8 } },
         result: 'The Hauptmann looks at you for a long moment. "As you wish." He gives the platoon to Oberfeldwebel Hagen. Your men heard. They do not forget it.' },
       { text: 'Say nothing.', show: s => !deserves(s), effects: { morale: -2 }, set: { passedOver: true },

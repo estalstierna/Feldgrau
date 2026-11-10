@@ -124,7 +124,7 @@ window.SIM = window.SIM || {};
       } else {
         if (g && g.status === 'ok') { g.status = 'gone'; g.fate = 'Left behind in Stalingrad, January 1943'; }
         s.stalingradSquad = (s.squad || []).map(m => Object.assign({}, m, m.status === 'ok' ? { status: 'gone', fate: 'Missing at Stalingrad, February 1943' } : {}));
-        s.squad = SIM.makeReplacements();
+        s.squad = SIM.makeReplacements(s);
         s.stats.health = Math.max(s.stats.health, 70);
         s.stats.food = 80; s.stats.warmth = 80; s.stats.morale = Math.max(s.stats.morale, 50);
         s.supplies = { ammo: 8, rations: 8, med: 5 };
@@ -140,7 +140,15 @@ window.SIM = window.SIM || {};
 
   // The men who join a squad that came back from Stalingrad without its men. By 1943 the Waffen-SS
   // took Luftwaffe transfers and ethnic Germans from the Balkans just like the Army.
-  SIM.makeReplacements = () => [
+  SIM.makeReplacements = s => (s && s.flags.joinedSS ? SS_BIOS : null) ? SIM.makeReplacementsBase().map(m => Object.assign(m, SS_BIOS[m.id] || {})) : SIM.makeReplacementsBase();
+  // The Waffen-SS drew on the same sources in 1943: ethnic Germans, Luftwaffe transfers, conscripted boys.
+  const SS_BIOS = {
+    rehm: { bio: 'Conscripted straight from the Reich Labour Service in Essen at seventeen; nobody asked whether he wanted the black collar patches. Has never seen a dead man.' },
+    tamas: { bio: 'An ethnic German from the Banat, in Romania. The recruiters came to his village in 1942 and took every young man. Speaks German with a Swabian accent his grandparents brought there in 1770.' },
+    lorenz: { bio: 'Luftwaffe ground crew, handed over to the Waffen-SS with two thousand others in the comb-out after Stalingrad. Still calls his rifle "the propeller".' },
+    fink: { bio: 'Back from a probation unit, rank restored. Will not say what he did. Can find anything.' }
+  };
+  SIM.makeReplacementsBase = () => [
     { id: 'rehm', name: 'Paul Rehm', role: 'Rifleman', age: 17, traits: ['green', 'brave'], loyalty: 55, morale: 80, rank: 0,
       bio: 'A Hitler Youth flak helper from Essen who lied about his age by a month. Has never seen a dead man.' },
     { id: 'tamas', name: 'Andreas Tamás', role: 'Machine gunner', age: 23, traits: ['steady', 'devout'], loyalty: 50, morale: 60, rank: 2,

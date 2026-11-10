@@ -258,7 +258,7 @@ window.SIM = window.SIM || {};
         const p = SIM.PEOPLE[id], v = SIM.rel(S, id);
         return `<div class="person">${avatar(id, p.name)}<div class="person-info">
           <div class="person-top"><b>${esc(p.name)}</b><span class="rel-label ${v < -15 ? 'neg' : v >= 15 ? 'pos' : ''}">${SIM.relLabel(v)}</span></div>
-          ${relBar(v)}<span class="small muted">${esc(SIM.personStatus(S, id) || p.role)}</span></div></div>`;
+          ${relBar(v)}<span class="small muted">${esc(SIM.personStatus(S, id) || (S.flags.joinedSS && p.roleSS) || p.role)}</span></div></div>`;
       };
       const groups = SIM.PEOPLE_GROUPS.concat({ id: 'other', name: 'Others' });
       return `<div class="kicker">Comrades &amp; people</div>` + groups.map(g => {

@@ -47,6 +47,10 @@ SIM.PORTRAIT_FILE = {
   // A Gefreiter in the squad in 1939–40; a military policeman with the gorget once he joins the Feldgendarmerie.
   lenz: s => (s.chapter || 0) >= 2 && s.flags.lenzFeldgendarm ? 'lenz' : 'lenz-young'
 };
+// The 1943 replacements and squad leaders wear Waffen-SS uniform for SS players, once those portraits exist.
+['rehm', 'tamas', 'lorenz', 'fink', 'kraus', 'dorn', 'saal'].forEach(id => {
+  SIM.PORTRAIT_FILE[id] = s => s.flags.joinedSS && SIM.PORTRAITS.includes(id + '-ss') ? id + '-ss' : id;
+});
 // Words in the story text that mean a character. Default: the last word of the name.
 SIM.CAST_WORDS = {
   hartmann: ['Hartmann', 'Willi'], albrecht: ['Albrecht'], mother: ['your mother', 'Your mother'], father: ['your father', 'Your father'],

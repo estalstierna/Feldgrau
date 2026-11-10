@@ -95,7 +95,7 @@ window.SIM = window.SIM || {};
     { id: 'pf_fink', chapters: [7], track: 'front', phases: [2], scene: 'camp',
       title: 'Fink\'s Market',
       cond: s => has(s, 'fink'),
-      text: 'Fink is running a market behind the field kitchen: Russian sunflower oil, Hungarian salami, Luftwaffe chocolate. "For you, Unteroffizier, a special price."',
+      text: s => `Fink is running a market behind the field kitchen: Russian sunflower oil, Hungarian salami, Luftwaffe chocolate. "For you, ${SIM.rankTitle(s).replace(/^SS-/, '')}, a special price."`,
       choices: [
         { text: 'Buy food for the squad (8 RM).', req: s => s.marks >= 8, reqText: 'You need 8 RM.', effects: { marks: -8 }, supply: { rations: 2 }, squad: { all: { morale: 4 } }, result: 'Salami and chocolate. The squad eats like officers for two days.' },
         { text: 'Shut it down.', effects: { officers: 2 }, squad: { fink: { loyalty: -6 } }, result: 'Fink shrugs and moves it two hundred metres further along.' }
