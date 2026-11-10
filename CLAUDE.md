@@ -32,9 +32,15 @@
   weapons across the chest; the combination with a skull badge gets prompts refused. Instead of the
   skull, use the cap badge from the sheet: "the round silver cap badge (two crossed swords with an acorn)
   from the attached emblem-sheet.png". Last resort: "a small round silver button on the front".
-  The sheet has eight pictures; refer to its headgear by name: Waffen-SS side cap "exactly like CAP ONE
-  in the attached emblem-sheet.png" (cap badge in the centre, eagle to its left), Army side cap "exactly
-  like CAP TWO" (only the eagle, centred), steel helmet "exactly like the HELMET" (eagle on the left side).
+  The sheet has eight pictures; refer to its headgear by name AND spell out the placement every time,
+  or the model places badges as it likes:
+  - Waffen-SS side cap: "a field-grey side cap exactly like CAP ONE (PIN AND EAGLE) in the attached
+    emblem-sheet.png: the round silver cap badge sits exactly in the CENTRE of the front of the cap, and
+    the small silver eagle sits directly to the LEFT of the badge (the viewer's left), at the same height".
+  - Army side cap: "exactly like CAP TWO (ONLY EAGLE) in the attached emblem-sheet.png: only a small
+    silver-grey eagle, exactly in the CENTRE of the front of the cap, and no other badge".
+  - Steel helmet: "exactly like the HELMET in the attached emblem-sheet.png: a small silver-grey eagle
+    decal on the LEFT side of the helmet, nothing else".
 - Scenes: landscape 16:9, at least 1600 × 900, horizon at 55–60 % of the height, important things
   between 30 % and 80 % of the height, hand-painted gouache style (`docs/style-reference.png`).
   Portraits: square, 1024 × 1024, plain dark olive background (#3b3d34).
