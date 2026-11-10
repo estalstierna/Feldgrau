@@ -97,7 +97,8 @@ def main():
         args.remove('--holes'); holes = 0.004
     mid, src = args
     img = cut_out(src, tol, holes)
-    img.thumbnail((256, 512), Image.LANCZOS)
+    # Wide clasps get more pixels so they stay sharp at their larger display width.
+    img.thumbnail((768, 512) if img.width > img.height * 2 else (256, 512), Image.LANCZOS)
     out = ROOT / 'assets' / 'medals'
     out.mkdir(parents=True, exist_ok=True)
     img.save(out / f'medal-{mid}.png', optimize=True)
