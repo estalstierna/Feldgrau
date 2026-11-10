@@ -37,6 +37,13 @@
   - Waffen-SS side cap: "a field-grey side cap exactly like CAP ONE (PIN AND EAGLE) in the attached
     emblem-sheet.png: the round silver cap badge sits exactly in the CENTRE of the front of the cap, and
     the small silver eagle sits directly to the LEFT of the badge (the viewer's left), at the same height".
+  - Image models read the sheet poorly for small details: ALSO describe the badge in words and anchor
+    the placement to the face: "on the front of the cap, directly above the bridge of his nose, a round
+    silver cap badge the size of a coin with a raised rim; on it, clearly visible in relief, TWO SMALL
+    SWORDS CROSSED DIAGONALLY, points up, and ONE SMALL ACORN with an oak leaf above where they cross.
+    Just to the left of this badge (the viewer's left), above his right eyebrow, a smaller silver eagle
+    holding the upright sword with oak leaves. Nothing else on the cap."
+  - Collar-patch stripes: say "running HORIZONTALLY across the lower part of the patch".
   - Army side cap: "exactly like CAP TWO (ONLY EAGLE) in the attached emblem-sheet.png: only a small
     silver-grey eagle, exactly in the CENTRE of the front of the cap, and no other badge".
   - Steel helmet: "exactly like the HELMET in the attached emblem-sheet.png: a small silver-grey eagle
