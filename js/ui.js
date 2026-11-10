@@ -411,7 +411,11 @@ window.SIM = window.SIM || {};
 
   // ── Wiring ──
   function init() {
-    $('#btn-new').onclick = () => { draft.first = ''; renderCreate(); };
+    $('#btn-new').onclick = () => {
+      const saved = SIM.load();
+      if (resumable(saved) && !confirm(`You have a saved game: ${saved.char.first} ${saved.char.last}, ${SIM.rankTitle(saved)}, Chapter ${SIM.CHAPTERS[saved.chapter || 0].num}.\n\nStarting a new soldier will erase it. Continue?`)) return;
+      draft.first = ''; renderCreate();
+    };
     $('#btn-continue').onclick = () => {
       const saved = SIM.load();
       if (!resumable(saved)) return renderTitle();
