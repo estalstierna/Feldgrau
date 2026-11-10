@@ -176,5 +176,40 @@ SIM.MAPS.stalingrad = () => ({
 });
 SIM.MAP_PLACES.stalingrad = {"steppe": [16.0, 49.8], "donbend": [167.8, 110.4], "volga_north": [247.7, 123.8], "city": [240.5, 139.6], "factory": [245.3, 129.9], "kessel": [217.3, 140.8], "gumrak": [227.7, 130.5], "centre": [240.5, 139.6]};
 
+SIM.MAPS.pow = () => ({
+  label: "Map of the prisoner transports from Stalingrad, 1943",
+  base: `<rect width="320" height="250" class="m-land"/>
+    <path d="M192.9,250.0 L183.9,241.3 L175.9,232.6 L170.2,223.5 L175.5,213.4 L185.7,183.7 L197.0,141.6 L223.2,125.0 L269.6,93.0 L257.1,84.3 L239.3,61.0 L253.6,32.0 L252.1,17.7 L241.1,16.0 L217.9,8.7 L160.7,2.0 L151.8,0.0" class="m-river" opacity=".75"/>
+    <path d="M130.4,250.0 L144.6,233.7 L152.3,224.1 L142.9,206.4 L137.5,197.7 L107.1,191.9 L91.1,174.4 L75.0,137.5 L71.4,113.4 L62.5,84.3 L57.1,69.8" class="m-river" opacity=".75"/>
+    <path d="M0.0,69.8 L23.2,55.2 L57.1,40.7 L84.6,51.5 L116.1,34.9 L160.7,2.0" class="m-river" opacity=".75"/>
+    <path d="M169.8,223.5 L150.0,191.9 L129.5,151.2 L98.2,101.7 L83.9,52.3 L46.8,18.9" class="m-border"/>
+    <text x="39.3" y="203.5" class="m-country">SOVIET UNION</text>
+    <text x="242.9" y="110.5" class="m-small m-label" transform="rotate(-50 242.9 110.5)">VOLGA</text>
+    <text x="105.4" y="180.2" class="m-small m-label" transform="rotate(-40 105.4 180.2)">DON</text>
+    <text x="100.0" y="32.0" class="m-small m-label">OKA</text>
+    <text x="102.7" y="77.0" class="m-small m-label" transform="rotate(-38 102.7 77.0)">railway to Moscow</text>`,
+  towns: [[46.8, 18.9, "Moscow", "end"], [169.8, 223.5, "Stalingrad"], [167.9, 228.2, "Beketovka", "end"], [197.0, 141.6, "Saratov"], [75.0, 137.5, "Voronezh"], [115.2, 107.0, "Tambov"], [252.1, 17.7, "Kazan"], [304.6, 18.6, "Yelabuga", "end"], [178.6, 93.0, "Penza"], [84.6, 51.5, "Ryazan"]]
+});
+SIM.MAP_PLACES.pow = {"column": [170.7, 220.9], "beketovka": [167.9, 228.2], "ruins_work": [169.6, 223.3], "train": [114.3, 127.9], "krasnogorsk": [41.6, 16.9]};
+
+SIM.MAPS.kursk = () => ({
+  label: "Map of the Kursk bulge, July 1943",
+  base: `<rect width="320" height="250" class="m-land"/>
+    <path d="M79.3,104.6 L75.1,127.6 L79.3,148.0 L77.3,166.3 L96.1,198.5 L129.4,214.3 L168.2,229.6 L200.6,239.8" class="m-river" opacity=".75"/>
+    <path d="M27.5,250.0 L23.9,236.7 L9.7,229.6 L0.0,221.9" class="m-river" opacity=".75"/>
+    <path d="M80.9,91.8 L63.7,96.4 L42.1,112.2 L19.4,132.7 L0.0,158.2" class="m-river" opacity=".75"/>
+    <path d="M64.7,117.3 L55.0,132.7 L29.1,153.1 L8.1,179.1 L0.0,193.9" class="m-river" opacity=".75"/>
+    <path d="M61.1,69.9 L32.3,76.5 L0.0,81.6" class="m-river" opacity=".75"/>
+    <path d="M67.9,0.0 L55.0,20.4 L71.2,35.7 L42.1,43.4 L12.9,51.0 L3.2,76.5 L22.6,96.9 L42.1,112.2 L58.2,119.9 L72.8,126.5 L84.1,137.8 L87.3,148.0 L100.3,178.6 L110.0,199.0 L132.6,214.3" class="m-border" stroke-dasharray="2 3" opacity=".85"/>
+    <text x="161.7" y="17.9" class="m-country">SOVIET UNION</text>
+    <text x="97.0" y="58.7" class="m-small m-label">the Kursk bulge</text>
+    <text x="95.4" y="145.4" class="m-small m-label">front line, 4 July 1943</text>
+    <text x="72.8" y="181.1" class="m-small m-label" transform="rotate(-70 72.8 181.1)">DONETS</text>
+    <text x="3.2" y="220.4" class="m-small m-label">DNIEPER</text>
+    <text x="27.5" y="122.4" class="m-small m-label" transform="rotate(-40 27.5 122.4)">PSEL</text>`,
+  towns: [[61.1, 69.9, "Kursk"], [57.3, 6.6, "Orel"], [74.1, 127.6, "Belgorod"], [62.4, 158.7, "Kharkov", "end"], [63.7, 96.4, "Oboyan", "end"], [78.6, 105.1, "Prokhorovka"], [8.1, 179.1, "Poltava"], [23.9, 236.7, "Dnepropetrovsk"], [157.9, 73.0, "Voronezh"], [114.5, 91.8, "Stary Oskol"]]
+});
+SIM.MAP_PLACES.kursk = {"hospital": [23.9, 236.7], "poltava": [8.1, 179.1], "kharkov": [62.4, 158.7], "belgorod": [70.5, 123.5], "startline": [64.1, 118.4], "oboyan": [66.3, 108.2], "prokhorovka": [78.6, 105.1], "retreat": [71.8, 122.4]};
+
 // Move every chapter's route stops to their projected positions.
-(SIM.CHAPTERS || []).forEach(ch => { const pl = SIM.MAP_PLACES[ch.map]; if (!pl) return; Object.keys(pl).forEach(k => { if (ch.places[k]) { ch.places[k].x = pl[k][0]; ch.places[k].y = pl[k][1]; } }); });
+(SIM.CHAPTERS || []).forEach(ch => [].concat(ch.maps || ch.map).forEach(id => { const pl = SIM.MAP_PLACES[id]; if (!pl) return; Object.keys(pl).forEach(k => { if (ch.places[k]) { ch.places[k].x = pl[k][0]; ch.places[k].y = pl[k][1]; } }); }));

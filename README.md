@@ -27,8 +27,9 @@ Choose with the mouse or by tapping, or press **1–4** to pick a choice and **E
 | VI: Leave | 20 – 26 April 1942 | Fourteen days at home in your home town. The family, Liesel (and a war wedding), the empty flat of the Jewish neighbours, an air raid, the Gestapo, forced labourers, and the film from Białystok |
 | *Interlude* | May – June 1942 | Kharkov, the summer directive, a last quiet week among the cherry orchards |
 | VII: Stalingrad | 28 Jun 1942 – 31 Jan 1943 | The whole battle over 13 days: the steppe, the **Don** bend, the **Volga**, the grain elevator, the **Tractor Works**, the Rattenkrieg, the encirclement, the airlift, Christmas in the pocket, the last planes from **Gumrak**, and the surrender. Army and SS players both end up here. Introduces **Grischa**, a Ukrainian *Hiwi* in your squad |
+| VIII: Two Roads | Feb – Jul 1943 | Two tracks of 14 days each, chosen by how Chapter VII ended. **Captivity**: the march to Beketovka, typhus, Dr. Lipatova, a familiar face in a private's coat, Camp 27 at Krasnogorsk, the NKVD, and the founding of the National Committee for a Free Germany. **Front**: hospital, Major Kessler's investigation of how you got out, Kharkov, and Operation Citadel at Kursk |
 
-Chapters I and II are 7 days each; Chapter III is 14 days, Chapter IV 10 days, Chapter V 12 days and Chapter VII 13 days, across several places. Each day has 3 phases (morning, afternoon, night). Choices in Chapter I follow you: who you saved, who you betrayed, and who is still in your squad.
+Chapters I and II are 7 days each; Chapter III is 14 days, Chapter IV 10 days, Chapter V 12 days, Chapter VII 13 days and Chapter VIII 14 days, across several places. Each day has 3 phases (morning, afternoon, night). Choices in Chapter I follow you: who you saved, who you betrayed, and who is still in your squad.
 
 ## Character and stats
 
@@ -93,6 +94,15 @@ In Stalingrad your squad has three **supplies**: ammunition, rations and medical
 - **Medical kit** can turn a man's death into a wound, and blunts the worst of your own wounds. Each use costs one.
 
 The chapter ends in one of four ways: **flown out** from Gumrak (by Starck's favour, your wounds, or a forged tag), **captivity** (alone or with your squad), a **breakout** across 200 km of snow, or death. All but death lead on.
+
+### Hope (Chapter VIII, captivity)
+In the camp, **Hope** replaces the squad's supplies. Letters, faith, comrades and small kindnesses raise it; deaths and betrayals lower it. Below 20, men stop eating, and you lose health every night.
+
+### Statements on record (Chapter VIII, front)
+Major Kessler of the Secret Field Police asks every man who got out of Stalingrad how he did it, more than once. What you tell him is kept **on record** (shown in the Soldbuch). He compares: telling the same lie twice is safer than changing your story, and the truth is safest of all, unless the truth is a crime.
+
+### Using supplies and kit yourself
+When your **food is below 60** you can eat one of the squad's rations; when your **health is below 70** you can use the medical kit. Some kit can be used too: drink vodka or schnapps, brew coffee, smoke. Each once per morning, afternoon or night, from the Status panel or the Kit tab.
 
 ### Starck
 SS officer **Wolfram Starck** is a recurring character from Chapter II on: a former schoolteacher and a true believer. You meet him:
@@ -197,6 +207,9 @@ js/data/ch6.js      Chapter VI: interludes (Army / SS), days 0–3 at home
 js/data/ch6_more.js Chapter VI: days 4–6, random events, endings
 js/data/ch7.js      Chapter VII: interlude, the steppe to the encirclement (days 0–6)
 js/data/ch7_more.js Chapter VII: the pocket, Gumrak, the surrender, random events, endings
+js/data/ch8.js      Chapter VIII: both calendars, the interlude, the captivity track
+js/data/ch8_front.js Chapter VIII: the front track (Kessler, Kursk)
+js/data/ch8_more.js Chapter VIII: random events, endings
 js/data/starck.js   Starck's appearances in Chapters II–IV
 js/systems.js       relationships, skills, kit, squad
 js/engine.js        state, effects, event selection, saving

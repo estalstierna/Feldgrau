@@ -283,3 +283,11 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
 }
 
 .medal-img { display: block; width: auto; object-fit: contain; }
+
+/* Using supplies and kit */
+.use-btn { margin-top: .35rem; font: inherit; font-size: .8rem; padding: .25em .8em; border: 1px solid var(--line); background: var(--paper, #f3ecdc); color: inherit; cursor: pointer; border-radius: 2px; }
+.use-btn:hover:not([disabled]) { border-color: currentColor; }
+.use-btn[disabled] { opacity: .45; cursor: default; }
+.use-why { display: block; font-size: .72rem; opacity: .6; margin-top: .15rem; }
+.toast { position: fixed; left: 50%; bottom: 5.5rem; transform: translate(-50%, 20px); max-width: min(90vw, 28rem); background: #2b2e27; color: #f0e9d8; padding: .7rem 1rem; font-size: .9rem; border-radius: 3px; box-shadow: 0 4px 18px rgba(0,0,0,.35); opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; z-index: 50; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }

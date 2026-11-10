@@ -83,7 +83,10 @@ SIM.findEvent = id => SIM.EVENTS.find(e => e.id === id) || SIM.POOL.find(e => e.
 SIM.INTERLUDE_EVENTS = SIM.INTERLUDE_EVENTS || {};
 
 SIM.chapter = s => SIM.CHAPTERS[s.chapter || 0];
-SIM.days = s => SIM.chapter(s).days;
+// A chapter value may be a function of the state (chapters with two tracks).
+SIM.chv = (s, k) => { const v = SIM.chapter(s)[k]; return typeof v === 'function' ? v(s) : v; };
+SIM.track = s => SIM.chv(s, 'track') || null;
+SIM.days = s => SIM.chv(s, 'days');
 SIM.today = s => { const d = SIM.days(s); return d[Math.min(s.day, d.length - 1)]; };
 // A day's place can depend on the story so far.
 SIM.dayPlace = (s, d) => typeof d.place === 'function' ? d.place(s) : d.place;
@@ -95,9 +98,10 @@ SIM.seenKey = (s, ev) => SIM.isPool(ev) ? `${s.chapter || 0}:${ev.id}` : ev.id;
 // Pick the event for the current day/phase.
 SIM.pickEvent = function (s) {
   const ch = s.chapter || 0;
-  const scripted = SIM.EVENTS.filter(e => (e.chapter || 0) === ch && e.day === s.day && e.phase === s.phase && !s.seen[e.id] && (!e.cond || e.cond(s)));
+  const tr = SIM.track(s);
+  const scripted = SIM.EVENTS.filter(e => (e.chapter || 0) === ch && e.day === s.day && e.phase === s.phase && (!e.track || e.track === tr) && !s.seen[e.id] && (!e.cond || e.cond(s)));
   if (scripted.length) return scripted[0];
-  const pool = SIM.POOL.filter(e => (e.chapters || [0]).includes(ch) && e.phases.includes(s.phase) && !s.seen[SIM.seenKey(s, e)] && (!e.cond || e.cond(s)));
+  const pool = SIM.POOL.filter(e => (e.chapters || [0]).includes(ch) && e.phases.includes(s.phase) && (!e.track || e.track === tr) && !s.seen[SIM.seenKey(s, e)] && (!e.cond || e.cond(s)));
   if (!pool.length) return null;
   const total = pool.reduce((a, e) => a + (e.weight || 1), 0);
   let r = Math.random() * total;
@@ -196,9 +200,14 @@ SIM.upkeep = function (s) {
     notes.push('You are hungry.');
   }
   if (s.phase === 2 && s.stats.food > 30) SIM.apply(s, { health: 3 }, d); // rest overnight
-  if (SIM.chapter(s).cold && SIM.coldUpkeep) SIM.coldUpkeep(s, d, notes);
+  if (SIM.chv(s, 'cold') && SIM.coldUpkeep) SIM.coldUpkeep(s, d, notes);
   // Some chapters give back morale each night: sleep, comradeship, a letter.
-  if (s.phase === 2 && SIM.chapter(s).nightMorale) SIM.apply(s, { morale: SIM.chapter(s).nightMorale }, d);
+  if (s.phase === 2 && SIM.chv(s, 'nightMorale')) SIM.apply(s, { morale: SIM.chv(s, 'nightMorale') }, d);
+  // Hope (in captivity): men who lose it stop eating, and die.
+  if (s.phase === 2 && SIM.chv(s, 'hope') && s.stats.hope !== undefined) {
+    if (s.stats.hope <= 20) { SIM.apply(s, { health: -4, morale: -3 }, d); notes.push('You have stopped believing you will ever see home. Men who stop believing stop eating, and then they die.'); }
+    else if (s.stats.hope >= 60) SIM.apply(s, { morale: 2 }, d);
+  }
   if (s.stats.health < 30) notes.push('Your wounds throb. You need rest and a doctor.');
   if (s.stats.morale < 20) notes.push('Something in you is close to breaking.');
   if (s.stats.suspicion >= 70) notes.push('You feel eyes on you. People stop talking when you come near.');
@@ -233,7 +242,7 @@ SIM.step = function (s, ev, out) {
   if (f) return { type: 'ending', id: SIM.finish(s, f) };
   if (out.next) { s.notes = []; return { type: 'event', ev: SIM.findEvent(out.next) }; }
   const ch = SIM.chapter(s);
-  if (ev.id === ch.finalEvent) return { type: 'ending', id: SIM.finish(s, ch.ending(s)) };
+  if ([].concat(ch.finalEvent || []).includes(ev.id)) return { type: 'ending', id: SIM.finish(s, ch.ending(s)) };
   for (let guard = 0; guard < 50; guard++) {
     const res = SIM.advance(s);
     f = SIM.fatal(s);

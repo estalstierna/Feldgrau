@@ -31,6 +31,8 @@ SIM.PEOPLE = {
   claire: { name: 'Claire Girard', role: 'Daughter of the house where you are billeted on the Cher.', present: f => f.metClaire, base: () => -20 },
   madame: { name: 'Madame Girard', role: 'Widow. Her husband died at Verdun.', present: f => f.metClaire, base: () => -30 }
 };
+// People that later chapters add (they load before this file).
+Object.assign(SIM.PEOPLE, SIM.EXTRA_PEOPLE || {});
 
 // Painted portraits available in assets/portraits/<id>.webp. Others fall back to initials.
 SIM.PORTRAITS = ['hartmann', 'lenz', 'rau', 'vogel', 'brandt', 'albrecht', 'sattler', 'brenner', 'kuehn', 'claire', 'madame', 'pohl', 'starck', 'brandes', 'voss', 'wendt', 'mayr', 'brueck', 'nowak', 'haas', 'mother', 'father', 'liesel', 'grischa'];
@@ -114,6 +116,51 @@ SIM.ITEMS = {
   valenki:    { name: 'Felt boots', unit: 'pair', desc: 'Russian valenki: thick pressed felt. Your leather marching boots freeze; these do not.' },
   blanket:    { name: 'Blanket', desc: 'A grey wool blanket, worn over the greatcoat like a cloak.' },
   film:       { name: 'Undeveloped film', desc: 'A roll of film from Białystok, 27 June 1941. Proof, if anyone ever asks for it. A death sentence, if the wrong person finds it.' }
+};
+// Kit you can use yourself, and what it does.
+SIM.ITEM_USE = {
+  vodka: { verb: 'Drink', effects: { morale: 6, warmth: 6, health: -1 }, text: 'You drink. For an hour the world is warmer and further away.' },
+  schnapps: { verb: 'Drink', effects: { morale: 5, warmth: 5, health: -1 }, text: 'Fierce, cheap, and exactly what you needed.' },
+  coffee: { verb: 'Brew', effects: { morale: 6, health: 2 }, text: 'Real coffee. The smell alone brings men from three dugouts away.' },
+  tobacco: { verb: 'Smoke', effects: { morale: 3 }, text: 'A pipe, a quiet quarter of an hour.' },
+  cigarettes: { verb: 'Smoke', effects: { morale: 3, health: -1 }, text: 'You smoke the whole pack, one after the other.' }
+};
+// Squad supplies you can use on yourself when you need them.
+SIM.SUPPLY_USE = {
+  rations: { verb: 'Eat a ration', stat: 'food', below: 60, effects: { food: 25 }, text: 'You eat your share and a little more. The others pretend not to notice.' },
+  med: { verb: 'Dress your wounds', stat: 'health', below: 70, effects: { health: 15 }, text: 'Clean dressings, sulfa powder, a twist of morphine. It helps.' }
+};
+SIM.phaseKey = s => `${s.chapter || 0}-${s.day}-${s.phase}`;
+// Why a supply cannot be used now, or null if it can.
+SIM.supplyBlock = function (s, k) {
+  const u = SIM.SUPPLY_USE[k];
+  if (!u || !SIM.hasSupplies(s)) return 'Not available.';
+  if (s.supplies[k] <= 0) return 'None left.';
+  if (s.stats[u.stat] >= u.below) return `Only when your ${SIM.STATS[u.stat].label.toLowerCase()} is below ${u.below}.`;
+  if ((s.used || {})[k] === SIM.phaseKey(s)) return 'Once per morning, afternoon or night.';
+  return null;
+};
+SIM.useSupply = function (s, k) {
+  if (SIM.supplyBlock(s, k)) return null;
+  const u = SIM.SUPPLY_USE[k];
+  s.supplies[k]--;
+  s.used = Object.assign({}, s.used, { [k]: SIM.phaseKey(s) });
+  SIM.apply(s, u.effects);
+  return u.text;
+};
+SIM.itemBlock = function (s, id) {
+  if (!SIM.ITEM_USE[id] || !SIM.has(s, id)) return 'Not available.';
+  if ((s.used || {})['item_' + id] === SIM.phaseKey(s)) return 'Once per morning, afternoon or night.';
+  return null;
+};
+SIM.useItem = function (s, id) {
+  if (SIM.itemBlock(s, id)) return null;
+  SIM.give(s, id, -1);
+  s.used = Object.assign({}, s.used, { ['item_' + id]: SIM.phaseKey(s) });
+  const eff = Object.assign({}, SIM.ITEM_USE[id].effects);
+  if (!SIM.chv(s, 'cold')) delete eff.warmth;
+  SIM.apply(s, eff);
+  return SIM.ITEM_USE[id].text;
 };
 SIM.has = (s, id, n = 1) => ((s.items || {})[id] || 0) >= n;
 SIM.give = function (s, id, n = 1) {
@@ -216,7 +263,7 @@ SIM.SUPPLY = {
   med: { name: 'Medical kit', short: 'Med.', desc: 'Dressings and morphine. Can save a wounded man.' }
 };
 SIM.SUPPLY_MAX = 12;
-SIM.hasSupplies = s => !!SIM.chapter(s).supplies && !!s.supplies;
+SIM.hasSupplies = s => !!SIM.chv(s, 'supplies') && !!s.supplies;
 SIM.supply = function (s, k, n, out) {
   if (!s.supplies) return;
   const before = s.supplies[k];
@@ -227,7 +274,7 @@ SIM.supply = function (s, k, n, out) {
 // Each night: in the pocket the squad eats its rations and the airlift brings what it can.
 SIM.supplyUpkeep = function (s, d, notes) {
   const ch = SIM.chapter(s), day = SIM.today(s);
-  if (!ch.supplies || !s.supplies || s.phase !== 2) return;
+  if (!SIM.chv(s, 'supplies') || !s.supplies || s.phase !== 2) return;
   const men = SIM.squadMen(s).length + 1;
   if (!day.pocket) {
     ['ammo', 'rations', 'med'].forEach(k => SIM.supply(s, k, 1));
@@ -277,7 +324,7 @@ SIM.coldUpkeep = function (s, d, notes) {
       notes.push('Frostbite. The skin on your feet has gone white and hard, then black. The medical orderly cuts away what he has to.');
       SIM.addLog(s, 'Frostbite.');
       SIM.woundBadge(s);   // frostbite counted as a wound for the Wound Badge
-      if (s.stats.health <= 0) s.deathCause = `Froze to death ${SIM.chapter(s).id === 'stalingrad' ? 'in the Stalingrad pocket' : 'in a foxhole before Moscow'}, ${day.date}.`;
+      if (s.stats.health <= 0) s.deathCause = `${{ stalingrad: 'Froze to death in the Stalingrad pocket', tworoads: 'Died of cold and hunger in the prisoner-of-war camp at Beketovka' }[SIM.chapter(s).id] || 'Froze to death in a foxhole before Moscow'}, ${day.date}.`;
     }
   } else if (s.stats.warmth <= 40) notes.push('The cold gets into everything: your bones, your rifle, your thoughts.');
   // At night the cold takes men from the squad.
@@ -337,6 +384,7 @@ SIM.applyExtras = function (s, ch, x, out) {
   if (ch.winter) x.winter(ch.winter);
   if (ch.supply) for (const k in ch.supply) x.supply(k, ch.supply[k]);
   if (ch.shelter !== undefined) x.shelter(ch.shelter);
+  if (ch.state) x.state(ch.state.key, ch.state.v, ch.state.t);
 };
 SIM.extendContext = function (s, x, out) {
   out.extra = out.extra || [];
@@ -360,6 +408,15 @@ SIM.extendContext = function (s, x, out) {
   x.casualty = (chance, how) => SIM.squadCasualty(s, out, chance, how);
   x.supply = (k, n) => SIM.supply(s, k, n, out);
   x.supplies = () => s.supplies || {};
+  // A statement for the record (interrogations). Later events compare what you said.
+  x.state = (key, v, t) => {
+    s.statements = s.statements || {};
+    const prev = s.statements[key];
+    s.statements[key] = { v, t: t || '', date: SIM.today(s).short };
+    if (prev && prev.v !== v) s.flags.changedStory = (s.flags.changedStory || 0) + 1;
+    out.extra.push({ label: prev && prev.v !== v ? 'Story changed' : 'Statement on record', good: !(prev && prev.v !== v), kind: 'item' });
+  };
+  x.said = key => ((s.statements || {})[key] || {}).v;
   x.winter = n => { s.squadWinter = Math.max(0, Math.min(3, (s.squadWinter || 0) + n)); out.extra.push({ label: `Squad winter kit ${n > 0 ? '▲' : '▼'}`, good: n > 0, kind: 'item' }); };
   x.shelter = n => { s.shelter = Math.max(0, Math.min(2, n)); out.extra.push({ label: n > 0 ? 'Shelter for the night' : 'No shelter', good: n > 0, kind: 'item' }); };
 };

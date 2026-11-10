@@ -18,7 +18,7 @@ You were ${ch.year - s.char.birthYear} years old. ${ch.casualties}`;
   arrested: {
     title: 'Arrested',
     final: true,
-    text: s => `The Feldgendarmerie come for you at night. The charge is Wehrkraftzersetzung: undermining the fighting spirit of the armed forces. Lenz's statement runs to three pages.${s.flags.spd ? ' The file from 1933 about your father is attached.' : ''}
+    text: s => SIM.chv(s, 'arrestText') || `The Feldgendarmerie come for you at night. The charge is Wehrkraftzersetzung: undermining the fighting spirit of the armed forces. Lenz's statement runs to three pages.${s.flags.spd ? ' The file from 1933 about your father is attached.' : ''}
 
 The court-martial takes forty minutes. Under the new wartime decree, the penalty is death. In a mercy that is not a mercy, it is commuted to service in a penal unit.
 
@@ -27,7 +27,7 @@ Most men in those units did not live to see the end of the war.`
   breakdown: {
     title: 'Broken',
     final: true,
-    text: s => `It happens in the middle of an ordinary moment. You simply stop. You sit down at the side of the road and you cannot get up again, and you cannot stop shaking, and when Brandt shouts at you, you cannot even hear him.
+    text: s => SIM.chv(s, 'breakdownText') || `It happens in the middle of an ordinary moment. You simply stop. You sit down at the side of the road and you cannot get up again, and you cannot stop shaking, and when Brandt shouts at you, you cannot even hear him.
 
 The medical officer writes "nervous exhaustion" on your tag. In ${SIM.chapter(s).year} the army does not have a better word for it. You are sent to a military hospital in ${SIM.chapter(s).hospital}, and then to a "special ward", where the doctors are less interested in curing you than in deciding whether you are a malingerer.
 

@@ -391,6 +391,122 @@ Format: square, at least 1024 x 1024 pixels, PNG. No text, letters or numbers.
 Close Combat Clasp in Bronze (1942). A horizontal bronze clasp, about three times as wide as it is tall. In the centre a small round medallion with a crossed bayonet and stick grenade, framed by oak leaves; on each side of it a spray of oak leaves fanning outward, all on a dark matt backing. The medallion holds the sword-and-oak-leaves emblem. No ribbon. Isolated on a plain light grey background.
 ```
 
+## 4i. Chapter VIII: Two Roads
+
+The scene prompts below are complete: paste each one on its own (after the master prompt, with `style-reference.png` attached). Single images (`-single`) look the same at every time of day.
+
+### Scenes
+
+**scene-powcamp-winter-morning.png**
+```
+Hand-painted gouache on textured, aged paper, with visible brush strokes and paper grain, like a 1940s book illustration. Smooth, even paint surface. Muted, desaturated palette. NOT photorealistic. Landscape 16:9, at least 1600 x 900 pixels. Horizon at about 55–60 % of the height; keep everything important between 30 % and 80 % of the height. No text, letters, numbers or signature.
+
+A prisoner-of-war camp on the frozen steppe in February 1943, early morning, pale grey light, bitter cold. A few low brick buildings and earth-covered dugouts, a simple barbed-wire fence on wooden posts, a wooden watchtower. Long rows of gaunt prisoners in ragged grey greatcoats, with blankets over their heads, standing in the snow for the morning count. Two guards in long quilted coats and fur caps. No flags, no emblems.
+```
+
+**scene-powcamp-winter-afternoon.png**
+```
+Hand-painted gouache on textured, aged paper, with visible brush strokes and paper grain, like a 1940s book illustration. Smooth, even paint surface. Muted, desaturated palette. NOT photorealistic. Landscape 16:9, at least 1600 x 900 pixels. Horizon at about 55–60 % of the height; keep everything important between 30 % and 80 % of the height. No text, letters, numbers or signature.
+
+A prisoner-of-war camp on the frozen steppe in February 1943, late afternoon. A low, weak winter sun, pale pink-gold light on the snow and long blue shadows. A few low brick buildings and earth-covered dugouts, a simple barbed-wire fence on wooden posts, a wooden watchtower. Gaunt prisoners in ragged grey greatcoats queue with tin cans at a steaming soup cauldron. Two guards in long quilted coats and fur caps. No flags, no emblems.
+```
+
+**scene-powcamp-winter-night.png**
+```
+Hand-painted gouache on textured, aged paper, with visible brush strokes and paper grain, like a 1940s book illustration. Smooth, even paint surface. Muted, desaturated palette. NOT photorealistic. Landscape 16:9, at least 1600 x 900 pixels. Horizon at about 55–60 % of the height; keep everything important between 30 % and 80 % of the height. No text, letters, numbers or signature.
+
+A prisoner-of-war camp on the frozen steppe in February 1943, at night. Deep blue snow, the black outlines of low buildings and earth-covered dugouts, a barbed-wire fence, a wooden watchtower with a single searchlight sweeping the snow. A faint orange glow and a thread of smoke from one stovepipe. A cold, starry sky. No flags, no emblems.
+```
+
+**scene-powcamp-morning.png**
+```
+Hand-painted gouache on textured, aged paper, with visible brush strokes and paper grain, like a 1940s book illustration. Smooth, even paint surface. Muted, desaturated palette. NOT photorealistic. Landscape 16:9, at least 1600 x 900 pixels. Horizon at about 55–60 % of the height; keep everything important between 30 % and 80 % of the height. No text, letters, numbers or signature.
+
+A prisoner-of-war camp in a birch and pine forest near Moscow, early summer 1943, soft morning light. Long wooden barracks with tarpaper roofs, a sandy parade ground, a simple barbed-wire fence and a wooden watchtower. Thin prisoners in faded grey uniforms without insignia stand in rows for the count. A guard in a summer tunic and side cap. No flags, no emblems.
+```
+
+**scene-powcamp-afternoon.png**
+```
+Hand-painted gouache on textured, aged paper, with visible brush strokes and paper grain, like a 1940s book illustration. Smooth, even paint surface. Muted, desaturated palette. NOT photorealistic. Landscape 16:9, at least 1600 x 900 pixels. Horizon at about 55–60 % of the height; keep everything important between 30 % and 80 % of the height. No text, letters, numbers or signature.
+
+A prisoner-of-war camp in a birch and pine forest near Moscow, summer 1943, warm late-afternoon light and long shadows. Long wooden barracks with tarpaper roofs, a sandy parade ground, a barbed-wire fence and a wooden watchtower. Prisoners in faded grey uniforms without insignia sit against the barrack walls in the sun, carving wood; a few play football with a ball made of rags. No flags, no emblems.
+```
+
+**scene-powcamp-night.png**
+```
+Hand-painted gouache on textured, aged paper, with visible brush strokes and paper grain, like a 1940s book illustration. Smooth, even paint surface. Muted, desaturated palette. NOT photorealistic. Landscape 16:9, at least 1600 x 900 pixels. Horizon at about 55–60 % of the height; keep everything important between 30 % and 80 % of the height. No text, letters, numbers or signature.
+
+A prisoner-of-war camp in a birch and pine forest near Moscow, a short summer night in 1943. Deep blue light that never quite becomes dark, the silhouettes of long wooden barracks and birch trees, a barbed-wire fence, a watchtower with a dim lamp. A few lit windows. No flags, no emblems.
+```
+
+**scene-tanks-morning.png**
+```
+Hand-painted gouache on textured, aged paper, with visible brush strokes and paper grain, like a 1940s book illustration. Smooth, even paint surface. Muted, desaturated palette. NOT photorealistic. Landscape 16:9, at least 1600 x 900 pixels. Horizon at about 55–60 % of the height; keep everything important between 30 % and 80 % of the height. No text, letters, numbers or signature.
+
+The open, rolling steppe of southern Russia in July 1943, early morning, hazy light and dust. Heavy, boxy grey tanks advance in a wide line through ripe wheat, with small infantry silhouettes in plain steel helmets walking behind them. Smoke and flashes on the horizon. All vehicles plain grey with no markings: no crosses, no letters, no numbers, no emblems.
+```
+
+**scene-tanks-afternoon.png**
+```
+Hand-painted gouache on textured, aged paper, with visible brush strokes and paper grain, like a 1940s book illustration. Smooth, even paint surface. Muted, desaturated palette. NOT photorealistic. Landscape 16:9, at least 1600 x 900 pixels. Horizon at about 55–60 % of the height; keep everything important between 30 % and 80 % of the height. No text, letters, numbers or signature.
+
+A tank battlefield on the steppe in July 1943, hot late afternoon, the sun low and orange through smoke. Burning and wrecked tanks scattered across a trampled wheat field, black smoke columns rising into the sky, a few small infantry figures in a shallow trench in the foreground. All vehicles plain grey or plain green with no markings: no crosses, no stars, no letters, no numbers, no emblems.
+```
+
+**scene-tanks-night.png**
+```
+Hand-painted gouache on textured, aged paper, with visible brush strokes and paper grain, like a 1940s book illustration. Smooth, even paint surface. Muted, desaturated palette. NOT photorealistic. Landscape 16:9, at least 1600 x 900 pixels. Horizon at about 55–60 % of the height; keep everything important between 30 % and 80 % of the height. No text, letters, numbers or signature.
+
+A tank battlefield on the steppe on a July night in 1943. Dark blue sky, the black silhouettes of wrecked tanks, several still burning orange, sparks rising. Flares hanging in the sky. A trench with a few dark figures in the foreground. All vehicles with no markings: no crosses, no stars, no letters, no numbers, no emblems.
+```
+
+**scene-barracks.png** (one image)
+```
+Hand-painted gouache on textured, aged paper, with visible brush strokes and paper grain, like a 1940s book illustration. Smooth, even paint surface. Muted, desaturated palette. NOT photorealistic. Landscape 16:9, at least 1600 x 900 pixels. Keep everything important between 30 % and 80 % of the height. No text, letters, numbers or signature.
+
+The inside of a prisoner-of-war barrack in 1943: rows of crowded wooden plank bunks in two tiers, gaunt men in ragged grey uniforms lying close together under greatcoats, a small iron stove glowing in the middle, a single window with frost on it, dim lamplight. No flags, no emblems.
+```
+
+**scene-hospital.png** (one image)
+```
+Hand-painted gouache on textured, aged paper, with visible brush strokes and paper grain, like a 1940s book illustration. Smooth, even paint surface. Muted, desaturated palette. NOT photorealistic. Landscape 16:9, at least 1600 x 900 pixels. Keep everything important between 30 % and 80 % of the height. No text, letters, numbers or signature.
+
+A makeshift military hospital ward in a former schoolroom, 1943: iron beds in rows with grey blankets, bandaged men, a tall window with winter light, a nurse in a white apron and headscarf bending over a bed, a blackboard still on the wall, wiped clean. No flags, no emblems.
+```
+
+**scene-office.png** (one image)
+```
+Hand-painted gouache on textured, aged paper, with visible brush strokes and paper grain, like a 1940s book illustration. Smooth, even paint surface. Muted, desaturated palette. NOT photorealistic. Landscape 16:9, at least 1600 x 900 pixels. Keep everything important between 30 % and 80 % of the height. No text, letters, numbers or signature.
+
+A small, bare interrogation room at night in 1943: a wooden table with an open file, a fountain pen, a glass of tea, a desk lamp throwing a hard pool of light, two empty wooden chairs facing each other, dark walls, a curtained window. No people. No flags, no portraits on the wall, no emblems.
+```
+
+**scene-train.png** (one image)
+```
+Hand-painted gouache on textured, aged paper, with visible brush strokes and paper grain, like a 1940s book illustration. Smooth, even paint surface. Muted, desaturated palette. NOT photorealistic. Landscape 16:9, at least 1600 x 900 pixels. Keep everything important between 30 % and 80 % of the height. No text, letters, numbers or signature.
+
+The inside of a crowded wooden cattle car on a moving train in spring 1943: gaunt prisoners in grey greatcoats sitting packed on the straw-covered floor, a small barred window high on the wall with a bright square of light and a glimpse of birch trees passing, dust in the light beam. No flags, no emblems.
+```
+
+### Portraits
+
+Start each portrait with this line, then add the description:
+```
+Portrait, square, head and shoulders, three-quarter view, painted like a hand-coloured 1943 photograph in gouache, plain dark olive background (#3b3d34). No text, letters or numbers.
+```
+
+| File | Description |
+|---|---|
+| `kessler.png` | Major Ludwig Kessler, about 50, an officer of the military police. A neat, grey, forgettable face, rimless round glasses, thinning grey hair combed flat, a calm, attentive, faintly tired expression. A field-grey officer's tunic with plain grey collar patches and twisted silver-grey shoulder boards; a fountain pen clipped in his breast pocket. No badges, no eagle. |
+| `vera.png` | Dr. Vera Lipatova, about 38, a Soviet army doctor. A small, tired, intelligent face, dark hair pulled back under a white headscarf, a white doctor's coat over a padded khaki jacket, a stethoscope round her neck. Firm, sad eyes. No badges, no stars. |
+| `belov.png` | Captain Arkady Belov, about 40, a Soviet officer and interrogator. A long, clever, ironic face, dark hair with grey at the temples, a khaki tunic with a standing collar and plain shoulder boards, a cigarette between two fingers. No badges, no stars, no emblems. |
+| `wiese.png` | Konrad Wiese, 28, a German prisoner who now works with the Soviets. A fair, open, earnest face, short fair hair, round wire glasses, a clean khaki tunic with no insignia at all, a book under his arm. |
+| `rehm.png` | Paul Rehm, 17, a German soldier, 1943. A very young, round, eager face, fair hair, a field-grey wool tunic with a dark field-grey collar and plain grey collar tabs, a plain steel helmet a little too big for him. No badges, no eagle. |
+| `tamas.png` | Andreas Tamás, 23, an ethnic German machine gunner from Romania, 1943. A dark, calm, serious face, black hair, a small wooden rosary cross at his throat, a field-grey wool tunic with plain grey collar tabs. No badges, no eagle. |
+| `lorenz.png` | Ewald Lorenz, 38, a former air force mechanic turned infantryman, 1943. A cheerful, lined, sunburnt face, a big moustache, a blue-grey air force side cap with no badge pushed back on his head, a field-grey tunic. No badges, no eagle. |
+| `fink.png` | Georg Fink, 26, a German soldier, 1943. Broad, strong, a broken nose, a sly grin, a cigarette behind his ear, a field-grey tunic with the sleeves rolled up, plain grey collar tabs. No badges, no eagle. |
+| `kraus.png` | Martin Kraus, 19, a baker's apprentice in uniform, 1943. A thin, gentle, anxious face, soft brown hair, a field-grey tunic with plain grey collar tabs, a pencil and a folded letter in his hand. No badges, no eagle. |
+
 ---
 
 ## 5. Title image (1 image)

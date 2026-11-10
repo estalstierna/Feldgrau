@@ -9,7 +9,8 @@ SIM.STATS = {
   officers:   { label: 'Superiors', short: 'Sup.',  desc: 'How your NCOs and officers judge you.' },
   suspicion:  { label: 'Suspicion', short: 'Susp.',  desc: 'Doubts about your political reliability. At 100, you are arrested.', bad: true },
   conscience: { label: 'Conscience', short: 'Consc.', desc: 'What is left of the person you were before.' },
-  warmth:     { label: 'Warmth', short: 'Warm', desc: 'How cold you are. Below 20 you start to freeze: frostbite, and worse.', show: s => !!SIM.chapter(s).cold }
+  warmth:     { label: 'Warmth', short: 'Warm', desc: 'How cold you are. Below 20 you start to freeze: frostbite, and worse.', show: s => !!SIM.chv(s, 'cold') },
+  hope:       { label: 'Hope', short: 'Hope', desc: 'Whether you still believe you will go home. Below 20 the body follows the mind.', show: s => !!SIM.chv(s, 'hope') && s.stats.hope !== undefined }
 };
 
 SIM.RANKS = ['Schütze', 'Oberschütze', 'Gefreiter', 'Obergefreiter', 'Unteroffizier', 'Feldwebel'];

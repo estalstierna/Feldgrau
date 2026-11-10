@@ -191,12 +191,12 @@ SIM.MAPS.occupied = () => ({
 });
 
 // New scenes without art yet borrow a drawn scene.
-SIM.SCENE_FALLBACK = { ruins: 'village', factory: 'village', steppe: 'road', airfield: 'field', street: 'village', station: 'road', kitchen: 'letter', cellar: 'camp', church: 'village' };
+SIM.SCENE_FALLBACK = { powcamp: 'camp', barracks: 'cellar', hospital: 'cellar', office: 'letter', train: 'road', tanks: 'field', ruins: 'village', factory: 'village', steppe: 'road', airfield: 'field', street: 'village', station: 'road', kitchen: 'letter', cellar: 'camp', church: 'village' };
 
 // Variants that must not fall back to the generic (summer) paintings.
 SIM.VARIANT_ONLY = ['winter'];
 // Indoor scenes look the same in every season.
-SIM.INDOOR = ['letter', 'cellar', 'kitchen', 'church'];
+SIM.INDOOR = ['letter', 'cellar', 'kitchen', 'church', 'barracks', 'hospital', 'office', 'train'];
 // Turn a drawn scene into winter: pale sky, snow on the ground, falling snow.
 SIM.winterize = function (svg, phase, seed) {
   const rnd = seeded((seed || 7) + 99);
@@ -275,8 +275,8 @@ SIM.MAPS.east = () => ({
 
 SIM.mapSVG = function (s) {
   const ch = SIM.chapter(s);
-  const m = SIM.MAPS[ch.map]();
-  const days = ch.days;
+  const m = SIM.MAPS[SIM.chv(s, 'map')]();
+  const days = SIM.days(s);
   const visited = days.slice(0, s.day + 1).map(d => SIM.dayPlace(s, d)).filter((p, i, a) => a.indexOf(p) === i);
   const cur = ch.places[SIM.dayPlace(s, days[Math.min(s.day, days.length - 1)])];
   const path = visited.map(p => ch.places[p]).map((p, i) => `${i ? 'L' : 'M'}${p.x},${p.y}`).join(' ');

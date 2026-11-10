@@ -110,7 +110,9 @@ window.SIM = window.SIM || {};
 
   // ── Profile (Soldbuch) ──
   function openProfile() {
+    lastPanel = null;
     const s = S, c = s.char;
+    const said = Object.values(s.statements || {}).filter(st => st.t);
     const shown = SIM.displayMedals(s);
     const chaptersDone = Object.keys(s.reviews).map(Number).map(i => `Chapter ${SIM.CHAPTERS[i].num}: ${SIM.CHAPTERS[i].title} (${SIM.CHAPTERS[i].range})`);
     $('#profile-body').innerHTML = `
@@ -128,6 +130,7 @@ window.SIM = window.SIM || {};
       <h3>Decorations</h3>
       <div class="profile-ribbons">${ribbonBar(s)}</div>
       ${shown.length ? medalCards(shown.map(m => m.id), s) : '<p class="muted">None yet.</p>'}
+      ${said.length ? `<h3>On record</h3><p class="small muted">What you have told your interrogators. They compare.</p><ul class="plain">${said.map(st => `<li><span class="d-date">${esc(st.date)}</span> ${esc(st.t)}</li>`).join('')}</ul>` : ''}
       <h3>Rank history</h3>
       <ul class="plain">${s.rankHistory.map(r => `<li><span class="d-date">${esc(r.date)}</span> ${esc(rankName(r.rank))}</li>`).join('')}</ul>
       <h3>Campaigns</h3>
@@ -141,6 +144,33 @@ window.SIM = window.SIM || {};
   // ── Sidebar ──
   function level(st, v) { return st.bad ? (v >= 70 ? 'crit' : v >= 40 ? 'warn' : 'ok') : (v <= 20 ? 'crit' : v <= 40 ? 'warn' : 'ok'); }
 
+  // A button to use a supply on yourself; disabled, with the reason, when it cannot be used.
+  function useButton(k) {
+    const u = SIM.SUPPLY_USE[k];
+    if (!u) return '';
+    const why = S.stage !== 'event' ? 'Only during the chapter.' : SIM.supplyBlock(S, k);
+    return `<button class="use-btn" data-use="${k}"${why ? ` disabled title="${esc(why)}"` : ''}>${esc(u.verb)}</button>${why ? `<span class="use-why">${esc(why)}</span>` : ''}`;
+  }
+  function itemButton(id) {
+    const u = SIM.ITEM_USE[id];
+    if (!u) return '';
+    const why = S.stage !== 'event' ? 'Only during the chapter.' : SIM.itemBlock(S, id);
+    return `<button class="use-btn" data-item="${id}"${why ? ` disabled title="${esc(why)}"` : ''}>${esc(u.verb)}</button>`;
+  }
+  function toast(text) {
+    let t = $('#toast');
+    if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
+    t.textContent = text; t.classList.add('on');
+    clearTimeout(toast.timer); toast.timer = setTimeout(() => t.classList.remove('on'), 3200);
+  }
+  function afterUse(text) {
+    if (!text) return;
+    SIM.save(S); renderSidebar(); renderTab();
+    if (!$('#profile').hidden && lastPanel) $('#profile-body').innerHTML = panelHTML(lastPanel);
+    toast(text);
+  }
+  let lastPanel = null;
+
   function renderSidebar() {
     const c = S.char;
     $('#char-name').textContent = `${c.first} ${c.last}`;
@@ -151,10 +181,10 @@ window.SIM = window.SIM || {};
       const st = SIM.STATS[k], v = S.stats[k];
       return `<div class="stat" title="${esc(st.desc)}"><div class="stat-head"><span>${st.label}</span><span>${v}</span></div>
         <div class="bar"><div class="fill ${level(st, v)} ${st.bad ? 'bad' : ''}" style="width:${v}%"></div></div></div>`;
-    }).join('') + `<div class="stat money"><span>Reichsmarks</span><span>${S.marks} RM</span></div>` + (SIM.hasSupplies && SIM.hasSupplies(S) ? `<div class="supplies"><div class="kicker small">Squad supplies</div>${Object.keys(SIM.SUPPLY).map(k => { const v = S.supplies[k]; return `<div class="stat" title="${esc(SIM.SUPPLY[k].desc)}"><div class="stat-head"><span>${SIM.SUPPLY[k].name}</span><span>${v} / ${SIM.SUPPLY_MAX}</span></div><div class="bar"><div class="fill ${v <= 2 ? 'crit' : v <= 4 ? 'warn' : 'ok'}" style="width:${100 * v / SIM.SUPPLY_MAX}%"></div></div></div>`; }).join('')}</div>` : '');
+    }).join('') + `<div class="stat money"><span>Reichsmarks</span><span>${S.marks} RM</span></div>` + (SIM.hasSupplies && SIM.hasSupplies(S) ? `<div class="supplies"><div class="kicker small">Squad supplies</div>${Object.keys(SIM.SUPPLY).map(k => { const v = S.supplies[k]; return `<div class="stat" title="${esc(SIM.SUPPLY[k].desc)}"><div class="stat-head"><span>${SIM.SUPPLY[k].name}</span><span>${v} / ${SIM.SUPPLY_MAX}</span></div><div class="bar"><div class="fill ${v <= 2 ? 'crit' : v <= 4 ? 'warn' : 'ok'}" style="width:${100 * v / SIM.SUPPLY_MAX}%"></div></div>${useButton(k)}</div>`; }).join('')}</div>` : '');
     $('#map').innerHTML = SIM.mapSVG(S);
     const ch = SIM.chapter(S);
-    $('#map-title').textContent = `Chapter ${ch.num} · ${ch.range}`;
+    $('#map-title').textContent = `Chapter ${ch.num} · ${SIM.chv(S, 'range')}`;
     const log = S.log.filter(l => (l.chapter || 0) === (S.chapter || 0));
     $('#diary').innerHTML = log.length ? log.slice().reverse().map(l => `<li><span class="d-date">${esc(l.date)}</span> ${esc(l.text)}</li>`).join('') : '<li class="muted">Nothing yet.</li>';
     $('#days').innerHTML = SIM.days(S).map((d, i) => `<span class="day ${i < S.day ? 'past' : i === S.day ? 'now' : ''}">${esc(d.short.split(' ')[1])}</span>`).join('');
@@ -244,10 +274,11 @@ window.SIM = window.SIM || {};
     }
     if (name === 'kit') {
       const ids = Object.keys(S.items || {}).filter(id => S.items[id] > 0);
-      return `<div class="kicker">Kit</div><p class="small muted">Reichsmarks: <b>${S.marks} RM</b></p>` + (ids.length ? ids.map(id => {
+      const sup = SIM.hasSupplies(S) ? `<div class="kicker">Squad supplies</div>` + Object.keys(SIM.SUPPLY).map(k => `<div class="item"><div class="person-top"><b>${esc(SIM.SUPPLY[k].name)}</b><span>${S.supplies[k]} / ${SIM.SUPPLY_MAX}</span></div><span class="small muted">${esc(SIM.SUPPLY[k].desc)}</span>${useButton(k)}</div>`).join('') : '';
+      return sup + `<div class="kicker">Kit</div><p class="small muted">Reichsmarks: <b>${S.marks} RM</b></p>` + (ids.length ? ids.map(id => {
         const it = SIM.ITEMS[id];
         return `<div class="item"><div class="person-top"><b>${esc(it.name)}</b><span>${S.items[id] > 1 || it.unit ? '× ' + S.items[id] : ''}</span></div>
-          <span class="small muted">${esc(it.desc)}${it.value ? ` Worth about ${it.value} RM.` : ''}</span></div>`;
+          <span class="small muted">${esc(it.desc)}${it.value ? ` Worth about ${it.value} RM.` : ''}</span>${itemButton(id)}</div>`;
       }).join('') : '<p class="muted small">Nothing but what the army issued.</p>');
     }
     if (name === 'skills') {
@@ -268,6 +299,7 @@ window.SIM = window.SIM || {};
   }
   function openPanel(name) {
     if (name === 'profile') return openProfile();
+    lastPanel = name;
     $('#profile-body').innerHTML = panelHTML(name);
     $('#profile').hidden = false;
     $('#btn-close-profile').focus();
@@ -440,6 +472,11 @@ window.SIM = window.SIM || {};
     document.querySelectorAll('#bottom-nav button').forEach(b => b.onclick = () => openPanel(b.dataset.panel));
     $('#id-card').onclick = openProfile;
     $('#btn-close-profile').onclick = closeProfile;
+    document.addEventListener('click', e => {
+      const b = e.target.closest('[data-use], [data-item]');
+      if (!b || b.disabled || !S || S.stage !== 'event') return;
+      afterUse(b.dataset.use ? SIM.useSupply(S, b.dataset.use) : SIM.useItem(S, b.dataset.item));
+    });
     $('#profile').onclick = e => { if (e.target.id === 'profile') closeProfile(); };
     document.addEventListener('keydown', e => {
       if (!$('#profile').hidden) { if (e.key === 'Escape') closeProfile(); return; }
