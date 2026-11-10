@@ -43,7 +43,13 @@
     SWORDS CROSSED DIAGONALLY, points up, and ONE SMALL ACORN with an oak leaf above where they cross.
     Just to the left of this badge (the viewer's left), above his right eyebrow, a smaller silver eagle
     holding the upright sword with oak leaves. Nothing else on the cap."
-  - Collar-patch stripes: say "running HORIZONTALLY across the lower part of the patch".
+  - Collars (the sheet now has ten pictures): Waffen-SS "black collar patches exactly like COLLAR ONE
+    (BLACK PATCHES) in the attached emblem-sheet.png", then the rank on the wearer's left patch (it shows
+    one stripe, Sturmmann): "but with TWO stripes" (Rottenführer), "but with the left patch plain black"
+    (Schütze), "but with ONE small square silver pip in its centre" (Unterscharführer). Army: "a collar
+    exactly like COLLAR TWO (ARMY) in the attached emblem-sheet.png" (dark green collar, grey bars).
+    Always add that a stripe runs "HORIZONTALLY across the FULL WIDTH of the patch, parallel to its
+    bottom edge".
   - Army side cap: "exactly like CAP TWO (ONLY EAGLE) in the attached emblem-sheet.png: only a small
     silver-grey eagle, exactly in the CENTRE of the front of the cap, and no other badge".
   - Steel helmet: "exactly like the HELMET in the attached emblem-sheet.png: a small silver-grey eagle
