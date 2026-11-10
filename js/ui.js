@@ -148,7 +148,7 @@ window.SIM = window.SIM || {};
       const st = SIM.STATS[k], v = S.stats[k];
       return `<div class="stat" title="${esc(st.desc)}"><div class="stat-head"><span>${st.label}</span><span>${v}</span></div>
         <div class="bar"><div class="fill ${level(st, v)} ${st.bad ? 'bad' : ''}" style="width:${v}%"></div></div></div>`;
-    }).join('') + `<div class="stat money"><span>Reichsmarks</span><span>${S.marks} RM</span></div>`;
+    }).join('') + `<div class="stat money"><span>Reichsmarks</span><span>${S.marks} RM</span></div>` + (SIM.hasSupplies && SIM.hasSupplies(S) ? `<div class="supplies"><div class="kicker small">Squad supplies</div>${Object.keys(SIM.SUPPLY).map(k => { const v = S.supplies[k]; return `<div class="stat" title="${esc(SIM.SUPPLY[k].desc)}"><div class="stat-head"><span>${SIM.SUPPLY[k].name}</span><span>${v} / ${SIM.SUPPLY_MAX}</span></div><div class="bar"><div class="fill ${v <= 2 ? 'crit' : v <= 4 ? 'warn' : 'ok'}" style="width:${100 * v / SIM.SUPPLY_MAX}%"></div></div></div>`; }).join('')}</div>` : '');
     $('#map').innerHTML = SIM.mapSVG(S);
     const ch = SIM.chapter(S);
     $('#map-title').textContent = `Chapter ${ch.num} · ${ch.range}`;
@@ -158,7 +158,7 @@ window.SIM = window.SIM || {};
     $('#mini-stats').innerHTML = `<span class="mini rank">${esc(SIM.rankTitle(S))}</span>` + SIM.visibleStats(S).map(k => {
       const st = SIM.STATS[k], v = S.stats[k];
       return `<span class="mini ${level(st, v)}" title="${esc(st.label)}">${st.short} <b>${v}</b></span>`;
-    }).join('') + `<span class="mini">RM <b>${S.marks}</b></span><button class="mini link" id="mini-profile">Soldbuch ›</button>`;
+    }).join('') + `<span class="mini">RM <b>${S.marks}</b></span>` + (SIM.hasSupplies && SIM.hasSupplies(S) ? Object.keys(SIM.SUPPLY).map(k => `<span class="mini ${S.supplies[k] <= 2 ? 'crit' : S.supplies[k] <= 4 ? 'warn' : 'ok'}">${SIM.SUPPLY[k].short} <b>${S.supplies[k]}</b></span>`).join('') : '') + `<button class="mini link" id="mini-profile">Soldbuch ›</button>`;
     $('#mini-profile').onclick = openProfile;
     renderTab();
   }
@@ -169,7 +169,7 @@ window.SIM = window.SIM || {};
     const place = SIM.place(S, ev.place || SIM.dayPlace(S, d)).name;
     $('#ev-date').textContent = `${d.date} · ${ev.time || SIM.PHASE_TIME[S.phase]}${d.temp !== undefined ? ` · ${d.temp < 0 ? '−' : ''}${Math.abs(d.temp)} °C` : ''}`;
     $('#ev-place').textContent = place;
-    const variant = SIM.chapter(S).sceneVariant;
+    const variant = d.variant || SIM.chapter(S).sceneVariant;
     $('#banner').innerHTML = SIM.sceneSVG(ev.scene, S.phase, (S.day + 1) * 13 + S.phase * 5 + ev.id.length + S.chapter * 31, variant);
     $('#banner').classList.toggle('painted', !!SIM.sceneImage(ev.scene, S.phase, variant));
   }
@@ -299,7 +299,8 @@ window.SIM = window.SIM || {};
 
   function resultHTML(ch, out, btnLabel, btnId = 'btn-next') {
     const awards = (out.awards || []).length ? `<div class="award-box"><div class="kicker">Awarded</div>${medalCards(out.awards, S)}</div>` : '';
-    return `<div class="chosen">“${esc(SIM.fmt(S, ch.text))}”</div>${paras(out.texts.join('\n\n'))}<div class="chips">${chips(out.deltas)}${extraChips(out.extra)}</div>${awards}<button class="btn primary" id="${btnId}">${btnLabel}</button>`;
+    const said = SIM.fmt(S, ch.text);
+    return `<div class="chosen">${/^["“]/.test(said) ? esc(said) : `“${esc(said)}”`}</div>${paras(out.texts.join('\n\n'))}<div class="chips">${chips(out.deltas)}${extraChips(out.extra)}</div>${awards}<button class="btn primary" id="${btnId}">${btnLabel}</button>`;
   }
 
   function revealResult(r, btnId = 'btn-next') {

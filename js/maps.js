@@ -155,5 +155,26 @@ SIM.MAPS.germany = () => ({
 });
 SIM.MAP_PLACES.germany = {"home_berlin": [174.0, 95.8], "home_hamburg": [114.8, 68.1], "home_munich": [143.2, 218.3], "home_breslau": [237.4, 135.8], "home_stolp": [237.4, 42.8]};
 
+SIM.MAPS.stalingrad = () => ({
+  label: "Map of Stalingrad and the bend of the Don, 1942\u201343",
+  base: `<rect width="320" height="250" class="m-land"/>
+    <path d="M0.0,13.3 L55.9,31.6 L98.3,34.0 L115.8,55.8 L125.4,64.3 L155.8,74.0 L183.7,94.7 L195.7,110.4 L179.8,122.6 L162.2,142.0 L147.8,165.0 L127.8,182.0 L95.9,213.6 L63.9,250.0" class="m-river" opacity=".75"/>
+    <path d="M295.6,0.0 L279.6,43.7 L266.0,97.1 L257.2,116.5 L250.9,125.0 L247.7,129.9 L243.3,139.6 L246.1,152.9 L249.3,165.0 L267.6,177.2 L303.6,213.6 L319.6,231.8" class="m-river" opacity=".75"/>
+    <path d="M127.8,182.0 L87.9,165.0 L47.9,134.7 L8.0,104.4" class="m-river" opacity=".75"/>
+    <path d="M247.7,123.8 L223.7,117.7 L199.7,118.9 L185.3,128.6 L183.7,145.6 L195.7,162.6 L215.7,169.9 L235.7,168.7 L247.7,162.6" class="m-border" stroke-dasharray="2 3" opacity=".85"/>
+    <path d="M0.0,19.4 L63.9,31.6 L99.9,43.7 L119.8,61.9 L151.8,80.1" class="m-border" stroke-dasharray="2 3" opacity=".85"/>
+    <path d="M247.7,177.2 L223.7,201.5 L191.7,231.8 L175.8,250.0" class="m-border" stroke-dasharray="2 3" opacity=".85"/>
+    <text x="183.7" y="17.0" class="m-country">SOVIET UNION</text>
+    <text x="67.9" y="43.7" class="m-small m-label">DON</text>
+    <text x="281.2" y="61.9" class="m-small m-label" transform="rotate(-70 281.2 61.9)">VOLGA</text>
+    <text x="63.9" y="143.2" class="m-small m-label" transform="rotate(-40 63.9 143.2)">CHIR</text>
+    <text x="179.8" y="179.6" class="m-small m-label">the pocket, Nov 1942</text>
+    <text x="87.9" y="13.3" class="m-small m-label">Romanian 3rd Army</text>
+    <text x="211.7" y="225.7" class="m-small m-label">Romanian 4th Army</text>
+    <text x="87.9" y="86.2" class="m-small m-label">Soviet attack, 19 Nov</text>`,
+  towns: [[240.5, 139.6, "Stalingrad"], [162.2, 142.0, "Kalach", "end"], [227.7, 130.5, "Gumrak", "end"], [215.7, 145.6, "Pitomnik", "end"], [98.3, 34.0, "Serafimovich"], [125.4, 64.3, "Kletskaya"], [127.8, 182.0, "Nizhne-Chirskaya", "end"], [266.0, 97.1, "Dubovka"]]
+});
+SIM.MAP_PLACES.stalingrad = {"steppe": [16.0, 49.8], "donbend": [167.8, 110.4], "volga_north": [247.7, 123.8], "city": [240.5, 139.6], "factory": [245.3, 129.9], "kessel": [217.3, 140.8], "gumrak": [227.7, 130.5], "centre": [240.5, 139.6]};
+
 // Move every chapter's route stops to their projected positions.
 (SIM.CHAPTERS || []).forEach(ch => { const pl = SIM.MAP_PLACES[ch.map]; if (!pl) return; Object.keys(pl).forEach(k => { if (ch.places[k]) { ch.places[k].x = pl[k][0]; ch.places[k].y = pl[k][1]; } }); });

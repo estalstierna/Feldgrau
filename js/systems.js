@@ -209,6 +209,48 @@ SIM.makeSSSquad = function (s) {
   ].map(m => Object.assign({ status: 'ok' }, m));
 };
 
+// ── Supplies: the squad's ammunition, rations and medical kit (chapters with supplies: true) ──
+SIM.SUPPLY = {
+  ammo: { name: 'Ammunition', short: 'Ammo', desc: 'Belts, clips and grenades. Low ammunition makes every fight more costly.' },
+  rations: { name: 'Rations', short: 'Rat.', desc: 'Bread, tins and horsemeat for the squad. When it runs out, everyone starves.' },
+  med: { name: 'Medical kit', short: 'Med.', desc: 'Dressings and morphine. Can save a wounded man.' }
+};
+SIM.SUPPLY_MAX = 12;
+SIM.hasSupplies = s => !!SIM.chapter(s).supplies && !!s.supplies;
+SIM.supply = function (s, k, n, out) {
+  if (!s.supplies) return;
+  const before = s.supplies[k];
+  s.supplies[k] = SIM.clamp(before + n, 0, SIM.SUPPLY_MAX);
+  const d = s.supplies[k] - before;
+  if (d && out) out.extra.push({ label: `${d > 0 ? '+' : '−'}${Math.abs(d)} ${SIM.SUPPLY[k].name}`, good: d > 0, kind: 'item' });
+};
+// Each night: in the pocket the squad eats its rations and the airlift brings what it can.
+SIM.supplyUpkeep = function (s, d, notes) {
+  const ch = SIM.chapter(s), day = SIM.today(s);
+  if (!ch.supplies || !s.supplies || s.phase !== 2) return;
+  const men = SIM.squadMen(s).length + 1;
+  if (!day.pocket) {
+    ['ammo', 'rations', 'med'].forEach(k => SIM.supply(s, k, 1));
+    return;
+  }
+  const need = Math.ceil(men / 3);
+  s.supplies.rations -= need;
+  if (s.supplies.rations < 0) {
+    s.supplies.rations = 0;
+    SIM.apply(s, { food: -12, morale: -4 }, d);
+    SIM.squadMod(s, 'all', { morale: -8 });
+    notes.push('There is nothing left to eat. The squad chews snow and the leather of their belts.');
+  } else SIM.apply(s, { food: 6 }, d);
+  const air = day.airlift || 0;
+  if (Math.random() < air) {
+    const got = [];
+    if (Math.random() < 0.75) { SIM.supply(s, 'rations', 1 + (Math.random() < 0.4 ? 1 : 0)); got.push('bread'); }
+    if (Math.random() < 0.5) { SIM.supply(s, 'ammo', 1); got.push('ammunition'); }
+    if (Math.random() < 0.3) { SIM.supply(s, 'med', 1); got.push('dressings'); }
+    if (got.length) notes.push(`A supply canister from the airlift reaches the squad: ${got.join(', ')}.`);
+  } else if (air > 0) notes.push('The planes did not get through tonight, or they did not drop here.');
+};
+
 // A replacement joins the squad.
 SIM.addMan = function (s, m) {
   s.squad = s.squad || [];
@@ -235,7 +277,7 @@ SIM.coldUpkeep = function (s, d, notes) {
       notes.push('Frostbite. The skin on your feet has gone white and hard, then black. The medical orderly cuts away what he has to.');
       SIM.addLog(s, 'Frostbite.');
       SIM.woundBadge(s);   // frostbite counted as a wound for the Wound Badge
-      if (s.stats.health <= 0) s.deathCause = `Froze to death in a foxhole before Moscow, ${day.date}.`;
+      if (s.stats.health <= 0) s.deathCause = `Froze to death ${SIM.chapter(s).id === 'stalingrad' ? 'in the Stalingrad pocket' : 'in a foxhole before Moscow'}, ${day.date}.`;
     }
   } else if (s.stats.warmth <= 40) notes.push('The cold gets into everything: your bones, your rifle, your thoughts.');
   // At night the cold takes men from the squad.
@@ -272,14 +314,16 @@ SIM.loseMan = function (s, id, status, out, how) {
 // preparation (checked kit, dug-in squad, first-aid training) lowers the odds.
 SIM.squadCasualty = function (s, out, chance, how) {
   const f = s.flags;
-  const p = chance * (f.kitChecked ? 0.85 : 1) * (f.dugIn ? 0.85 : 1) * (f.squadAlert ? 0.9 : 1);
+  const lowAmmo = SIM.hasSupplies(s) && s.supplies.ammo <= 2 ? 1.4 : 1;
+  const p = chance * lowAmmo * (f.kitChecked ? 0.85 : 1) * (f.dugIn ? 0.85 : 1) * (f.squadAlert ? 0.9 : 1);
   if (Math.random() >= p) return null;
   const men = SIM.squadMen(s);
   if (!men.length) return null;
   const weight = m => 1 + (SIM.hasTrait(m, 'nervous') || SIM.hasTrait(m, 'green') ? 0.6 : 0) + (SIM.hasTrait(m, 'brave') ? 0.3 : 0);
   let r = Math.random() * men.reduce((a, m) => a + weight(m), 0), pick = men[0];
   for (const m of men) { r -= weight(m); if (r <= 0) { pick = m; break; } }
-  const killed = Math.random() < (f.medics ? 0.35 : 0.45);
+  let killed = Math.random() < (f.medics ? 0.35 : 0.45);
+  if (killed && SIM.hasSupplies(s) && s.supplies.med > 0 && Math.random() < 0.5) { killed = false; SIM.supply(s, 'med', -1, out); }
   return SIM.loseMan(s, pick.id, killed ? 'killed' : 'wounded', out, how);
 };
 
@@ -291,6 +335,7 @@ SIM.applyExtras = function (s, ch, x, out) {
   if (ch.train) for (const k in ch.train) x.train(k, ch.train[k]);
   if (ch.squad) for (const id in ch.squad) x.squadMod(id, ch.squad[id]);
   if (ch.winter) x.winter(ch.winter);
+  if (ch.supply) for (const k in ch.supply) x.supply(k, ch.supply[k]);
   if (ch.shelter !== undefined) x.shelter(ch.shelter);
 };
 SIM.extendContext = function (s, x, out) {
@@ -313,6 +358,8 @@ SIM.extendContext = function (s, x, out) {
   x.has = (id, n) => SIM.has(s, id, n);
   x.lose = (id, status, how) => SIM.loseMan(s, id, status, out, how);
   x.casualty = (chance, how) => SIM.squadCasualty(s, out, chance, how);
+  x.supply = (k, n) => SIM.supply(s, k, n, out);
+  x.supplies = () => s.supplies || {};
   x.winter = n => { s.squadWinter = Math.max(0, Math.min(3, (s.squadWinter || 0) + n)); out.extra.push({ label: `Squad winter kit ${n > 0 ? '▲' : '▼'}`, good: n > 0, kind: 'item' }); };
   x.shelter = n => { s.shelter = Math.max(0, Math.min(2, n)); out.extra.push({ label: n > 0 ? 'Shelter for the night' : 'No shelter', good: n > 0, kind: 'item' }); };
 };

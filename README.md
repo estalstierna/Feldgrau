@@ -25,8 +25,10 @@ Choose with the mouse or by tapping, or press **1–4** to pick a choice and **E
 | V: Before Moscow | 15 Nov – 24 Dec 1941 | The last offensive and the Soviet counteroffensive over 12 days, from the Volokolamsk highway to thirty kilometres from Moscow and back to the Ruza. Introduces **SS-Hauptsturmführer Wolfram Starck** |
 | *Interlude* | Jan – Apr 1942 | Army: the winter line holds. Waffen-SS: training in Bohemia and a new section of six men |
 | VI: Leave | 20 – 26 April 1942 | Fourteen days at home in your home town. The family, Liesel (and a war wedding), the empty flat of the Jewish neighbours, an air raid, the Gestapo, forced labourers, and the film from Białystok |
+| *Interlude* | May – June 1942 | Kharkov, the summer directive, a last quiet week among the cherry orchards |
+| VII: Stalingrad | 28 Jun 1942 – 31 Jan 1943 | The whole battle over 13 days: the steppe, the **Don** bend, the **Volga**, the grain elevator, the **Tractor Works**, the Rattenkrieg, the encirclement, the airlift, Christmas in the pocket, the last planes from **Gumrak**, and the surrender. Army and SS players both end up here. Introduces **Grischa**, a Ukrainian *Hiwi* in your squad |
 
-Chapters I and II are 7 days each; Chapter III is 14 days, Chapter IV 10 days and Chapter V 12 days, across several places. Each day has 3 phases (morning, afternoon, night). Choices in Chapter I follow you: who you saved, who you betrayed, and who is still in your squad.
+Chapters I and II are 7 days each; Chapter III is 14 days, Chapter IV 10 days, Chapter V 12 days and Chapter VII 13 days, across several places. Each day has 3 phases (morning, afternoon, night). Choices in Chapter I follow you: who you saved, who you betrayed, and who is still in your squad.
 
 ## Character and stats
 
@@ -80,6 +82,17 @@ A **Warmth** value appears in winter, and the temperature shows in the date line
 - **Shelter** at night gives warmth back.
 - Below 20 warmth, you start to **freeze**. Frostbite counts as a wound for the Wound Badge.
 - The squad has its own **winter kit** level. The colder it is, the more men are lost to frostbite at night.
+
+### Supplies (Chapter VII)
+In Stalingrad your squad has three **supplies**: ammunition, rations and medical kit (0–12 each).
+
+- Before the encirclement, the supply lines bring one of each every night.
+- In the **pocket** the squad eats rations every night (more men, more bread). When they run out, everyone starves.
+- Only the **airlift** brings anything, and less each week: 60 % of nights in November, none at the end.
+- **Low ammunition** (2 or less) makes every fight more dangerous for you and your men.
+- **Medical kit** can turn a man's death into a wound, and blunts the worst of your own wounds. Each use costs one.
+
+The chapter ends in one of four ways: **flown out** from Gumrak (by Starck's favour, your wounds, or a forged tag), **captivity** (alone or with your squad), a **breakout** across 200 km of snow, or death. All but death lead on.
 
 ### Starck
 SS officer **Wolfram Starck** is a recurring character from Chapter II on: a former schoolteacher and a true believer. You meet him:
@@ -182,6 +195,8 @@ js/data/ch5.js      Chapter V: interlude, the offensive, Starck, the eviction
 js/data/ch5_more.js Chapter V: the counteroffensive, retreat, Christmas, endings
 js/data/ch6.js      Chapter VI: interludes (Army / SS), days 0–3 at home
 js/data/ch6_more.js Chapter VI: days 4–6, random events, endings
+js/data/ch7.js      Chapter VII: interlude, the steppe to the encirclement (days 0–6)
+js/data/ch7_more.js Chapter VII: the pocket, Gumrak, the surrender, random events, endings
 js/data/starck.js   Starck's appearances in Chapters II–IV
 js/systems.js       relationships, skills, kit, squad
 js/engine.js        state, effects, event selection, saving

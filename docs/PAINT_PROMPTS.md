@@ -353,6 +353,46 @@ Format: square, at least 1024 x 1024 pixels, PNG. No text, letters or numbers.
 
 ---
 
+## 4h. Chapter VII: Stalingrad
+
+### Scenes
+
+**Format for every image:** landscape 16:9, at least 1600 × 900 pixels, PNG. Horizon at about 55–60 % of the height. Keep everything important between 30 % and 80 % of the height. No text, letters, numbers or signature.
+
+**Style for every image:** hand-painted gouache on textured, aged paper, visible brush strokes and paper grain, like a 1940s book illustration. Muted, desaturated palette. NOT photorealistic.
+
+Make the morning version first, then the afternoon and night versions in the same conversation.
+
+| Files | Scene |
+|---|---|
+| `scene-steppe-<phase>.png` | The open Russian steppe in high summer 1942: flat to the horizon, gold wheat and sunflowers, a dry ravine (balka), a dust cloud from a distant column of trucks and small soldier silhouettes in shirtsleeves. Night version: a dark plain, a red glow of burning fields on the horizon. |
+| `scene-ruins-<phase>.png` | The ruins of a large Soviet city in autumn 1942: gutted multi-storey apartment blocks with empty window holes, rubble, a twisted lamp post, smoke. The broad grey river visible between the ruins. Night version: fires in the ruins, a flare hanging in the sky. |
+| `scene-factory-<phase>.png` | A huge ruined tractor factory: roofless steel halls, broken gantries, tall chimneys, rail tracks, machinery under rubble, smoke. Night version: dark silhouettes of girders against burning sky. |
+| `scene-ruins-winter-<phase>.png` | The same ruined city in January 1943: snow on the rubble, frozen, grey, silent; a few hunched figures in greatcoats with blankets. Night version: deep blue snow, a single fire. |
+| `scene-factory-winter-<phase>.png` | The ruined factory halls in deep winter: snow drifting through the broken roofs, icicles on the girders. Night version: moonlight through the roof. |
+| `scene-airfield-winter-<phase>.png` | A makeshift airfield on the snowy steppe in January 1943: a trampled snow runway, a three-engined transport plane with corrugated metal skin, wrecked aircraft, stretchers with wounded men in the snow, smoke from shellfire. Plain grey aircraft with no markings. Night version: dark, a plane's landing light, fires. |
+| `scene-field-winter-<phase>.png`, `scene-village-winter-<phase>.png` | Already painted for Chapter V: reused. |
+
+### Portrait: Grischa
+
+**`grischa.png`**
+```
+Portrait, square, head and shoulders, three-quarter view, painted like a hand-coloured 1942 photograph in gouache, plain dark olive background (#3b3d34).
+
+Grigori "Grischa" Sobol, 27, a Ukrainian former tractor driver serving as an auxiliary with the German army in 1942. A broad, weathered peasant face, high cheekbones, short dark-blond hair, a few days of stubble, careful, watchful grey eyes, the faintest hint of a wary smile. He wears a plain, worn field-grey German army tunic with no collar insignia, no shoulder straps, no badges and no eagle, over a faded Soviet-style collarless shirt, and a plain white cloth armband with no writing on his left upper arm. A soft grey side cap with no badge.
+
+Format: square, at least 1024 x 1024 pixels, PNG. No text, letters or numbers.
+```
+
+### Medal: Close Combat Clasp
+
+**`medal-nahkampf.png`** (start with the medal line from section 4)
+```
+Close Combat Clasp in Bronze (1942). A horizontal bronze clasp, about three times as wide as it is tall. In the centre a small round medallion with a crossed bayonet and stick grenade, framed by oak leaves; on each side of it a spray of oak leaves fanning outward, all on a dark matt backing. The medallion holds the sword-and-oak-leaves emblem. No ribbon. Isolated on a plain light grey background.
+```
+
+---
+
 ## 5. Title image (1 image)
 
 - **File:** `title.webp`

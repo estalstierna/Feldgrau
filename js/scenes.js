@@ -25,7 +25,7 @@ SIM.SCENE_IMAGES = { camp: ['morning', 'afternoon', 'night'], forest: ['morning'
 // A chapter can have its own variant of a scene (e.g. 'village-east'); it falls back to the generic one.
 SIM.sceneImage = function (scene, phase, variant) {
   // Indoor scenes (letters) look the same in every season: use the generic painting.
-  if (variant && SIM.VARIANT_ONLY && SIM.VARIANT_ONLY.includes(variant) && !(scene === 'letter' && !SIM.SCENE_IMAGES[`${scene}-${variant}`])) return SIM.SCENE_IMAGES[`${scene}-${variant}`] ? SIM.sceneImage(`${scene}-${variant}`, phase) : null;
+  if (variant && SIM.VARIANT_ONLY && SIM.VARIANT_ONLY.includes(variant) && !(SIM.INDOOR.includes(scene) && !SIM.SCENE_IMAGES[`${scene}-${variant}`])) return SIM.SCENE_IMAGES[`${scene}-${variant}`] ? SIM.sceneImage(`${scene}-${variant}`, phase) : null;
   if (variant && SIM.SCENE_IMAGES[`${scene}-${variant}`]) {
     const v = SIM.sceneImage(`${scene}-${variant}`, phase);
     if (v) return v;
@@ -40,7 +40,7 @@ SIM.sceneImage = function (scene, phase, variant) {
 SIM.sceneSVG = function (scene, phase, seed, variant, drawnOnly) {
   const img = drawnOnly ? null : SIM.sceneImage(scene, phase, variant);
   if (img) return `<img class="scene-img" src="${img}" alt="">`;
-  if (variant === 'winter' && !drawnOnly && scene !== 'letter') return SIM.winterize(SIM.sceneSVG(scene, phase, seed, null, true), phase, seed);
+  if (variant === 'winter' && !drawnOnly && !SIM.INDOOR.includes(scene)) return SIM.winterize(SIM.sceneSVG(scene, phase, seed, null, true), phase, seed);
   if (SIM.SCENE_FALLBACK[scene]) return SIM.sceneSVG(SIM.SCENE_FALLBACK[scene], phase, seed, null, true);
   const rnd = seeded(seed || 7);
   const [top, bot] = SIM.SKIES[phase] || SIM.SKIES[0];
@@ -191,10 +191,12 @@ SIM.MAPS.occupied = () => ({
 });
 
 // New scenes without art yet borrow a drawn scene.
-SIM.SCENE_FALLBACK = { street: 'village', station: 'road', kitchen: 'letter', cellar: 'camp', church: 'village' };
+SIM.SCENE_FALLBACK = { ruins: 'village', factory: 'village', steppe: 'road', airfield: 'field', street: 'village', station: 'road', kitchen: 'letter', cellar: 'camp', church: 'village' };
 
 // Variants that must not fall back to the generic (summer) paintings.
 SIM.VARIANT_ONLY = ['winter'];
+// Indoor scenes look the same in every season.
+SIM.INDOOR = ['letter', 'cellar', 'kitchen', 'church'];
 // Turn a drawn scene into winter: pale sky, snow on the ground, falling snow.
 SIM.winterize = function (svg, phase, seed) {
   const rnd = seeded((seed || 7) + 99);

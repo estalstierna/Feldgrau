@@ -129,9 +129,11 @@ SIM.resolveChoice = function (s, ev, ch, man) {
   if (ch.result) x.say(ch.result);
   if (ch.risk) {
     const r = ch.risk;
-    const p = typeof r.chance === 'function' ? r.chance(s) : r.chance;
+    let p = typeof r.chance === 'function' ? r.chance(s) : r.chance;
+    if (SIM.hasSupplies && SIM.hasSupplies(s) && s.supplies.ammo <= 2) p *= 1.3;
     if (Math.random() < p) {
-      const dmg = SIM.rand(r.dmg[0], r.dmg[1]);
+      let dmg = SIM.rand(r.dmg[0], r.dmg[1]);
+      if (SIM.hasSupplies && SIM.hasSupplies(s) && s.supplies.med > 0 && dmg >= 15) { dmg = Math.round(dmg * 0.7); SIM.supply(s, 'med', -1, out); }
       x.apply({ health: -dmg, morale: -3 });
       out.wounded = true;
       s.flags.wounded = true;
@@ -181,7 +183,9 @@ SIM.upkeep = function (s) {
   s.delayed = (s.delayed || []).filter(dl => dl.in > 0);
   const drain = SIM.chapter(s).foodDrain;
   const ch = SIM.chapter(s);
-  SIM.apply(s, { food: (ch.warFoodDrain !== undefined && atWar ? ch.warFoodDrain : drain !== undefined && !atWar ? drain : (atWar ? -7 : -5)) + (s.flags.farm ? 1 : 0) }, d);
+  const dayDrain = SIM.today(s).foodDrain;
+  SIM.apply(s, { food: (dayDrain !== undefined ? dayDrain : ch.warFoodDrain !== undefined && atWar ? ch.warFoodDrain : drain !== undefined && !atWar ? drain : (atWar ? -7 : -5)) + (s.flags.farm ? 1 : 0) }, d);
+  if (SIM.supplyUpkeep) SIM.supplyUpkeep(s, d, notes);
   if (!atWar && s.phase === 2) { SIM.apply(s, { food: 8 }, d); notes.push(SIM.chapter(s).kitchenNote || 'The field kitchen comes round with pea soup.'); }
   if (atWar && s.phase === 2 && Math.random() < 0.6) { SIM.apply(s, { food: 12 }, d); notes.push('The field kitchen catches up with the company at last: lukewarm stew and bread.'); }
   if (s.stats.food <= 15) {

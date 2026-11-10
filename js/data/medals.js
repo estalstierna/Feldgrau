@@ -41,6 +41,10 @@ SIM.MEDALS = {
     stripes: [['#b3262a', 6], ['#f2f2f2', 1], ['#111', 2], ['#f2f2f2', 1], ['#b3262a', 6]],
     desc: 'For the winter battle in the East, 1941/42: fourteen days of combat or sixty days in the theatre, or frostbite severe enough to earn the Wound Badge. Instituted in May 1942. The soldiers called it the "Frozen Meat Order".'
   },
+  nahkampf: {
+    name: 'Close Combat Clasp in Bronze', german: 'Nahkampfspange in Bronze', kind: 'badge', order: 19, shape: 'clasp',
+    desc: 'Instituted in November 1942 for fighting hand to hand, "man against man". The bronze grade required fifteen days of close combat. Worn above the left breast pocket, it was valued above the Iron Cross by front-line soldiers.'
+  },
   tankbadge: {
     name: 'Tank Destruction Badge', german: 'Sonderabzeichen für das Niederkämpfen von Panzerkampfwagen durch Einzelkämpfer', kind: 'badge', order: 21, shape: 'tankstripe',
     desc: 'A strip of silver braid with a small black metal tank, worn on the upper right sleeve, one for each tank destroyed single-handed with hand weapons. Instituted in March 1942 and awarded retroactively for tanks destroyed from 22 June 1941.'
@@ -122,6 +126,16 @@ SIM.badgeSVG = function (id, size = 44) {
       <circle cx="22" cy="10" r="2.2" fill="#6f7563" stroke="#3d4136" stroke-width=".6"/>
       <g transform="translate(0 3)">${crossPath(22, 26, 15, '#111', '#c0c4c8')}</g>
       <ellipse cx="22" cy="44" rx="13" ry="1.6" fill="rgba(0,0,0,.25)"/>
+    </svg>`;
+  }
+  if (m.shape === 'clasp') {
+    return `<svg viewBox="0 0 60 30" width="${size * 1.3}" height="${size * 0.65}" aria-hidden="true">
+      <path d="M3,15 Q15,9 26,13 L26,17 Q15,21 3,15 Z" fill="#9a7a44" stroke="#5a4423" stroke-width=".6"/>
+      <path d="M57,15 Q45,9 34,13 L34,17 Q45,21 57,15 Z" fill="#9a7a44" stroke="#5a4423" stroke-width=".6"/>
+      ${[8, 13, 18, 47, 42, 37].map(x => `<ellipse cx="${x}" cy="15" rx="3" ry="1.6" fill="#c49a5a" opacity=".8"/>`).join('')}
+      <rect x="24" y="7" width="12" height="16" rx="1.5" fill="#8a6a3a" stroke="#5a4423" stroke-width=".7"/>
+      <line x1="26" y1="21" x2="34" y2="9" stroke="#3a2a14" stroke-width="1.2"/><line x1="34" y1="21" x2="26" y2="9" stroke="#3a2a14" stroke-width="1.2"/>
+      <rect x="28.5" y="12" width="3" height="6" fill="#3a2a14"/>
     </svg>`;
   }
   if (m.shape === 'tankstripe') {
