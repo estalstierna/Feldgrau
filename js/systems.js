@@ -20,8 +20,8 @@ SIM.PEOPLE = {
     base: f => (f.stoppedReprisal ? 25 : 0) + (f.triedToStop ? 10 : 0) + (f.savedTirailleurs ? 20 : 0) + (f.savedPole ? 5 : 0) + (f.firstWave ? 10 : 0) + (f.tookBoat ? 10 : 0) + (f.refusedOrder2 ? -20 : 0) },
   sattler: { name: 'Bruno Sattler', role: 'Berliner. Can get you anything, for a price.', present: f => f.metSattler, base: () => 0 },
   liesel: { name: 'Liesel', role: 'Works at the post office. You met at a dance at Christmas 1939.', present: f => f.sweetheart, base: f => 45 + (f.married ? 15 : 0) },
-  mother: { name: 'Your mother', role: 'Writes every week. Keeps your room exactly as you left it.', present: f => f.homeLeave, base: f => 60 },
-  father: { name: 'Your father', role: 'Fought at Verdun in 1916. Says little about it.', present: f => f.homeLeave,
+  mother: { name: 'Your mother', short: 'Mother', role: 'Writes every week. Keeps your room exactly as you left it.', present: f => f.homeLeave, base: f => 60 },
+  father: { name: 'Your father', short: 'Father', role: 'Fought at Verdun in 1916. Says little about it.', present: f => f.homeLeave,
     base: f => (f.party ? 40 : f.catholic ? 25 : 20) + (f.joinedSS ? (f.party ? 20 : f.spd ? -50 : f.catholic ? -25 : -5) : 0) },
   starck: { name: 'Wolfram Starck', role: 'SS-Hauptsturmführer. A schoolteacher from Brunswick who believes every word.', present: f => f.metStarck,
     // He respects courage and hardness, and despises what he calls softness.
@@ -298,7 +298,8 @@ SIM.extendContext = function (s, x, out) {
   x.rel = (id, n) => {
     s.rel = s.rel || {};
     s.rel[id] = (s.rel[id] || 0) + n;
-    out.extra.push({ label: `${SIM.PEOPLE[id].name.split(' ')[0]} ${n > 0 ? '▲' : '▼'}`, good: n > 0, kind: 'rel' });
+    const p = SIM.PEOPLE[id];
+    out.extra.push({ label: `${p.short || p.name.split(' ')[0]} ${n > 0 ? '▲' : '▼'}`, good: n > 0, kind: 'rel' });
   };
   x.item = (id, n) => {
     SIM.give(s, id, n);
