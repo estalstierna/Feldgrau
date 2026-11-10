@@ -35,7 +35,7 @@ SIM.PEOPLE = {
 Object.assign(SIM.PEOPLE, SIM.EXTRA_PEOPLE || {});
 
 // Painted portraits available in assets/portraits/<id>.webp. Others fall back to initials.
-SIM.PORTRAITS = ['hartmann', 'lenz', 'rau', 'vogel', 'brandt', 'albrecht', 'sattler', 'brenner', 'kuehn', 'claire', 'madame', 'pohl', 'starck', 'brandes', 'voss', 'wendt', 'mayr', 'brueck', 'nowak', 'haas', 'mother', 'father', 'liesel', 'grischa', 'kessler', 'vera', 'belov', 'wiese', 'rehm', 'tamas', 'lorenz', 'kraus', 'dorn', 'saal'];
+SIM.PORTRAITS = ['hartmann', 'lenz', 'rau', 'vogel', 'brandt', 'albrecht', 'sattler', 'brenner', 'kuehn', 'claire', 'madame', 'pohl', 'starck', 'brandes', 'voss', 'wendt', 'mayr', 'brueck', 'nowak', 'haas', 'mother', 'father', 'liesel', 'grischa', 'kessler', 'vera', 'belov', 'wiese', 'rehm', 'tamas', 'lorenz', 'kraus', 'dorn', 'saal', 'fink'];
 
 // Some people have more than one portrait, chosen by chapter (e.g. summer and winter uniform).
 SIM.PORTRAIT_FILE = {
