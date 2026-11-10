@@ -102,7 +102,7 @@ SIM.ribbonSVG = function (id, w = 36, h = 11) {
 };
 
 // Painted medals in assets/medals/medal-<id>.png. Others use the drawn SVG.
-SIM.MEDAL_IMAGES = ['ek2', 'kvk2', 'kvk2ns', 'ek1', 'sudeten', 'westwall', 'rescue', 'longservice4', 'isa', 'wound_black', 'wound_silver', 'wound_gold', 'schnur1', 'schnur2', 'schnur3', 'tankbadge', 'ostmedaille'];
+SIM.MEDAL_IMAGES = ['ek2', 'kvk2', 'kvk2ns', 'ek1', 'sudeten', 'westwall', 'rescue', 'longservice4', 'isa', 'wound_black', 'wound_silver', 'wound_gold', 'schnur1', 'schnur2', 'schnur3', 'tankbadge', 'ostmedaille', 'nahkampf'];
 
 SIM.badgeSVG = function (id, size = 44) {
   if (SIM.MEDAL_IMAGES.includes(id)) return `<img class="medal-img" src="assets/medals/medal-${id}.png" alt="" style="height:${size}px">`;
