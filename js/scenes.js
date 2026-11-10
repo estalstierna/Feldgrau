@@ -207,16 +207,37 @@ SIM.winterize = function (svg, phase, seed) {
 };
 
 SIM.MAPS.germany = () => ({
-  label: 'Map of Germany, 1942',
+  label: 'Map of Germany and its neighbours, 1942',
   base: `<rect width="320" height="250" class="m-land"/>
-    <path d="M0,0 L320,0 L320,30 C280,34 250,40 215,44 C190,48 172,52 160,58 C150,52 138,40 130,34 C110,30 92,36 80,48 L60,56 L40,30 L0,40 Z" class="m-sea"/>
-    <text x="150" y="20" class="m-sea-label">Baltic Sea</text><text x="8" y="22" class="m-sea-label">North Sea</text>
-    <path d="M40,60 C30,100 28,140 40,170 C45,200 60,220 90,240 L150,248 C200,246 230,236 250,220 C270,200 300,180 312,150 C300,120 296,90 300,60" class="m-border" opacity=".6"/>
-    <path d="M140,70 C150,110 160,140 175,160" class="m-river" opacity=".6"/>
-    <path d="M205,60 C210,90 220,130 230,175" class="m-river" opacity=".5"/>
-    <path d="M60,90 C58,130 62,170 70,210" class="m-river" opacity=".6"/>
-    <text x="110" y="200" class="m-country">GERMANY</text>`,
-  towns: [[140, 72, 'Hamburg', 'end'], [205, 105, 'Berlin'], [165, 222, 'Munich'], [255, 158, 'Breslau'], [236, 44, 'Stolp'], [160, 60, 'Lübeck'], [182, 52, 'Rostock'], [62, 140, 'Cologne']]
+    <path d="M0.0,0.0 L83.9,0.0 L82.7,12.2 L89.1,14.7 L90.8,25.0 L92.0,30.6 L96.8,42.2 L91.6,45.8 L96.1,51.9 L98.6,58.3 L93.4,59.2 L90.8,68.1 L83.9,72.2 L77.8,63.9 L67.4,65.3 L67.4,75.0 L58.8,70.8 L46.7,72.2 L36.3,79.2 L25.1,84.7 L21.6,100.0 L16.4,108.3 L13.0,113.9 L4.3,125.0 L0.0,129.2 L0,0 Z" class="m-sea"/>
+    <path d="M120.2,0.0 L108.9,8.3 L110.7,13.9 L107.2,14.2 L107.2,20.8 L105.8,26.7 L112.4,30.6 L106.3,33.6 L115.9,38.9 L113.3,42.5 L118.5,46.4 L126.2,44.4 L133.1,41.7 L134.9,45.8 L130.6,54.2 L130.9,56.7 L138.3,55.6 L140.9,58.3 L148.7,51.4 L151.8,50.6 L157.4,45.0 L160.0,42.5 L167.7,44.4 L170.3,37.5 L175.2,36.7 L179.8,43.1 L178.1,48.6 L181.6,51.4 L187.6,55.6 L189.7,57.8 L197.1,54.2 L212.2,50.6 L234.5,39.4 L246.4,34.2 L259.9,32.5 L261.1,38.9 L263.7,41.1 L266.3,45.8 L274.9,44.4 L281.9,38.9 L287.0,37.5 L292.2,29.2 L298.3,29.2 L306.9,16.7 L307.8,7.8 L306.9,0.0 L190.2,0.0 L190.2,1.9 L188.5,12.5 L181.9,16.1 L170.3,17.2 L164.8,16.7 L167.7,11.1 L163.4,0.0 L161.2,0.0 L160.8,8.9 L153.9,15.3 L158.2,19.4 L153.0,25.0 L146.1,22.8 L135.7,18.6 L134.9,8.9 L141.8,2.8 L146.1,0.0 Z" class="m-sea"/>
+    <path d="M117.6,11.1 L126.2,12.5 L129.7,19.4 L127.1,26.4 L117.6,26.4 L111.5,22.2 L112.4,15.3 Z" class="m-land m-coast"/>
+    <path d="M133.1,30.6 L141.8,29.2 L147.8,31.9 L147.8,37.5 L138.3,37.5 L133.1,33.3 Z" class="m-land m-coast"/>
+    <path d="M148.7,29.2 L152.2,31.9 L149.6,38.9 L147.8,37.5 Z" class="m-land m-coast"/>
+    <path d="M198.0,19.4 L204.9,20.8 L204.0,27.8 L197.1,26.4 Z" class="m-land m-coast"/>
+    <path d="M74.2,234.4 L77.8,205.6 L89.4,180.8 L85.9,166.7 L74.4,156.7 L63.3,140.6 L60.0,132.5 L49.3,115.3 L36.3,113.9 L19.0,113.9" class="m-river" opacity=".7"/>
+    <path d="M189.3,143.1 L180.5,137.5 L144.0,107.5 L136.6,84.7 L115.9,68.1 L98.6,58.3" class="m-river" opacity=".7"/>
+    <path d="M257.7,163.9 L237.4,136.1 L221.0,120.6 L194.5,101.4 L194.5,71.4 L190.2,61.1" class="m-river" opacity=".7"/>
+    <path d="M89.9,222.2 L115.9,211.1 L152.2,194.4 L175.7,206.4 L226.0,216.7 L245.5,222.2" class="m-river" opacity=".7"/>
+    <path d="M109.8,127.8 L102.0,108.3 L95.1,81.1 L90.8,68.1" class="m-river" opacity=".7"/>
+    <path d="M287.7,165.3 L313.0,150.0 L313.9,127.8 L306.1,104.7 L283.6,94.4 L264.6,83.3 L267.2,69.4 L269.8,47.2" class="m-river" opacity=".7"/>
+    <path d="M106.0,32.5 L92.5,30.6" class="m-border"/>
+    <path d="M67.4,76.4 L65.7,86.1 L64.8,98.6 L61.4,108.3 L50.1,115.3 L48.4,125.0 L45.0,138.9 L46.7,145.8 L48.4,155.6 L49.3,166.7 L52.7,181.9 L58.8,188.9 L72.6,191.7 L84.7,195.3 L77.8,205.6 L73.5,222.2 L74.4,233.9 L91.6,233.3 L105.5,233.3 L111.5,234.7 L122.8,238.9 L133.1,236.1 L153.9,233.3 L166.0,227.8 L167.7,216.7 L175.5,206.4 L181.6,200.0 L167.7,188.9 L159.1,177.8 L155.6,163.9 L153.9,159.7 L166.0,154.2 L178.1,145.8 L190.2,141.7 L198.9,138.9 L205.8,144.4 L223.1,150.0 L235.2,154.2 L247.3,161.1 L259.4,168.1 L265.4,161.1 L264.6,152.8 L257.7,138.9 L252.5,130.6 L235.2,122.2 L224.8,116.7 L216.2,105.6 L215.3,101.4 L223.1,86.1 L232.6,79.2 L242.1,63.9 L245.5,50.0 L249.0,33.3" class="m-border"/>
+    <path d="M278.4,45.8 L281.9,55.6 L281.9,66.7 L287.0,72.2 L297.4,77.8 L314.7,77.8" class="m-border"/>
+    <text x="25.9" y="30.6" class="m-sea-label">North Sea</text>
+    <text x="223.1" y="22.2" class="m-sea-label">Baltic Sea</text>
+    <text x="98.6" y="136.1" class="m-country">GERMANY</text>
+    <text x="93.4" y="24.4" class="m-country m-small">DENMARK</text>
+    <text x="173.8" y="7.8" class="m-country m-small">SWEDEN</text>
+    <text x="34.6" y="94.4" class="m-country m-small">NETHERLANDS</text>
+    <text x="12.1" y="151.4" class="m-country m-small">BELGIUM</text>
+    <text x="15.6" y="216.7" class="m-country m-small">FRANCE</text>
+    <text x="64.0" y="244.4" class="m-country m-small">SWITZERLAND</text>
+    <text x="195.4" y="180.6" class="m-country m-small">PROTECTORATE</text>
+    <text x="312.1" y="151.4" class="m-country m-small" text-anchor="end">GEN. GOVT.</text>
+    <text x="312.1" y="56.9" class="m-country m-small" text-anchor="end">E. PRUSSIA</text>
+    <text x="172.9" y="234.7" class="m-country m-small">AUSTRIA</text>`,
+  towns: [[115.9, 68.1, 'Hamburg', 'end'], [174.6, 96.7, 'Berlin'], [143.2, 218.3, 'Munich'], [237.4, 135.8, 'Breslau'], [237.4, 42.8, 'Stolp', 'end'], [127.8, 59.2, 'Lübeck'], [152.7, 53.1, 'Rostock'], [63.3, 140.6, 'Cologne'], [160.3, 8.9, 'Copenhagen', 'end'], [265.4, 45.8, 'Danzig'], [306.1, 104.7, 'Warsaw', 'end'], [226.0, 216.4, 'Vienna'], [192.3, 164.4, 'Prague'], [101.7, 200.6, 'Stuttgart']]
 });
 
 SIM.MAPS.moscow = () => ({

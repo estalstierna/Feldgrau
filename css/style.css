@@ -113,6 +113,7 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
 
 .map svg { width: 100%; height: auto; display: block; }
 .m-land { fill: #d4c9a8; }
+.m-coast { stroke: #9fb0aa; stroke-width: .6; }
 .m-sea { fill: #9fb0aa; }
 .m-lux { fill: #cbbf9c; stroke: #6b2a20; stroke-width: 1.2; stroke-dasharray: 5 3; }
 .m-sea-label { fill: #55665f; font: italic 10px var(--serif); }

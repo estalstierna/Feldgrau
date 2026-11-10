@@ -23,11 +23,11 @@ window.SIM = window.SIM || {};
     { date: 'Sunday, 26 April 1942',    short: 'Sun 26 Apr', place: s => 'home_' + s.char.hometown }
   ];
   const PLACES = {
-    home_berlin:  { name: 'Berlin-Wedding',   x: 205, y: 105 },
-    home_hamburg: { name: 'Hamburg-Altona',   x: 140, y: 72 },
-    home_munich:  { name: 'Munich',           x: 165, y: 222 },
-    home_breslau: { name: 'Breslau',          x: 255, y: 158 },
-    home_stolp:   { name: 'Stolp, Pomerania', x: 236, y: 44 }
+    home_berlin:  { name: 'Berlin-Wedding',   x: 174.0, y: 95.8 },
+    home_hamburg: { name: 'Hamburg-Altona',   x: 114.8, y: 68.1 },
+    home_munich:  { name: 'Munich',           x: 143.2, y: 218.3 },
+    home_breslau: { name: 'Breslau',          x: 237.4, y: 135.8 },
+    home_stolp:   { name: 'Stolp, Pomerania', x: 237.4, y: 42.8 }
   };
 
   SIM.CHAPTERS.push({
