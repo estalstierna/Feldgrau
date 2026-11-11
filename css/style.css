@@ -317,5 +317,8 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
 .archive-card { border-top: 1px dotted var(--line); padding: .8rem 0; display: flex; flex-direction: column; gap: .2rem; }
 .archive-card.fallen b:first-child { color: var(--crit); }
 .archive-end { font-size: .9rem; }
-.archive-medals { display: flex; flex-wrap: wrap; gap: .25rem; align-items: center; margin: .2rem 0; }
-.archive-medals svg, .archive-medals img { height: 22px; width: auto; }
+.archive-medals { display: flex; flex-wrap: wrap; gap: .7rem; align-items: flex-end; margin: .5rem 0 .3rem; }
+.archive-medal { margin: 0; width: 76px; display: flex; flex-direction: column; align-items: center; gap: .25rem; }
+.archive-medal.wide { width: 110px; }
+.archive-medal .medal-img { max-width: 100%; }
+.archive-medal figcaption { font-size: .66rem; line-height: 1.2; text-align: center; opacity: .75; }

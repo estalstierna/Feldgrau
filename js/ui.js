@@ -112,7 +112,7 @@ window.SIM = window.SIM || {};
   // ── Past soldiers (title screen) ──
   function openArchive() {
     const list = SIM.loadArchive();
-    const medal = id => SIM.MEDALS[id] ? `<span title="${esc(SIM.MEDALS[id].name)}">${SIM.MEDALS[id].kind === 'ribbon' ? SIM.ribbonSVG(id) : SIM.badgeSVG(id, 22)}</span>` : '';
+    const medal = id => SIM.MEDALS[id] ? `<figure class="archive-medal${SIM.MEDALS[id].shape === 'clasp' ? ' wide' : ''}" title="${esc(SIM.MEDALS[id].german || '')}">${SIM.badgeSVG(id, SIM.MEDALS[id].shape === 'clasp' ? 30 : 56)}<figcaption>${esc(SIM.MEDALS[id].name)}</figcaption></figure>` : '';
     const mark = r => r.how === 'kia' ? '†' : r.how === 'unfinished' ? '…' : '•';
     $('#profile-body').innerHTML = `<div class="kicker">Past soldiers</div><h2>The Fallen and the Others</h2>
       <p class="small muted">Every soldier whose story has ended, newest first. Kept in this browser only.</p>` +
