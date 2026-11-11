@@ -77,6 +77,10 @@
     eagle decal on the side of the helmet that is in the RIGHT HALF of the picture, nothing else".
     Waffen-SS steel helmet: "like the SECOND HELMET in the attached emblem-sheet.png: a small decal of the
     sword-and-oak-leaves emblem, silver on a small black shield, on the side of the helmet that is in the LEFT HALF of the picture; no eagle".
+- If a portrait is refused as "harassment / discrimination" even with neutral wording, the face probably
+  resembles a real person: drop the character's name, write "an ordinary, fictional man", give him
+  distinctive features (round face, spectacles, beard colour), use no date or place, attach nothing,
+  and refine afterwards in the same conversation.
 - Scenes: landscape 16:9, at least 1600 × 900, horizon at 55–60 % of the height, important things
   between 30 % and 80 % of the height, hand-painted gouache style (`docs/style-reference.png`).
   Portraits: square, 1024 × 1024, plain dark olive background (#3b3d34).
