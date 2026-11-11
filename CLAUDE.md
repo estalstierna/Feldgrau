@@ -40,8 +40,8 @@
     WEARER'S LEFT patch. In a portrait facing the viewer the wearer's left is the RIGHT HALF OF THE
     PICTURE. Rule of thumb: rank patch, cap eagle and helmet eagle all in the RIGHT half of the picture;
     the collar emblem and the Army breast eagle in the LEFT half. (The sheet now has TWELVE pictures in three rows:
-    emblem, flag, medal, breast eagle / cap badge, CAP ONE (eagle in the right half), CAP TWO, CAP ONE
-    from the side / ARMY HELMET (visor to the left, eagle), SECOND HELMET (visor to the right, emblem on a
+    emblem, flag, medal, breast eagle / cap badge, CAP TWO (ARMY 1939: eagle above a red-white-black
+    cockade inside a white inverted V), CAP ONE (Waffen-SS: badge and eagle), CAP ONE from the side / ARMY HELMET (visor to the left, eagle), SECOND HELMET (visor to the right, emblem on a
     black shield, the Waffen-SS helmet), COLLAR ONE (two loose black patches), COLLAR TWO (Army). Still
     state every side in words; text outweighs the sheet. Portraits made before
     Nov 2026 have the cap/helmet eagle mirrored; the owner chose to keep them.)
@@ -69,8 +69,10 @@
     almost straight on so both collar patches are fully visible (keep hands low). For the cap: "in the
     RIGHT HALF of the picture, just beside this badge, a smaller silver eagle". Mirroring a finished image
     does not fix it, because it moves the cap eagle too.
-  - Army side cap: "exactly like CAP TWO (ONLY EAGLE) in the attached emblem-sheet.png: only a small
-    silver-grey eagle, exactly in the CENTRE of the front of the cap, and no other badge".
+  - Army side cap 1939–42 (M34 Feldmütze): "exactly like CAP TWO (EAGLE ABOVE COCKADE) in the attached
+    emblem-sheet.png: centred on the front, a small grey eagle holding only the sword-and-oak-leaves emblem,
+    and below it a small round red-white-black cockade inside an upside-down V of thin white braid".
+    For 1943 caps without the cockade: "only a small grey eagle, centred on the front, no other badge".
   - Army steel helmet: "exactly like the HELMET in the attached emblem-sheet.png: a small silver-grey
     eagle decal on the side of the helmet that is in the RIGHT HALF of the picture, nothing else".
     Waffen-SS steel helmet: "like the SECOND HELMET in the attached emblem-sheet.png: a small decal of the
