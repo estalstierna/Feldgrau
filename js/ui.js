@@ -360,7 +360,13 @@ window.SIM = window.SIM || {};
   // Portraits of the people in a scene. The one named in the title is shown larger.
   function castHTML(list) {
     if (!list.length) return '';
-    const fig = c => `<figure class="cast-p${c.featured ? ' featured' : ''}${c.alive ? '' : ' gone'}"><img src="assets/portraits/${SIM.portraitFile(S, c.id)}.webp" alt="" loading="lazy"><figcaption>${esc(c.name)}</figcaption></figure>`;
+    // First name on the first line, the rest (surname, "von Albrecht") on the second; a nickname counts as the first name.
+    const twoLines = name => {
+      const nick = name.match(/^(\S+) "([^"]+)" (.+)$/);
+      const [first, rest] = nick ? [nick[2], nick[3]] : [name.split(' ')[0], name.split(' ').slice(1).join(' ')];
+      return `<span class="cn-first">${esc(first)}</span>${rest ? `<span class="cn-last">${esc(rest)}</span>` : ''}`;
+    };
+    const fig = c => `<figure class="cast-p${c.featured ? ' featured' : ''}${c.alive ? '' : ' gone'}"><img src="assets/portraits/${SIM.portraitFile(S, c.id)}.webp" alt="" loading="lazy"><figcaption>${twoLines(c.name)}</figcaption></figure>`;
     const main = list.find(c => c.featured), rest = list.filter(c => c !== main);
     return `${rest.length ? `<div class="cast">${rest.map(fig).join('')}</div>` : ''}${main ? fig(main) : ''}`;
   }

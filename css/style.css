@@ -322,3 +322,5 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
 .archive-medal.wide { width: 110px; }
 .archive-medal .medal-img { max-width: 100%; }
 .archive-medal figcaption { font-size: .66rem; line-height: 1.2; text-align: center; opacity: .75; }
+.cast-p figcaption span { display: block; white-space: nowrap; }
+.cast { align-items: flex-start; }
