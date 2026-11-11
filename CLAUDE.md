@@ -39,10 +39,13 @@
     eagle; Army side cap = eagle centred; Waffen-SS collar = emblem on WEARER'S RIGHT patch, rank on
     WEARER'S LEFT patch. In a portrait facing the viewer the wearer's left is the RIGHT HALF OF THE
     PICTURE. Rule of thumb: rank patch, cap eagle and helmet eagle all in the RIGHT half of the picture;
-    the collar emblem and the Army breast eagle in the LEFT half. (The emblem sheet shows CAP ONE's eagle
-    on the wrong side, so always state the side in words; text outweighs the sheet. Portraits made before
+    the collar emblem and the Army breast eagle in the LEFT half. (The sheet now has TWELVE pictures in three rows:
+    emblem, flag, medal, breast eagle / cap badge, CAP ONE (eagle in the right half), CAP TWO, CAP ONE
+    from the side / ARMY HELMET (visor to the left, eagle), SECOND HELMET (visor to the right, emblem on a
+    black shield, the Waffen-SS helmet), COLLAR ONE (two loose black patches), COLLAR TWO (Army). Still
+    state every side in words; text outweighs the sheet. Portraits made before
     Nov 2026 have the cap/helmet eagle mirrored; the owner chose to keep them.)
-  - Waffen-SS side cap: "exactly like CAP ONE (PIN AND EAGLE) in the attached emblem-sheet.png, but with
+  - Waffen-SS side cap: "exactly like CAP ONE (PIN AND EAGLE) in the attached emblem-sheet.png, with
     the eagle in the RIGHT HALF of the picture: the round cap badge sits exactly in the centre of the
     front, directly above the bridge of his nose, and the small silver eagle sits beside it in the RIGHT
     HALF of the picture".
@@ -70,8 +73,8 @@
     silver-grey eagle, exactly in the CENTRE of the front of the cap, and no other badge".
   - Army steel helmet: "exactly like the HELMET in the attached emblem-sheet.png: a small silver-grey
     eagle decal on the side of the helmet that is in the RIGHT HALF of the picture, nothing else".
-    Waffen-SS steel helmet: "a small decal of the sword-and-oak-leaves emblem, silver on a small black
-    shield, on the side of the helmet that is in the LEFT HALF of the picture; no eagle".
+    Waffen-SS steel helmet: "like the SECOND HELMET in the attached emblem-sheet.png: a small decal of the
+    sword-and-oak-leaves emblem, silver on a small black shield, on the side of the helmet that is in the LEFT HALF of the picture; no eagle".
 - Scenes: landscape 16:9, at least 1600 × 900, horizon at 55–60 % of the height, important things
   between 30 % and 80 % of the height, hand-painted gouache style (`docs/style-reference.png`).
   Portraits: square, 1024 × 1024, plain dark olive background (#3b3d34).
