@@ -31,6 +31,7 @@ window.SIM = window.SIM || {};
   // ── Title ──
   function renderTitle() {
     $('#btn-continue').hidden = !resumable(SIM.load());
+    $('#btn-archive').hidden = !SIM.loadArchive().length;
     $('#title-chapters').textContent = SIM.CHAPTERS.map(c => `Chapter ${c.num}: ${c.title} · ${c.range}`).join('\n');
     show('title');
   }
@@ -106,6 +107,29 @@ window.SIM = window.SIM || {};
         ${rec ? `<span class="small">${esc(rec.date)}${rec.reason ? ' · ' + esc(rec.reason) : ''}</span>` : ''}
         <span class="small muted">${esc(m.desc)}</span></div></div>`;
     }).join('');
+  }
+
+  // ── Past soldiers (title screen) ──
+  function openArchive() {
+    const list = SIM.loadArchive();
+    const medal = id => SIM.MEDALS[id] ? `<span title="${esc(SIM.MEDALS[id].name)}">${SIM.MEDALS[id].kind === 'ribbon' ? SIM.ribbonSVG(id) : SIM.badgeSVG(id, 22)}</span>` : '';
+    const mark = r => r.how === 'kia' ? '†' : r.how === 'unfinished' ? '…' : '•';
+    $('#profile-body').innerHTML = `<div class="kicker">Past soldiers</div><h2>The Fallen and the Others</h2>
+      <p class="small muted">Every soldier whose story has ended, newest first. Kept in this browser only.</p>` +
+      list.map(r => {
+        const lost = (r.squad || []).filter(m => m.status === 'killed').length;
+        return `<div class="archive-card ${r.how === 'kia' ? 'fallen' : ''}">
+          <div class="person-top"><b>${mark(r)} ${esc(r.rank)} ${esc(r.name)}</b><span class="small muted">${esc(r.finished)}</span></div>
+          <div class="small">Born ${r.born}, ${esc(r.town)}${r.ss ? ' · Waffen-SS' : ''}</div>
+          <div class="archive-end"><b>${esc(r.title)}</b> · Chapter ${esc(r.chapter)}: ${esc(r.chapterTitle)}, ${esc(r.date)}</div>
+          ${r.cause ? `<div class="small muted"><i>${esc(r.cause)}</i></div>` : ''}
+          ${r.medals.length ? `<div class="archive-medals">${r.medals.map(medal).join('')}</div>` : ''}
+          ${[r.wounds ? `Wounded ${r.wounds} time${r.wounds === 1 ? '' : 's'}` : '', lost ? `${lost} of his men killed` : '', r.lastWords ? `Last diary entry: “${esc(r.lastWords)}”` : ''].filter(Boolean).length ? `<div class="small muted">${[r.wounds ? `Wounded ${r.wounds} time${r.wounds === 1 ? '' : 's'}` : '', lost ? `${lost} of his men killed` : '', r.lastWords ? `Last diary entry: “${esc(r.lastWords)}”` : ''].filter(Boolean).join(' · ')}</div>` : ''}
+        </div>`;
+      }).join('') + `<p><button class="btn small" id="btn-clear-archive">Clear the list</button></p>`;
+    $('#profile').hidden = false;
+    $('#btn-close-profile').focus();
+    $('#btn-clear-archive').onclick = () => { if (confirm('Forget all past soldiers?')) { SIM.clearArchive(); closeProfile(); renderTitle(); } };
   }
 
   // ── Profile (Soldbuch) ──
@@ -492,8 +516,10 @@ window.SIM = window.SIM || {};
     $('#btn-new').onclick = () => {
       const saved = SIM.load();
       if (resumable(saved) && !confirm(`You have a saved game: ${saved.char.first} ${saved.char.last}, ${SIM.rankTitle(saved)}, Chapter ${SIM.CHAPTERS[saved.chapter || 0].num}.\n\nStarting a new soldier will erase it. Continue?`)) return;
+      if (resumable(saved)) SIM.archive(saved, 'unfinished');
       draft.first = ''; renderCreate();
     };
+    $('#btn-archive').onclick = openArchive;
     $('#btn-continue').onclick = () => {
       const saved = SIM.load();
       if (!resumable(saved)) return renderTitle();

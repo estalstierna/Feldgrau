@@ -231,6 +231,7 @@ SIM.finish = function (s, id) {
   s.stage = 'ending';
   s.current = null;
   if (!e.final) SIM.review(s);
+  else if (SIM.archive && typeof localStorage !== 'undefined') SIM.archive(s, id);
   if (e.onFinish) e.onFinish(s);
   return id;
 };
@@ -372,4 +373,36 @@ SIM.migrate = function (s) {
 SIM.SAVE_KEY = 'feldgrau-save-v1';
 SIM.save = function (s) { try { localStorage.setItem(SIM.SAVE_KEY, JSON.stringify(s)); } catch (e) { /* ignore */ } };
 SIM.load = function () { try { const t = localStorage.getItem(SIM.SAVE_KEY); return t ? SIM.migrate(JSON.parse(t)) : null; } catch (e) { return null; } };
+// ── The archive: a short record of every soldier whose story has ended ──
+SIM.ARCHIVE_KEY = 'feldgrau-archive-v1';
+SIM.loadArchive = function () { try { return JSON.parse(localStorage.getItem(SIM.ARCHIVE_KEY) || '[]'); } catch (e) { return []; } };
+SIM.archiveRecord = function (s, how) {
+  const ch = SIM.chapter(s), e = s.ending && SIM.ENDINGS[s.ending];
+  const last = (s.log || []).slice(-1)[0];
+  return {
+    id: s.runId || (s.runId = `${Date.now()}-${Math.floor(Math.random() * 1e6)}`),
+    name: `${s.char.first} ${s.char.last}`, born: s.char.birthYear, town: SIM.townName(s.char.hometown),
+    rank: SIM.rankTitle(s), ss: !!s.flags.joinedSS,
+    chapter: ch.num, chapterTitle: ch.title,
+    date: (SIM.today(s) || {}).date || ch.range,
+    how,
+    title: how === 'unfinished' ? 'Left unfinished' : e ? e.title : '',
+    cause: s.ending === 'kia' ? (s.deathCause || ch.deathDefault || '') : '',
+    medals: SIM.displayMedals(s).map(m => m.id),
+    wounds: s.wounds || 0,
+    conscience: s.stats.conscience,
+    squad: (s.squad || []).map(m => ({ name: m.name, status: m.status })),
+    lastWords: last ? last.text : '',
+    finished: new Date().toISOString().slice(0, 10)
+  };
+};
+SIM.archive = function (s, how) {
+  if (!s || !s.char) return;
+  try {
+    const list = SIM.loadArchive().filter(r => r.id !== s.runId);
+    list.unshift(SIM.archiveRecord(s, how));
+    localStorage.setItem(SIM.ARCHIVE_KEY, JSON.stringify(list.slice(0, 40)));
+  } catch (e) { /* ignore */ }
+};
+SIM.clearArchive = function () { try { localStorage.removeItem(SIM.ARCHIVE_KEY); } catch (e) { /* ignore */ } };
 SIM.clearSave = function () { try { localStorage.removeItem(SIM.SAVE_KEY); } catch (e) { /* ignore */ } };
