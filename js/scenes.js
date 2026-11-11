@@ -23,6 +23,15 @@ function pines(rnd, count, yBase, hMin, hMax, color) {
 SIM.PHASE_NAMES = ['morning', 'afternoon', 'night'];
 SIM.SCENE_IMAGES = { camp: ['morning', 'afternoon', 'night'], forest: ['morning', 'afternoon', 'night'], field: ['morning', 'afternoon', 'night'], village: ['morning', 'afternoon', 'night'], road: ['morning', 'afternoon', 'night'], river: ['morning', 'afternoon', 'night'], city: ['morning', 'afternoon', 'night'], bridge: ['morning', 'afternoon', 'night'], letter: 'single', 'village-east': ['morning', 'afternoon', 'night'], 'road-east': ['morning', 'afternoon', 'night'], 'river-east': ['morning', 'afternoon', 'night'], 'city-east': ['morning', 'afternoon', 'night'], 'camp-winter': ['morning', 'afternoon', 'night'], 'field-winter': ['morning', 'afternoon', 'night'], 'village-winter': ['morning', 'afternoon', 'night'], 'river-winter': ['morning', 'afternoon', 'night'], 'forest-winter': ['morning', 'afternoon', 'night'], 'road-winter': ['morning', 'afternoon', 'night'], 'letter-winter': 'single', street: ['morning', 'afternoon', 'night'], station: 'single', kitchen: 'single', cellar: 'single', church: 'single', steppe: ['morning', 'afternoon', 'night'], ruins: ['morning', 'afternoon', 'night'], factory: ['morning', 'afternoon', 'night'], 'ruins-winter': ['morning', 'afternoon', 'night'], 'factory-winter': ['morning', 'afternoon', 'night'], 'airfield-winter': ['morning', 'afternoon', 'night'], powcamp: ['morning', 'afternoon', 'night'], 'powcamp-winter': ['morning', 'afternoon', 'night'], tanks: ['morning', 'afternoon', 'night'], barracks: 'single', hospital: 'single', office: 'single', train: 'single' };
 // A chapter can have its own variant of a scene (e.g. 'village-east'); it falls back to the generic one.
+// The picture at the top of the death screen: a field grave in summer or winter, or a camp grave.
+SIM.funeralImage = function (s) {
+  const d = SIM.today(s) || {};
+  const camp = SIM.track && SIM.track(s) === 'camp';
+  const winter = d.variant === 'winter' || (d.temp !== undefined && d.temp < 0);
+  const id = camp ? 'funeral-camp' : winter ? 'funeral-winter' : 'funeral';
+  const pick = [id, 'funeral'].find(k => SIM.SCENE_IMAGES[k] === 'single');
+  return pick ? `assets/scenes/scene-${pick}.webp` : null;
+};
 SIM.sceneImage = function (scene, phase, variant) {
   // Indoor scenes (letters) look the same in every season: use the generic painting.
   if (variant && SIM.VARIANT_ONLY && SIM.VARIANT_ONLY.includes(variant) && !(SIM.INDOOR.includes(scene) && !SIM.SCENE_IMAGES[`${scene}-${variant}`])) return SIM.SCENE_IMAGES[`${scene}-${variant}`] ? SIM.sceneImage(`${scene}-${variant}`, phase) : null;

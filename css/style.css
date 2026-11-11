@@ -311,3 +311,4 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
 
 .people-group { font: .72rem var(--type); letter-spacing: .14em; text-transform: uppercase; color: var(--warn, #8a5a1a); margin: 1.1rem 0 .3rem; padding-bottom: .25rem; border-bottom: 1px solid var(--line); }
 .people-group:first-of-type { margin-top: .4rem; }
+.end-banner .scene-img { object-position: 50% 55%; filter: saturate(.85); }
