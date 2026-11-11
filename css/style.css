@@ -324,3 +324,5 @@ button:focus-visible, input:focus-visible, label.opt:focus-within { outline: 2px
 .archive-medal figcaption { font-size: .66rem; line-height: 1.2; text-align: center; opacity: .75; }
 .cast-p figcaption span { display: block; white-space: nowrap; }
 .cast { align-items: flex-start; }
+.ribbon-img { display: block; object-fit: fill; border-radius: 1px; box-shadow: 0 0 0 1px rgba(0,0,0,.25); }
+.ribbon-bar img { display: block; }

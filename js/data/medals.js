@@ -93,8 +93,11 @@ SIM.displayMedals = function (s) {
   return s.medals.filter(m => !replaced.has(m.id)).sort((a, b) => SIM.MEDALS[a.id].order - SIM.MEDALS[b.id].order);
 };
 
-SIM.ribbonSVG = function (id, w = 36, h = 11) {
+// Painted ribbon bars in assets/ribbons/ribbon-<id>.png; others are drawn from their stripes.
+SIM.RIBBON_IMAGES = ['ek2', 'kvk2ns', 'kvk2', 'ostmedaille', 'sudeten', 'westwall', 'rescue', 'longservice4'];
+SIM.ribbonSVG = function (id, w = 36, h = 11, drawn) {
   const m = SIM.MEDALS[id];
+  if (!drawn && SIM.RIBBON_IMAGES.includes(id)) return `<img class="ribbon ribbon-img" src="assets/ribbons/ribbon-${id}.png" alt="" width="${w}" height="${h}">`;
   const total = m.stripes.reduce((a, s) => a + s[1], 0);
   let x = 0;
   const rects = m.stripes.map(([c, n]) => { const r = `<rect x="${x}" y="0" width="${(n / total) * w + 0.3}" height="${h}" fill="${c}"/>`; x += (n / total) * w; return r; }).join('');
@@ -112,7 +115,7 @@ SIM.badgeSVG = function (id, size = 44) {
     const cross = id === 'ek2';
     const kvk = m.pendant === 'kvk';
     return `<svg viewBox="0 0 40 56" width="${size * 0.72}" height="${size}" aria-hidden="true">
-      ${SIM.ribbonSVG(id, 40, 20).replace('<svg class="ribbon" viewBox="0 0 40 20" width="40" height="20" aria-hidden="true">', '<g>').replace('</svg>', '</g>')}
+      ${SIM.ribbonSVG(id, 40, 20, true).replace('<svg class="ribbon" viewBox="0 0 40 20" width="40" height="20" aria-hidden="true">', '<g>').replace('</svg>', '</g>')}
       <polygon points="14,20 26,20 20,26" fill="#555"/>
       ${cross ? crossPath(20, 40, 15, '#111', '#c0c4c8') : kvk ? kvkPath(20, 40, 14, m.swords !== false) : `<circle cx="20" cy="40" r="12" fill="#a8a294" stroke="#6b665a" stroke-width="2"/><circle cx="20" cy="40" r="7" fill="none" stroke="#6b665a" stroke-width="1"/>`}
     </svg>`;
