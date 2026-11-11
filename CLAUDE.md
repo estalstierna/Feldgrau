@@ -3,7 +3,7 @@
 ## Working with the owner
 - The owner writes in Swedish. Reply in Swedish; the game itself is in English.
 - Ask before starting a new chapter; the owner likes to choose between numbered options ("1a, 2b, …").
-- Develop on branch `ccr-fbc35b87-fc42gq`; GitHub Pages serves it at https://estalstierna.github.io/SIMWW2/.
+- Develop on branch `ccr-fbc35b87-fc42gq`; GitHub Pages serves it at https://estalstierna.github.io/Feldgrau/ (the repo was renamed from SIMWW2 to Feldgrau).
 
 ## Image prompts (for the owner's image model)
 - Give **complete, copy-ready prompts**: one full prompt per image (and per time of day for scenes),
