@@ -50,6 +50,13 @@
     exactly like COLLAR TWO (ARMY) in the attached emblem-sheet.png" (dark green collar, grey bars).
     Always add that a stripe runs "HORIZONTALLY across the FULL WIDTH of the patch, parallel to its
     bottom edge".
+  - Left/right gets mirrored when written as "viewer's left" or "wearer's left". Instead name the HALF
+    OF THE PICTURE: "the collar patch in the LEFT HALF of the picture shows the sword with oak leaves; the
+    patch in the RIGHT HALF of the picture shows the rank", add an explicit ban ("the sword with oak
+    leaves must NOT appear on the patch in the right half of the picture"), and pose Waffen-SS portraits
+    almost straight on so both collar patches are fully visible (keep hands low). For the cap: "in the
+    LEFT HALF of the picture, just beside this badge, a smaller silver eagle". Mirroring a finished image
+    does not fix it, because it moves the cap eagle too.
   - Army side cap: "exactly like CAP TWO (ONLY EAGLE) in the attached emblem-sheet.png: only a small
     silver-grey eagle, exactly in the CENTRE of the front of the cap, and no other badge".
   - Steel helmet: "exactly like the HELMET in the attached emblem-sheet.png: a small silver-grey eagle
