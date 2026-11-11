@@ -294,7 +294,10 @@ window.SIM = window.SIM || {};
       if (!S.squad) return `<div class="kicker">Squad</div><p class="muted small">You do not command any men yet. That may change.</p>`;
       const plt = SIM.platoonActive && SIM.platoonActive(S);
       const brig = S.flags.brigadier && S.brigade && SIM.track(S) === 'camp' ? `<div class="kicker">Your work brigade</div><div class="item"><div class="person-top"><b>${S.brigade.men} men</b><span>Brigadier</span></div>${miniBar('Morale', S.brigade.morale)}<span class="small muted">You answer for the norm, the bread and the count. They answer to you.</span></div>` : '';
-      return brig + (plt ? platoonHTML() : '') + `<div class="kicker">Your squad</div>
+      const e = S.escape && SIM.track(S) === 'camp' && S.chapter === 8 && (S.flags.metHaller || S.escape.food || S.escape.map || S.escape.compass || S.escape.boots) ? S.escape : null;
+      const tick = v => v ? '✔' : '—';
+      const esc9 = e ? `<div class="kicker">Escape plan</div><div class="item"><span class="small">Food: <b>${e.food}</b> days · Map: <b>${tick(e.map)}</b> · Compass: <b>${tick(e.compass)}</b> · Boots: <b>${tick(e.boots)}</b> · Partner: <b>${e.partner ? (e.partner === 'haller' ? 'Haller' : esc(((SIM.man(S, e.partner) || {}).name || '').split(' ')[0])) : '—'}</b></span>${miniBar('Whispers', e.risk)}<span class="small muted">The more you prepare, the better your chances, and the more people may notice.</span></div>` : '';
+      return brig + esc9 + (plt ? platoonHTML() : '') + `<div class="kicker">Your squad</div>
         <div class="squad-sum">${miniBar('Morale', SIM.squadMorale(S))}${miniBar('Loyalty', SIM.squadLoyalty(S))}</div>` +
         S.squad.map(m => `<div class="person ${m.status !== 'ok' ? 'gone' : ''}">${avatar(m.id, m.name)}<div class="person-info">
           <div class="person-top"><b>${esc(m.name)}</b>${S.flags.deputy === m.id ? '<span class="deputy">deputy</span>' : ''}</div>
@@ -328,18 +331,19 @@ window.SIM = window.SIM || {};
   }
   function manActions(m) {
     const q = S.platoon.squads;
-    return `<div class="plt-actions">${['dorn', 'saal'].map(id => pltButton('give', m.id, id, `To ${q[id].alive ? q[id].short : (id === 'dorn' ? '2nd' : '3rd') + ' squad'}`)).join('')}${pltButton('recommend', m.id, '', 'Recommend for promotion')}</div>`;
+    return `<div class="plt-actions">${['dorn', 'saal'].map(id => pltButton('give', m.id, id, `To ${q[id].alive ? q[id].short : (id === 'dorn' ? '2nd' : '3rd') + ' ' + SIM.subUnit(S)}`)).join('')}${pltButton('recommend', m.id, '', 'Recommend for promotion')}</div>`;
   }
   function platoonHTML() {
     const p = S.platoon;
     const left = 2 - p.recs;
-    return `<div class="kicker">Your platoon</div><p class="small muted">You command three squads. In battle you give the orders; your squad leaders carry them out in their own way. Recommendations left this summer: ${left}.</p>` +
+    const sub = SIM.subUnit(S);
+    return `<div class="kicker">Your ${SIM.unitName(S)}</div><p class="small muted">You command three ${sub}s. In battle you give the orders; your ${sub} leaders carry them out in their own way. Recommendations left this summer: ${left}.</p>` +
       ['dorn', 'saal'].map((id, i) => { const q = p.squads[id]; const v = SIM.rel(S, id);
         return `<div class="person">${q.alive ? avatar(id, q.name) : avatar(id + '_x', (i ? '3rd' : '2nd') + ' squad')}<div class="person-info">
-          <div class="person-top"><b>${q.alive ? esc(q.name) : `${i ? '3rd' : '2nd'} squad`}</b>${q.alive ? `<span class="rel-label ${v < -15 ? 'neg' : v >= 15 ? 'pos' : ''}">${SIM.relLabel(v)}</span>` : '<span class="rel-label neg">leader killed</span>'}</div>
-          <span class="small muted">${i ? '3rd' : '2nd'} squad · ${q.strength} men · ${esc(SIM.PLATOON_TRAITS[q.trait])}</span>
+          <div class="person-top"><b>${q.alive ? esc(q.name) : `${i ? '3rd' : '2nd'} ${sub}`}</b>${q.alive ? `<span class="rel-label ${v < -15 ? 'neg' : v >= 15 ? 'pos' : ''}">${SIM.relLabel(v)}</span>` : '<span class="rel-label neg">leader killed</span>'}</div>
+          <span class="small muted">${i ? '3rd' : '2nd'} ${sub} · ${q.strength} men · ${esc(SIM.PLATOON_TRAITS[q.trait])}</span>
           ${miniBar('Morale', q.morale)}${miniBar('Ammunition', Math.round(100 * q.ammo / 12))}
-          <div class="plt-actions">${pltButton('take', id, '', 'Take a man into your squad')}${q.alive ? pltButton('recommend', id, '', 'Recommend him for the Iron Cross') : ''}</div></div></div>`; }).join('');
+          <div class="plt-actions">${pltButton('take', id, '', 'Take a man into your own unit')}${q.alive ? pltButton('recommend', id, '', 'Recommend him for a decoration') : ''}</div></div></div>`; }).join('');
   }
 
   let activeTab = 'status';

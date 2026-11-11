@@ -28,6 +28,7 @@ Choose with the mouse or by tapping, or press **1–4** to pick a choice and **E
 | *Interlude* | May – June 1942 | Kharkov, the summer directive, a last quiet week among the cherry orchards |
 | VII: Stalingrad | 28 Jun 1942 – 31 Jan 1943 | The whole battle over 13 days: the steppe, the **Don** bend, the **Volga**, the grain elevator, the **Tractor Works**, the Rattenkrieg, the encirclement, the airlift, Christmas in the pocket, the last planes from **Gumrak**, and the surrender. Army and SS players both end up here. Introduces **Grischa**, a Ukrainian *Hiwi* in your squad |
 | VIII: Two Roads | Feb – Jul 1943 | Two tracks of 14 days each, chosen by how Chapter VII ended. **Captivity**: the march to Beketovka, typhus, Dr. Lipatova, a familiar face in a private's coat, Camp 27 at Krasnogorsk, the NKVD, and the founding of the National Committee for a Free Germany. **Front**: hospital, Major Kessler's investigation of how you got out, Kharkov, and Operation Citadel at Kursk |
+| IX: The Long Retreat | Aug 1943 – May 1944 | Two tracks of 14 days. **Front**: the officer candidate course at the war school in Dresden (or the retreat to the Dnieper for those who stay with their men), then a **company** as a Leutnant: Kiev, Zhitomir, the Christmas offensive and the **Cherkassy pocket**, with the breakout across the Gniloy Tikich at Lysianka. Orders from above can be **obeyed, bent or refused**. **Camp**: the Antifa school or the train east to Camp 97 at **Yelabuga** on the Kama, logging in the forest at minus thirty, and an **escape plan** built over the winter, with Leopold Haller, a Tyrolean who has escaped twice before |
 
 Chapters I and II are 7 days each; Chapter III is 14 days, Chapter IV 10 days, Chapter V 12 days, Chapter VII 13 days and Chapter VIII 14 days, across several places. Each day has 3 phases (morning, afternoon, night). Choices in Chapter I follow you: who you saved, who you betrayed, and who is still in your squad.
 
@@ -108,6 +109,10 @@ Major Kessler of the Secret Field Police asks every man who got out of Stalingra
   - In the Squad tab you can **transfer** your men to another squad or **take** a man from one (one move per phase), and **recommend** two men this summer for promotion or the Iron Cross.
   - **Discipline**: a sentry asleep, prisoners shot, a man who ran. You decide how much the army learns.
 - **Camp: Brigadier.** A prisoner the others respect can be made leader of a work brigade of sixty men: the bread, the norm, the names the NKVD wants. The brigade's morale shows in the Squad tab.
+
+### Orders and the escape plan (Chapter IX)
+- **Orders**: hold to the last man, shoot hostages, a hopeless night attack, leave the wounded. Each can be obeyed, bent or refused. Refuse too often while your superiors think little of you, and you are relieved of command.
+- **Escape plan** (camp): food (days of bread), a map, a compass, good boots and a partner, shown in the Squad tab. Every preparation raises the chance of getting away, and the "whispers": the chance that the guards find your hoard or someone talks. The attempt is on the night of 1 May 1944.
 
 ### Using supplies and kit yourself
 When your **food is below 60** you can eat one of the squad's rations; when your **health is below 70** you can use the medical kit. Some kit can be used too: drink vodka or schnapps, brew coffee, smoke. Each once per morning, afternoon or night, from the Status panel or the Kit tab.
@@ -218,6 +223,10 @@ js/data/ch7_more.js Chapter VII: the pocket, Gumrak, the surrender, random event
 js/data/ch8.js      Chapter VIII: both calendars, the interlude, the captivity track
 js/data/ch8_front.js Chapter VIII: the front track (Kessler, Kursk)
 js/data/ch8_more.js Chapter VIII: random events, endings
+js/data/ch9.js      Chapter IX: calendars, interlude, war school / retreat to the Dnieper
+js/data/ch9_front.js Chapter IX: the company, orders, the Cherkassy pocket
+js/data/ch9_camp.js Chapter IX: Yelabuga and the escape plan
+js/data/ch9_more.js Chapter IX: random events, endings
 js/data/starck.js   Starck's appearances in Chapters II–IV
 js/systems.js       relationships, skills, kit, squad
 js/engine.js        state, effects, event selection, saving

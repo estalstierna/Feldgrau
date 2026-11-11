@@ -286,7 +286,8 @@ SIM.mapSVG = function (s) {
   const ch = SIM.chapter(s);
   const m = SIM.MAPS[SIM.chv(s, 'map')]();
   const days = SIM.days(s);
-  const visited = days.slice(0, s.day + 1).map(d => SIM.dayPlace(s, d)).filter((p, i, a) => a.indexOf(p) === i);
+  const mapPlaces = SIM.MAP_PLACES && SIM.MAP_PLACES[SIM.chv(s, 'map')];
+  const visited = days.slice(0, s.day + 1).map(d => SIM.dayPlace(s, d)).filter((p, i, a) => a.indexOf(p) === i && (!mapPlaces || p in mapPlaces));
   const cur = ch.places[SIM.dayPlace(s, days[Math.min(s.day, days.length - 1)])];
   const path = visited.map(p => ch.places[p]).map((p, i) => `${i ? 'L' : 'M'}${p.x},${p.y}`).join(' ');
   const town = (x, y, name, anchor = 'start', dx = 5) => `<circle cx="${x}" cy="${y}" r="2.2" class="m-town"/><text x="${x + (anchor === 'end' ? -dx : dx)}" y="${y + 3}" text-anchor="${anchor}" class="m-label">${name}</text>`;

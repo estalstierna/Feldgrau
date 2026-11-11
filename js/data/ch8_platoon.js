@@ -9,6 +9,10 @@ window.SIM = window.SIM || {};
   const ev = o => E.push(Object.assign({ chapter: 7 }, o));
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const P = s => s.platoon;
+  // Sub-units are squads in a platoon, platoons in a company (Chapter IX).
+  const SUB = s => (s.platoon && s.platoon.company) ? 'platoon' : 'squad';
+  SIM.subUnit = SUB;
+  SIM.unitName = s => (s.platoon && s.platoon.company) ? 'company' : 'platoon';
   const active = s => !!(s.platoon && s.platoon.active);
   SIM.platoonActive = active;
   const nco = s => SIM.rankTitle(s, 4);
@@ -31,7 +35,8 @@ window.SIM = window.SIM || {};
   };
   SIM.PLATOON_TRAITS = { bold: 'Leads attacks well and loses men doing it. May charge when told to hold.', careful: 'Gives steady fire support and keeps his men alive. Slow in the attack; hesitates when morale is low.', none: 'A stand-in. Does what he is told, no more.' };
   const sq = (s, id) => P(s).squads[id];
-  const lname = (s, q) => q.alive ? q.short : `${q.short}'s old squad`;
+  const lname = (s, q) => q.alive ? q.short : `${q.short}'s old ${SUB(s)}`;
+  const scale = q => (q.full || 10) / 10;
   SIM.platoonNight = s => {
     if (!active(s)) return;
     Object.values(P(s).squads).forEach(q => { q.ammo = clamp(q.ammo + 1, 0, 12); q.morale = clamp(q.morale + 2, 0, 100); });
@@ -40,14 +45,14 @@ window.SIM = window.SIM || {};
   // How strong a squad is in a role.
   const power = (s, id, role) => {
     if (id === 'own') {
-      const n = men(s).length + 1;
+      const n = (men(s).length + 1) * ((P(s) && P(s).company) ? 1.4 : 1);
       const mor = SIM.squadMorale ? SIM.squadMorale(s) : 60;
       const ammo = s.supplies && s.supplies.ammo <= 2 ? 0.7 : 1;
       return (n / 6) * (0.5 + mor / 200) * ammo * (1 + SIM.skill(s, 'leadership') * 0.06);
     }
     const q = sq(s, id);
     if (q.strength <= 0) return 0;
-    let p = (q.strength / 10) * (0.5 + q.morale / 200) * (q.ammo <= 2 ? 0.7 : 1);
+    let p = (q.strength / (q.full || 10)) * (0.5 + q.morale / 200) * (q.ammo <= 2 ? 0.7 : 1);
     if (q.trait === 'bold') p *= role === 'assault' ? 1.25 : 0.95;
     if (q.trait === 'careful') p *= role === 'assault' ? 0.8 : 1.25;
     return p;
@@ -60,7 +65,7 @@ window.SIM = window.SIM || {};
     const d = sq(s, 'dorn'), sa = sq(s, 'saal');
     // Dorn does not like holding back.
     if (support === 'dorn' && d.alive && d.strength > 0 && SIM.rel(s, 'dorn') < 15 && x.roll(0.3)) {
-      out.push(`${d.short} does not wait for your signal: his squad goes forward with ${lname(s, sq(s, assault) || d)}'s men.`);
+      out.push(`${d.short} does not wait for your signal: his ${SUB(s)} goes forward with ${lname(s, sq(s, assault) || d)}'s men.`);
       support = null; plan = Object.assign({}, plan, { dornCharged: true });
     }
     let p = 0.32 + power(s, assault, 'assault') * 0.42 + (support ? power(s, support, 'support') * 0.3 : 0) + (plan.dornCharged ? 0.08 : 0) + (prof.bonus ? prof.bonus(s) : 0);
@@ -71,12 +76,13 @@ window.SIM = window.SIM || {};
     const lose = (id, n) => {
       if (id === 'own') return;
       const q = sq(s, id); if (!q || q.strength <= 0) return;
+      n = Math.round(n * scale(q));
       q.strength = Math.max(0, q.strength - n);
-      q.morale = clamp(q.morale + (ok ? 4 : -10) - n * 2, 0, 100);
-      if (q.alive && (q.strength <= 2 || x.roll(id === assault ? 0.08 : 0.03))) {
+      q.morale = clamp(q.morale + (ok ? 4 : -10) - Math.round(n * 2 / scale(q)), 0, 100);
+      if (q.alive && (q.strength <= 2 * scale(q) || x.roll(id === assault ? 0.08 : 0.03))) {
         q.alive = false; q.trait = 'none';
-        out.push(`${q.name} is killed. The senior Obergefreiter takes over what is left of his squad.`);
-        SIM.addLog(s, `${q.name}, squad leader in your platoon, was killed ${prof.where}.`);
+        out.push(`${q.name} is killed. The senior NCO takes over what is left of his ${SUB(s)}.`);
+        SIM.addLog(s, `${q.name}, ${SUB(s)} leader in your ${SIM.unitName(s)}, was killed ${prof.where}.`);
         x.apply({ morale: -6 });
       }
     };
@@ -95,7 +101,7 @@ window.SIM = window.SIM || {};
     } else if (support === 'own' && x.roll(0.1)) {
       const m = x.casualty(0.5, prof.where); say(x, m, m => `${m.name} is killed by return fire.`, m => `${m.name} is wounded by return fire.`);
     }
-    const names = { own: 'your squad', dorn: `${lname(s, d)}`, saal: `${lname(s, sa)}` };
+    const names = { own: `your own ${SUB(s)}`, dorn: `${lname(s, d)}`, saal: `${lname(s, sa)}` };
     if (ok) { x.apply({ merit: assault === 'own' ? 4 : 3, officers: 4, morale: 3 }); out.push(prof.win(names[assault], support ? names[support] : null)); }
     else { x.apply({ merit: 1, officers: -2, morale: -4 }); out.push(prof.lose(names[assault])); }
     out.forEach(t => x.say(t));
@@ -103,9 +109,9 @@ window.SIM = window.SIM || {};
   };
 
   const ORDERS = [
-    { label: s => `${sq(s, 'dorn').alive ? 'Dorn' : 'The 2nd squad'} leads the attack. ${sq(s, 'saal').alive ? 'Saal' : 'The 3rd squad'} gives fire support. Your squad is the reserve.`, plan: { assault: 'dorn', support: 'saal', reserve: 'own' } },
-    { label: s => `${sq(s, 'saal').alive ? 'Saal' : 'The 3rd squad'} goes forward slowly. ${sq(s, 'dorn').alive ? 'Dorn' : 'The 2nd squad'} covers the flank. Your squad is the reserve.`, plan: { assault: 'saal', support: 'dorn', reserve: 'own' } },
-    { label: s => `You lead the attack with your own squad. ${sq(s, 'saal').alive ? 'Saal' : 'The 3rd squad'} gives fire support.`, plan: { assault: 'own', support: 'saal', reserve: 'dorn' } }
+    { label: s => `${sq(s, 'dorn').alive ? 'Dorn' : `The 2nd ${SUB(s)}`} leads the attack. ${sq(s, 'saal').alive ? 'Saal' : `The 3rd ${SUB(s)}`} gives fire support. Your own ${SUB(s)} is the reserve.`, plan: { assault: 'dorn', support: 'saal', reserve: 'own' } },
+    { label: s => `${sq(s, 'saal').alive ? 'Saal' : `The 3rd ${SUB(s)}`} goes forward slowly. ${sq(s, 'dorn').alive ? 'Dorn' : `The 2nd ${SUB(s)}`} covers the flank. Your own ${SUB(s)} is the reserve.`, plan: { assault: 'saal', support: 'dorn', reserve: 'own' } },
+    { label: s => `You lead the attack with your own ${SUB(s)}. ${sq(s, 'saal').alive ? 'Saal' : `The 3rd ${SUB(s)}`} gives fire support.`, plan: { assault: 'own', support: 'saal', reserve: 'dorn' } }
   ];
   // Give a battle event a set of platoon orders, used instead of its own choices when you command a platoon.
   const withOrders = (id, prof) => {
@@ -119,6 +125,7 @@ window.SIM = window.SIM || {};
     }));
   };
   const front = (id, where, cause, base, win, lose, bonus) => withOrders(id, { where, cause, base, win, lose, bonus });
+  SIM.withUnitOrders = (id, where, cause, base, win, lose, bonus) => withOrders(id, { where, cause, base, win, lose, bonus });
   front('c8f_7m', 'on patrol in the minefield', 'Killed by a mine on patrol before Kursk, June 1943.', 0.08,
     (a, b) => `${a[0].toUpperCase() + a.slice(1)} maps the minefield in four hours on their bellies${b ? `, with ${b} watching the Soviet line` : ''}. Eleven mines, all marked.`,
     a => `A flash in the grass. ${a[0].toUpperCase() + a.slice(1)} comes back with a wounded man and half a map.`);
@@ -273,7 +280,7 @@ The company commander calls the NCOs together by candlelight. "The battalion has
     if (!active(s) || s.stage !== 'event') return 'Only as Zugführer, during the chapter.';
     if (kind === 'recommend' && (P(s).recd || []).includes(a)) return 'Already recommended.';
     if (kind === 'recommend' && P(s).recs >= 2) return 'You have used your two recommendations this summer.';
-    if (kind === 'take' && sq(s, a) && sq(s, a).strength <= 3) return 'That squad cannot spare anyone.';
+    if (kind === 'take' && sq(s, a) && sq(s, a).strength <= 3) return `That ${SUB(s)} cannot spare anyone.`;
     if (kind !== 'recommend' && (s.used || {}).platoon === SIM.phaseKey(s)) return 'One transfer per morning, afternoon or night.';
     return null;
   };
@@ -283,13 +290,13 @@ The company commander calls the NCOs together by candlelight. "The battalion has
     if (kind === 'give') {           // a: man id, b: squad id
       const m = SIM.man(s, a), q = sq(s, b);
       if (!m || m.status !== 'ok' || !q || q.strength >= 12) return null;
-      m.status = 'transferred'; m.fate = `Transferred to ${q.alive ? q.short + '\'s' : 'the ' + (b === 'dorn' ? '2nd' : '3rd')} squad, ${SIM.today(s).date}`;
+      m.status = 'transferred'; m.fate = `Transferred to ${q.alive ? q.short + '\'s' : 'the ' + (b === 'dorn' ? '2nd' : '3rd')} ${SUB(s)}, ${SIM.today(s).date}`;
       q.strength++; q.morale = clamp(q.morale + 2, 0, 100);
       SIM.squadMod(s, 'all', { morale: SIM.hasTrait(m, 'informer') || SIM.hasTrait(m, 'schemer') ? 2 : -3 });
       if (s.flags.deputy === m.id) delete s.flags.deputy;
-      SIM.addLog(s, `Transferred ${m.name} to ${q.short}'s squad.`);
+      SIM.addLog(s, `Transferred ${m.name} to ${q.short}'s ${SUB(s)}.`);
       mark();
-      return `${m.name} moves his kit to ${q.alive ? q.short + '\'s' : 'the other'} squad.`;
+      return `${m.name} moves his kit to ${q.alive ? q.short + '\'s' : 'the other'} ${SUB(s)}.`;
     }
     if (kind === 'take') {           // a: squad id
       const q = sq(s, a);
@@ -300,9 +307,9 @@ The company commander calls the NCOs together by candlelight. "The battalion has
       const m = { id: 'plt' + n + '_' + s.day, name: `${FIRST[(n * 5 + s.day) % FIRST.length]} ${LAST[(n * 7 + s.day * 3) % LAST.length]}`, role: 'Rifleman', age: 19 + ((n * 3 + s.day) % 14),
         traits: TRAITS[(n + s.day) % TRAITS.length].slice(), loyalty: 45, morale: 55, rank: 1, status: 'ok', bio: `Came over from ${q.alive ? q.short + '\'s' : 'the ' + (a === 'dorn' ? '2nd' : '3rd')} squad in ${SIM.today(s).short.split(' ').slice(2).join(' ') || 'the summer'}.` };
       s.squad.push(m);
-      SIM.addLog(s, `Took ${m.name} into your own squad from ${q.short}'s.`);
+      SIM.addLog(s, `Took ${m.name} into your own ${SUB(s)} from ${q.short}'s.`);
       mark();
-      return `${m.name} reports to you from ${q.short}'s squad. ${q.alive ? q.short + ' is not pleased.' : ''}`;
+      return `${m.name} reports to you from ${q.short}'s ${SUB(s)}. ${q.alive ? q.short + ' is not pleased.' : ''}`;
     }
     if (kind === 'recommend') {      // a: man id or squad leader id
       P(s).recs++; P(s).recd = (P(s).recd || []).concat(a);

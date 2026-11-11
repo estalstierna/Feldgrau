@@ -239,8 +239,8 @@ MAPS['germany'] = dict(
     towns=[('Hamburg', 53.55, 10.0, 'end'), ('Berlin', 52.52, 13.4), ('Munich', 48.14, 11.58), ('Breslau', 51.11, 17.03),
            ('Stolp', 54.46, 17.03, 'end'), ('Lübeck', 53.87, 10.69), ('Rostock', 54.09, 12.13), ('Cologne', 50.94, 6.96),
            ('Copenhagen', 55.68, 12.57, 'end'), ('Danzig', 54.35, 18.65), ('Warsaw', 52.23, 21.0, 'end'), ('Vienna', 48.21, 16.37),
-           ('Prague', 50.08, 14.42), ('Stuttgart', 48.78, 9.18)],
-    places=dict(home_berlin=(52.55, 13.36), home_hamburg=(53.55, 9.94), home_munich=(48.14, 11.58), home_breslau=(51.11, 17.03),
+           ('Prague', 50.08, 14.42), ('Dresden', 51.05, 13.74), ('Stuttgart', 48.78, 9.18)],
+    places=dict(dresden=(51.05, 13.74), home_berlin=(52.55, 13.36), home_hamburg=(53.55, 9.94), home_munich=(48.14, 11.58), home_breslau=(51.11, 17.03),
                 home_stolp=(54.46, 17.03)),
 )
 
@@ -282,7 +282,8 @@ MAPS['pow'] = dict(
     towns=[('Moscow', 55.75, 37.62, 'end'), ('Stalingrad', 48.71, 44.51), ('Beketovka', 48.55, 44.4, 'end'), ('Saratov', 51.53, 46.03),
            ('Voronezh', 51.67, 39.2), ('Tambov', 52.72, 41.45), ('Kazan', 55.79, 49.12), ('Yelabuga', 55.76, 52.06, 'end'), ('Penza', 53.2, 45.0),
            ('Ryazan', 54.63, 39.74)],
-    places=dict(column=(48.8, 44.56), beketovka=(48.55, 44.4), ruins_work=(48.72, 44.5), train=(52.0, 41.4), krasnogorsk=(55.82, 37.33)),
+    places=dict(column=(48.8, 44.56), beketovka=(48.55, 44.4), ruins_work=(48.72, 44.5), train=(52.0, 41.4), krasnogorsk=(55.82, 37.33),
+                train_east=(55.4, 44.0), yelabuga=(55.76, 52.06), kama_forest=(55.95, 51.75), kama=(55.6, 51.7)),
 )
 
 # ── Chapter VIII (front track): the Kursk bulge, 1943 ──
@@ -303,6 +304,24 @@ MAPS['kursk'] = dict(
            ('Stary Oskol', 51.3, 37.84)],
     places=dict(hospital=(48.46, 35.04), poltava=(49.59, 34.55), kharkov=(49.99, 36.23), belgorod=(50.68, 36.48), startline=(50.78, 36.28),
                 oboyan=(50.98, 36.35), prokhorovka=(51.04, 36.73), retreat=(50.7, 36.52)),
+)
+
+# ── Chapter IX (front track): the Dnieper to the Cherkassy pocket, 1943–44 ──
+MAPS['dnieper'] = dict(
+    label='Map of the Dnieper and the Cherkassy pocket, 1943–44',
+    bbox=(48.2, 51.6, 28.0),
+    rivers=[[(51.6, 30.55), (51.0, 30.55), (50.45, 30.6), (50.1, 30.9), (49.75, 31.47), (49.44, 32.06), (49.2, 32.6), (49.07, 33.42), (48.75, 34.3), (48.5, 34.8)],
+            [(50.4, 28.5), (50.25, 28.66), (49.9, 29.4), (49.5, 29.9)],
+            [(49.55, 30.4), (49.3, 30.85), (49.15, 31.1), (49.05, 31.5)],
+            [(51.2, 34.8), (50.6, 34.5), (49.9, 34.4), (49.6, 34.55), (49.2, 34.3)]],
+    front=[[(49.55, 30.9), (49.6, 31.3), (49.55, 31.8), (49.35, 31.9), (49.15, 31.6), (49.2, 31.1), (49.35, 30.85), (49.55, 30.9)]],
+    labels=[('SOVIET UNION', 51.35, 32.2, C), ('DNIEPER', 50.85, 30.7, R), ('the pocket, Feb 1944', 48.95, 31.35, R), ('GNILOY TIKICH', 49.08, 30.4, R)],
+    towns=[('Kiev', 50.45, 30.52), ('Cherkassy', 49.44, 32.06), ('Korsun', 49.42, 31.26, 'end'), ('Kanev', 49.75, 31.47), ('Zhitomir', 50.25, 28.66),
+           ('Berdichev', 49.9, 28.6), ('Lysianka', 49.25, 30.83, 'end'), ('Zvenigorodka', 49.08, 30.97), ('Poltava', 49.59, 34.55, 'end'),
+           ('Kremenchug', 49.07, 33.42), ('Uman', 48.75, 30.22)],
+    places=dict(kharkov_road=(49.85, 34.6), scorched=(49.85, 33.2), kanev=(49.75, 31.5), bukrin=(49.85, 31.2), dnieper=(50.0, 31.0),
+                kiev=(50.35, 30.55), zhitomir=(50.25, 28.75), berdichev=(49.95, 28.9), zvenigorodka=(49.1, 31.0), korsun=(49.42, 31.3),
+                shenderovka=(49.33, 31.08), lysianka=(49.25, 30.83)),
 )
 
 

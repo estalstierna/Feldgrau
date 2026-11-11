@@ -151,9 +151,9 @@ SIM.MAPS.germany = () => ({
     <text x="312.1" y="151.4" class="m-country m-small" text-anchor="end">GEN. GOVT.</text>
     <text x="312.1" y="56.9" class="m-country m-small" text-anchor="end">E. PRUSSIA</text>
     <text x="172.9" y="234.7" class="m-country m-small">AUSTRIA</text>`,
-  towns: [[115.9, 68.1, "Hamburg", "end"], [174.6, 96.7, "Berlin"], [143.2, 218.3, "Munich"], [237.4, 135.8, "Breslau"], [237.4, 42.8, "Stolp", "end"], [127.8, 59.2, "Lübeck"], [152.7, 53.1, "Rostock"], [63.3, 140.6, "Cologne"], [160.3, 8.9, "Copenhagen", "end"], [265.4, 45.8, "Danzig"], [306.1, 104.7, "Warsaw", "end"], [226.0, 216.4, "Vienna"], [192.3, 164.4, "Prague"], [101.7, 200.6, "Stuttgart"]]
+  towns: [[115.9, 68.1, "Hamburg", "end"], [174.6, 96.7, "Berlin"], [143.2, 218.3, "Munich"], [237.4, 135.8, "Breslau"], [237.4, 42.8, "Stolp", "end"], [127.8, 59.2, "Lübeck"], [152.7, 53.1, "Rostock"], [63.3, 140.6, "Cologne"], [160.3, 8.9, "Copenhagen", "end"], [265.4, 45.8, "Danzig"], [306.1, 104.7, "Warsaw", "end"], [226.0, 216.4, "Vienna"], [192.3, 164.4, "Prague"], [180.5, 137.5, "Dresden"], [101.7, 200.6, "Stuttgart"]]
 });
-SIM.MAP_PLACES.germany = {"home_berlin": [174.0, 95.8], "home_hamburg": [114.8, 68.1], "home_munich": [143.2, 218.3], "home_breslau": [237.4, 135.8], "home_stolp": [237.4, 42.8]};
+SIM.MAP_PLACES.germany = {"dresden": [180.5, 137.5], "home_berlin": [174.0, 95.8], "home_hamburg": [114.8, 68.1], "home_munich": [143.2, 218.3], "home_breslau": [237.4, 135.8], "home_stolp": [237.4, 42.8]};
 
 SIM.MAPS.stalingrad = () => ({
   label: "Map of Stalingrad and the bend of the Don, 1942\u201343",
@@ -190,7 +190,7 @@ SIM.MAPS.pow = () => ({
     <text x="102.7" y="77.0" class="m-small m-label" transform="rotate(-38 102.7 77.0)">railway to Moscow</text>`,
   towns: [[46.8, 18.9, "Moscow", "end"], [169.8, 223.5, "Stalingrad"], [167.9, 228.2, "Beketovka", "end"], [197.0, 141.6, "Saratov"], [75.0, 137.5, "Voronezh"], [115.2, 107.0, "Tambov"], [252.1, 17.7, "Kazan"], [304.6, 18.6, "Yelabuga", "end"], [178.6, 93.0, "Penza"], [84.6, 51.5, "Ryazan"]]
 });
-SIM.MAP_PLACES.pow = {"column": [170.7, 220.9], "beketovka": [167.9, 228.2], "ruins_work": [169.6, 223.3], "train": [114.3, 127.9], "krasnogorsk": [41.6, 16.9]};
+SIM.MAP_PLACES.pow = {"column": [170.7, 220.9], "beketovka": [167.9, 228.2], "ruins_work": [169.6, 223.3], "train": [114.3, 127.9], "krasnogorsk": [41.6, 16.9], "train_east": [160.7, 29.1], "yelabuga": [304.6, 18.6], "kama_forest": [299.1, 13.1], "kama": [298.2, 23.3]};
 
 SIM.MAPS.kursk = () => ({
   label: "Map of the Kursk bulge, July 1943",
@@ -210,6 +210,22 @@ SIM.MAPS.kursk = () => ({
   towns: [[61.1, 69.9, "Kursk"], [57.3, 6.6, "Orel"], [74.1, 127.6, "Belgorod"], [62.4, 158.7, "Kharkov", "end"], [63.7, 96.4, "Oboyan", "end"], [78.6, 105.1, "Prokhorovka"], [8.1, 179.1, "Poltava"], [23.9, 236.7, "Dnepropetrovsk"], [157.9, 73.0, "Voronezh"], [114.5, 91.8, "Stary Oskol"]]
 });
 SIM.MAP_PLACES.kursk = {"hospital": [23.9, 236.7], "poltava": [8.1, 179.1], "kharkov": [62.4, 158.7], "belgorod": [70.5, 123.5], "startline": [64.1, 118.4], "oboyan": [66.3, 108.2], "prokhorovka": [78.6, 105.1], "retreat": [71.8, 122.4]};
+
+SIM.MAPS.dnieper = () => ({
+  label: "Map of the Dnieper and the Cherkassy pocket, 1943\u201344",
+  base: `<rect width="320" height="250" class="m-land"/>
+    <path d="M120.8,0.0 L120.8,44.1 L123.1,84.6 L137.3,110.3 L164.3,136.0 L192.3,158.8 L217.9,176.5 L256.7,186.0 L298.4,209.6 L322.1,227.9" class="m-river" opacity=".75"/>
+    <path d="M23.7,88.2 L31.3,99.3 L66.3,125.0 L90.0,154.4" class="m-river" opacity=".75"/>
+    <path d="M113.7,150.7 L135.0,169.1 L146.8,180.1 L165.8,187.5" class="m-river" opacity=".75"/>
+    <path d="M322.1,29.4 L307.9,73.5 L303.1,125.0 L310.2,147.1 L298.4,176.5" class="m-river" opacity=".75"/>
+    <path d="M137.3,150.7 L156.3,147.1 L180.0,150.7 L184.7,165.4 L170.5,180.1 L146.8,176.5 L135.0,165.4 L137.3,150.7" class="m-border" stroke-dasharray="2 3" opacity=".85"/>
+    <text x="198.9" y="18.4" class="m-country">SOVIET UNION</text>
+    <text x="127.9" y="55.1" class="m-small m-label">DNIEPER</text>
+    <text x="158.7" y="194.9" class="m-small m-label">the pocket, Feb 1944</text>
+    <text x="113.7" y="185.3" class="m-small m-label">GNILOY TIKICH</text>`,
+  towns: [[119.4, 84.6, "Kiev"], [192.3, 158.8, "Cherkassy"], [154.4, 160.3, "Korsun", "end"], [164.3, 136.0, "Kanev"], [31.3, 99.3, "Zhitomir"], [28.4, 125.0, "Berdichev"], [134.0, 172.8, "Lysianka", "end"], [140.7, 185.3, "Zvenigorodka"], [310.2, 147.8, "Poltava", "end"], [256.7, 186.0, "Kremenchug"], [105.1, 209.6, "Uman"]]
+});
+SIM.MAP_PLACES.dnieper = {"kharkov_road": [312.6, 128.7], "scorched": [246.3, 128.7], "kanev": [165.8, 136.0], "bukrin": [151.6, 128.7], "dnieper": [142.1, 117.6], "kiev": [120.8, 91.9], "zhitomir": [35.5, 99.3], "berdichev": [42.6, 121.3], "zvenigorodka": [142.1, 183.8], "korsun": [156.3, 160.3], "shenderovka": [145.9, 166.9], "lysianka": [134.0, 172.8]};
 
 // Move every chapter's route stops to their projected positions.
 (SIM.CHAPTERS || []).forEach(ch => [].concat(ch.maps || ch.map).forEach(id => { const pl = SIM.MAP_PLACES[id]; if (!pl) return; Object.keys(pl).forEach(k => { if (ch.places[k]) { ch.places[k].x = pl[k][0]; ch.places[k].y = pl[k][1]; } }); }));
