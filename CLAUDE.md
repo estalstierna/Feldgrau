@@ -34,15 +34,24 @@
   from the attached emblem-sheet.png". Last resort: "a small round silver button on the front".
   The sheet has eight pictures; refer to its headgear by name AND spell out the placement every time,
   or the model places badges as it likes:
-  - Waffen-SS side cap: "a field-grey side cap exactly like CAP ONE (PIN AND EAGLE) in the attached
-    emblem-sheet.png: the round silver cap badge sits exactly in the CENTRE of the front of the cap, and
-    the small silver eagle sits directly to the LEFT of the badge (the viewer's left), at the same height".
+  - HISTORICAL SIDES (wearer's view): Waffen-SS cap = badge centre front, eagle on the WEARER'S LEFT;
+    Army helmet = eagle on the WEARER'S LEFT; Waffen-SS helmet = emblem decal on the WEARER'S RIGHT, no
+    eagle; Army side cap = eagle centred; Waffen-SS collar = emblem on WEARER'S RIGHT patch, rank on
+    WEARER'S LEFT patch. In a portrait facing the viewer the wearer's left is the RIGHT HALF OF THE
+    PICTURE. Rule of thumb: rank patch, cap eagle and helmet eagle all in the RIGHT half of the picture;
+    the collar emblem and the Army breast eagle in the LEFT half. (The emblem sheet shows CAP ONE's eagle
+    on the wrong side, so always state the side in words; text outweighs the sheet. Portraits made before
+    Nov 2026 have the cap/helmet eagle mirrored; the owner chose to keep them.)
+  - Waffen-SS side cap: "exactly like CAP ONE (PIN AND EAGLE) in the attached emblem-sheet.png, but with
+    the eagle in the RIGHT HALF of the picture: the round cap badge sits exactly in the centre of the
+    front, directly above the bridge of his nose, and the small silver eagle sits beside it in the RIGHT
+    HALF of the picture".
   - Image models read the sheet poorly for small details: ALSO describe the badge in words and anchor
     the placement to the face: "on the front of the cap, directly above the bridge of his nose, a round
     silver cap badge the size of a coin with a raised rim; on it, clearly visible in relief, TWO SMALL
     SWORDS CROSSED DIAGONALLY, points up, and ONE SMALL ACORN with an oak leaf above where they cross.
-    Just to the left of this badge (the viewer's left), above his right eyebrow, a smaller silver eagle
-    holding the upright sword with oak leaves. Nothing else on the cap."
+    Beside this badge, in the RIGHT HALF of the picture, a smaller silver eagle holding the upright
+    sword with oak leaves. Nothing else on the cap."
   - Collars (the sheet now has ten pictures): Waffen-SS "black collar patches exactly like COLLAR ONE
     (BLACK PATCHES) in the attached emblem-sheet.png", then the rank on the wearer's left patch (it shows
     one stripe, Sturmmann): "but with TWO stripes" (Rottenführer), "but with the left patch plain black"
@@ -55,12 +64,14 @@
     patch in the RIGHT HALF of the picture shows the rank", add an explicit ban ("the sword with oak
     leaves must NOT appear on the patch in the right half of the picture"), and pose Waffen-SS portraits
     almost straight on so both collar patches are fully visible (keep hands low). For the cap: "in the
-    LEFT HALF of the picture, just beside this badge, a smaller silver eagle". Mirroring a finished image
+    RIGHT HALF of the picture, just beside this badge, a smaller silver eagle". Mirroring a finished image
     does not fix it, because it moves the cap eagle too.
   - Army side cap: "exactly like CAP TWO (ONLY EAGLE) in the attached emblem-sheet.png: only a small
     silver-grey eagle, exactly in the CENTRE of the front of the cap, and no other badge".
-  - Steel helmet: "exactly like the HELMET in the attached emblem-sheet.png: a small silver-grey eagle
-    decal on the LEFT side of the helmet, nothing else".
+  - Army steel helmet: "exactly like the HELMET in the attached emblem-sheet.png: a small silver-grey
+    eagle decal on the side of the helmet that is in the RIGHT HALF of the picture, nothing else".
+    Waffen-SS steel helmet: "a small decal of the sword-and-oak-leaves emblem, silver on a small black
+    shield, on the side of the helmet that is in the LEFT HALF of the picture; no eagle".
 - Scenes: landscape 16:9, at least 1600 × 900, horizon at 55–60 % of the height, important things
   between 30 % and 80 % of the height, hand-painted gouache style (`docs/style-reference.png`).
   Portraits: square, 1024 × 1024, plain dark olive background (#3b3d34).
